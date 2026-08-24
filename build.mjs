@@ -999,6 +999,14 @@ ${urls.map(u => `  <url><loc>${BASE}${u.loc}</loc><priority>${u.pri}</priority><
 /* A preview build tells crawlers to stay out entirely — see NOINDEX in layout.mjs.
    The per-page meta robots tag is the reliable half: a project-subpath deploy
    serves robots.txt at /<repo>/robots.txt, which crawlers do not read. */
+/* Netlify reads _headers from the publish dir. An X-Robots-Tag header is
+   stronger than the meta tag: it also covers non-HTML files, and it cannot be
+   missed by a crawler that never parses the document. */
+if (NOINDEX) write('_headers', `/*\n  X-Robots-Tag: noindex, nofollow\n`);
+/* build.mjs does not wipe dist/, so a _headers left behind by an earlier
+   preview build would otherwise ship a noindex header to production. */
+else fs.rmSync(path.join('dist', '_headers'), { force: true });
+
 write('robots.txt', NOINDEX
   ? `User-agent: *\nDisallow: /\n`
   : `User-agent: *\nAllow: /\n\nSitemap: ${BASE}/sitemap.xml\n`);

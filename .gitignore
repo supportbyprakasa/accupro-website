@@ -10,3 +10,4 @@ dist/*.html
 dist/services/
 dist/sitemap.xml
 dist/robots.txt
+dist/_headers

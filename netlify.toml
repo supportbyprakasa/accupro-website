@@ -1,0 +1,20 @@
+# Netlify config. Only used if this repo is later connected to Netlify via git;
+# a token-based deploy of dist/ does not read it.
+#
+# PREVIEW=1 puts `noindex, nofollow` on all 36 pages and makes robots.txt
+# Disallow: /. This site is a verbatim rebuild of a live client site, so an
+# indexable copy would compete with the real domain as duplicate content.
+
+[build]
+  command = "node build.mjs"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+  PREVIEW = "1"
+  SITE_URL = "https://accupro-preview.netlify.app"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
