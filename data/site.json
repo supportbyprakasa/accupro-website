@@ -1,0 +1,416 @@
+{
+  "_note": "All prose in this file is copied VERBATIM from accuprointernational.co.id/en/. Text in [SQUARE BRACKETS] is a placeholder: that fact does not exist on the current site and must be supplied by Accupro.",
+  "company": {
+    "legalName": "PT. Accurate Pro International",
+    "shortName": "Accupro",
+    "tagline": "A trusted partner in your Tax, Legal, Legality and Business Services solutions, committed to Integrity, Professionalism and Innovation to support the growth and sustainability of your business locally and globally.",
+    "phones": [
+      "021-2309-6155",
+      "021-3886-4200"
+    ],
+    "whatsapp": "0811-1999-9553",
+    "whatsappIntl": "6281119999553",
+    "emails": [
+      "accupro99@gmail.com",
+      "accurateprointernational@gmail.com"
+    ],
+    "addressLine": "Jl. Bandengan Utara No. 80",
+    "addressLine2": "Ruko Bandengan Indah No.10 Blok B-36, Penjaringan",
+    "city": "Jakarta Utara, Jakarta 14440",
+    "hours": "Monday - Friday : 8:00 AM - 5:00 PM",
+    "social": {
+      "instagram": "https://instagram.com/accupro.co.id",
+      "facebook": "https://facebook.com/profile.php?id=61552054107995",
+      "linkedin": "https://linkedin.com/in/accu-pro-international",
+      "tiktok": "https://tiktok.com/@accupro.co.id"
+    }
+  },
+  "hero": {
+    "headlines": [
+      "Reliable Tax Expert, the Right Solution",
+      "Easy Tax, Smooth Business",
+      "Optimize Tax, Maximize Profit"
+    ],
+    "primary": "Reliable Tax Expert, the Right Solution"
+  },
+  "pillars": [
+    {
+      "id": "taxes",
+      "icon": "chart",
+      "title": "Taxes",
+      "text": "We support you in managing your tax obligations, both as a company and an individual. Our services range from tax consultation to accurate and timely tax calculations.",
+      "shot": "Photo: desk with tax returns, calculator and laptop",
+      "ratio": "4 / 3",
+      "px": "min 1200px",
+      "photo": "tax-docs"
+    },
+    {
+      "id": "legality",
+      "icon": "building",
+      "title": "Legality",
+      "text": "We provide consulting services and solutions for business licensing. However small, medium or large the scale of your business, we are ready to help ensure the legality of your business is fulfilled.",
+      "shot": "Photo: signing of a notarial deed",
+      "ratio": "4 / 3",
+      "px": "min 1200px",
+      "photo": "signing"
+    },
+    {
+      "id": "bookkeeping",
+      "icon": "book",
+      "title": "Book Keeping",
+      "text": "We provide bookkeeping and tax consultation for companies or individuals. Both include recording, storing and restating financial transactions.",
+      "shot": "Photo: ledger and financial statements on a work desk",
+      "ratio": "4 / 3",
+      "px": "min 1200px",
+      "photo": "filed-docs"
+    }
+  ],
+  "stats": [
+    {
+      "value": "95%",
+      "label": "Business Solutions",
+      "flag": true
+    },
+    {
+      "value": "80%",
+      "label": "Growing Business",
+      "flag": true
+    },
+    {
+      "value": "24",
+      "label": "Services offered",
+      "flag": false
+    },
+    {
+      "value": "3",
+      "label": "Languages: ID / EN / 中文",
+      "flag": false
+    }
+  ],
+  "cta": {
+    "heading": "Consult Your Business for Free Now!",
+    "text": "We invite you to take advantage of a free consultation session specifically designed to help you identify and address the challenges faced in your business."
+  },
+  "sectionHeading": "What You Can Get",
+  "testimonials": [
+    {
+      "name": "Ibu Cindy",
+      "company": "PT. ANUGERAH ABADI MEDIKA",
+      "quote": "So far, the service has been satisfying, responsive, and has a good response. Very helpful, especially with the tax system."
+    },
+    {
+      "name": "Ibu Irene",
+      "company": "PT. KARYA ALLPAS SUKSES",
+      "quote": "So far, we are quite satisfied with Accu Pro's fast response service. Hopefully, it will continue to improve and expand its services in the future."
+    },
+    {
+      "name": "Mr. Zhang",
+      "company": "PT. KEMURNIAN TINGGI GAS",
+      "quote": "Great service! The response is fast and very helpful. If there's anything unclear, they explain it in detail. Thank you, Accu Pro!"
+    },
+    {
+      "name": "Claudia",
+      "company": "[COMPANY NAME]",
+      "quote": "I'm really happy using ACCU PRO's services! The team is very fast in responding and provides great solutions. I hope we can continue to work well together. Thank you, ACCU PRO!"
+    }
+  ],
+  "team": [
+    {
+      "name": "Kurniawan, S.H., M.Kn., CTL",
+      "role": "Direktur",
+      "shot": "Portrait photo — same backdrop for all four",
+      "photo": "portrait"
+    },
+    {
+      "name": "Maria Batvin, S.M., CHRO",
+      "role": "Marketing",
+      "shot": "Portrait photo — same backdrop for all four",
+      "photo": "portrait"
+    },
+    {
+      "name": "Habibah",
+      "role": "Staff Pajak",
+      "shot": "Portrait photo — same backdrop for all four",
+      "photo": "portrait"
+    },
+    {
+      "name": "Nares",
+      "role": "Staff Pajak",
+      "shot": "Portrait photo — same backdrop for all four",
+      "photo": "portrait"
+    }
+  ],
+  "categories": [
+    {
+      "slug": "tax-reporting",
+      "icon": "chart",
+      "name": "Tax & Reporting",
+      "blurb": "Monthly and annual tax obligations for companies and individuals, including audit correspondence.",
+      "shot": "Photo: tax returns, calculator and laptop on a work desk",
+      "ratio": "4 / 3",
+      "photo": "tax-docs"
+    },
+    {
+      "slug": "tax-registration",
+      "icon": "file",
+      "name": "Registration & Tax Accounts",
+      "blurb": "Getting registered and staying registered — NPWP, EFIN, and CORETAX accounts.",
+      "shot": "Photo: CORETAX interface being operated on screen",
+      "ratio": "4 / 3",
+      "photo": "screen"
+    },
+    {
+      "slug": "company-legality",
+      "icon": "building",
+      "name": "Company Legality",
+      "blurb": "Setting up, amending and housing a legal entity in Indonesia.",
+      "shot": "Photo: signing of a notarial deed",
+      "ratio": "4 / 3",
+      "photo": "signing"
+    },
+    {
+      "slug": "stay-permits-visa",
+      "icon": "plane",
+      "name": "Stay Permits & Visa",
+      "blurb": "Work, investor and family stay permits plus business visas for foreign nationals.",
+      "shot": "Photo: passport, KITAS card and immigration paperwork",
+      "ratio": "4 / 3",
+      "photo": "passport"
+    },
+    {
+      "slug": "trademark-ip",
+      "icon": "badge",
+      "name": "Trademark & IP",
+      "blurb": "Protecting your brand in Indonesia, for local and foreign applicants alike.",
+      "shot": "Photo: trademark certificate and product branding",
+      "ratio": "4 / 3",
+      "photo": "branding"
+    }
+  ],
+  "services": [
+    {
+      "slug": "corporate-tax-processing",
+      "name": "Corporate Tax Processing",
+      "shot": "Photo: monthly tax filing documents",
+      "cat": "tax-reporting",
+      "photo": "tax-docs"
+    },
+    {
+      "slug": "individual-tax-processing",
+      "name": "Individual Tax Processing",
+      "shot": "Photo: individual taxpayer paperwork",
+      "cat": "tax-reporting",
+      "photo": "tax-docs"
+    },
+    {
+      "slug": "corporate-annual-tax-return",
+      "name": "Corporate Annual Tax Return Processing",
+      "shot": "Photo: annual corporate return and financial statements",
+      "cat": "tax-reporting",
+      "photo": "tax-docs"
+    },
+    {
+      "slug": "individual-annual-tax-return",
+      "name": "Individual Annual Tax Return Processing",
+      "shot": "Photo: individual annual return being filed online",
+      "cat": "tax-reporting",
+      "photo": "screen"
+    },
+    {
+      "slug": "corporate-annual-tax-return-nil",
+      "name": "Corporate Annual Tax Return (Nil)",
+      "shot": "Photo: nil return document",
+      "cat": "tax-reporting",
+      "photo": "tax-docs"
+    },
+    {
+      "slug": "sp2dk-response",
+      "name": "Response to the SP2DK Letter",
+      "shot": "Photo: SP2DK letter on a desk",
+      "cat": "tax-reporting",
+      "photo": "tax-docs"
+    },
+    {
+      "slug": "pkp-confirmation",
+      "name": "Confirmation of Taxable Entrepreneur (PKP) Status",
+      "shot": "Photo: PKP confirmation certificate",
+      "cat": "tax-reporting",
+      "photo": "certificate"
+    },
+    {
+      "slug": "corporate-npwp",
+      "name": "Corporate NPWP Registration",
+      "shot": "Photo: corporate NPWP card",
+      "cat": "tax-registration",
+      "photo": "stamp"
+    },
+    {
+      "slug": "individual-npwp",
+      "name": "Individual NPWP Registration",
+      "shot": "Photo: individual NPWP card",
+      "cat": "tax-registration",
+      "photo": "stamp"
+    },
+    {
+      "slug": "npwp-data-update",
+      "name": "NPWP Data Update",
+      "shot": "Photo: tax office service counter",
+      "cat": "tax-registration",
+      "photo": "reception"
+    },
+    {
+      "slug": "efin-registration",
+      "name": "EFIN Registration",
+      "shot": "Photo: EFIN activation letter",
+      "cat": "tax-registration",
+      "photo": "stamp"
+    },
+    {
+      "slug": "coretax-pma-account",
+      "name": "Creation of CORETAX PMA Account",
+      "shot": "Photo: CORETAX login screen",
+      "cat": "tax-registration",
+      "photo": "screen"
+    },
+    {
+      "slug": "coretax-pmdn-account",
+      "name": "Creation of CORETAX PMDN Account",
+      "shot": "Photo: CORETAX dashboard",
+      "cat": "tax-registration",
+      "photo": "screen"
+    },
+    {
+      "slug": "coretax-personal-activation",
+      "name": "Activation of Personal CORETAX Account",
+      "shot": "Photo: personal CORETAX activation on a phone",
+      "cat": "tax-registration",
+      "photo": "screen"
+    },
+    {
+      "slug": "company-establishment",
+      "name": "Establishment of a PT / CV / Foundation",
+      "shot": "Photo: deed of establishment and company stamp",
+      "cat": "company-legality",
+      "photo": "stamp"
+    },
+    {
+      "slug": "company-legality",
+      "name": "Company Legality Establishment",
+      "shot": "Photo: NIB and business licence documents",
+      "cat": "company-legality",
+      "photo": "signing"
+    },
+    {
+      "slug": "deed-amendment",
+      "name": "Deed Amendment",
+      "shot": "Photo: amended deed being signed",
+      "cat": "company-legality",
+      "photo": "signing"
+    },
+    {
+      "slug": "virtual-office",
+      "name": "Virtual Office Rental",
+      "shot": "Photo: office building reception",
+      "cat": "company-legality",
+      "photo": "reception"
+    },
+    {
+      "slug": "work-kitas",
+      "name": "Work KITAS Processing",
+      "shot": "Photo: KITAS card and passport",
+      "cat": "stay-permits-visa",
+      "photo": "passport"
+    },
+    {
+      "slug": "investor-kitas",
+      "name": "Investor KITAS Processing",
+      "shot": "Photo: shareholder documents and passport",
+      "cat": "stay-permits-visa",
+      "photo": "passport"
+    },
+    {
+      "slug": "family-kitas",
+      "name": "Family Reunification KITAS Processing",
+      "shot": "Photo: expatriate family paperwork",
+      "cat": "stay-permits-visa",
+      "photo": "passport"
+    },
+    {
+      "slug": "business-visa",
+      "name": "Business VISA Processing",
+      "shot": "Photo: passport with visa sticker",
+      "cat": "stay-permits-visa",
+      "photo": "passport"
+    },
+    {
+      "slug": "trademark-pma",
+      "name": "Trademark Registration for PMA / Foreigners",
+      "shot": "Photo: trademark certificate",
+      "cat": "trademark-ip",
+      "photo": "certificate"
+    },
+    {
+      "slug": "trademark-pmdn",
+      "name": "Trademark Registration for PMDN / Indonesian Citizens",
+      "shot": "Photo: brand assets and certificate",
+      "cat": "trademark-ip",
+      "photo": "branding"
+    }
+  ],
+  "tools": [
+    {
+      "slug": "pph-badan",
+      "name": "Corporate Income Tax (PPh Badan) Calculator",
+      "note": "Rates 22%, 19% for listed companies, 0.5% final for MSMEs, plus the Article 31E facility.",
+      "kind": "tax"
+    },
+    {
+      "slug": "pph21-ter",
+      "name": "PPh 21 TER Calculator",
+      "note": "Average Effective Rate categories A/B/C under PMK 168/2023.",
+      "kind": "tax"
+    },
+    {
+      "slug": "pph21-masa",
+      "name": "PPh 21 Final Period Calculator",
+      "note": "Final tax period, with PTKP provisions across multiple years.",
+      "kind": "tax"
+    },
+    {
+      "slug": "pph23",
+      "name": "PPh 23 Calculator",
+      "note": "Nine income types, 15% and 2% rates, non-NPWP adjustment.",
+      "kind": "tax"
+    },
+    {
+      "slug": "pph4-2",
+      "name": "PPh Article 4(2) Calculator",
+      "note": "Final rates for rent, land and building transfers, and construction services.",
+      "kind": "tax"
+    },
+    {
+      "slug": "company-setup-cost",
+      "name": "Company Setup Cost Simulator",
+      "note": "Estimated cost and timeline by entity type, paid-up capital and domicile.",
+      "kind": "own"
+    },
+    {
+      "slug": "kitas-requirements",
+      "name": "KITAS Requirements & Timeline Checker",
+      "note": "Pick a KITAS type, get the document checklist and a stage-by-stage estimate.",
+      "kind": "own"
+    },
+    {
+      "slug": "trademark-cost",
+      "name": "Trademark Filing Cost Simulator",
+      "note": "Per class of goods or services, distinguishing local and foreign applicants.",
+      "kind": "own"
+    },
+    {
+      "slug": "monthly-obligations",
+      "name": "Monthly Tax Obligation Checker",
+      "note": "By entity type and PKP status — what must be reported each month.",
+      "kind": "own"
+    }
+  ]
+}
