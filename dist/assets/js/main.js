@@ -1,6 +1,37 @@
-/* Accupro International — behaviour. No dependencies. */
+/* Accupro International — behaviour. One dependency: Lenis (smooth scroll),
+   loaded via CDN in layout.mjs's head()/footer(). Everything else is
+   vanilla. */
 (function () {
   'use strict';
+
+  /* ---- smooth scroll (Lenis) -------------------------------------------
+     autoRaf runs its own rAF loop; anchors:true keeps in-page hash links
+     (e.g. the footer's "Our Team" → about.html#team) scrolling smoothly
+     instead of jumping. Lenis already disables itself under
+     prefers-reduced-motion by default, so no extra guard is needed here. */
+  if (typeof Lenis !== 'undefined') {
+    new Lenis({ autoRaf: true, anchors: true });
+  }
+
+  /* ---- scroll reveal -----------------------------------------------------
+     Cards and row-cards fade/slide in as they enter the viewport. Guarded
+     twice: the CSS only defines the hidden starting state inside
+     prefers-reduced-motion:no-preference, and this script skips entirely
+     for users who've asked for reduced motion — so nothing ever depends on
+     JS running to become visible. */
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    var revealEls = Array.prototype.slice.call(document.querySelectorAll('.card, .rowcard'));
+    revealEls.forEach(function (el) { el.classList.add('reveal'); });
+    var revealIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          revealIO.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(function (el) { revealIO.observe(el); });
+  }
 
   /* ---- mobile navigation ---------------------------------------------- */
   var burger = document.querySelector('.burger');

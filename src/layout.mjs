@@ -123,6 +123,7 @@ export const head = ({ title, desc, d = 0, path = '', ogCat = 'team-work', ogSee
 <meta name="twitter:description" content="${attr(desc)}">
 <meta name="twitter:image" content="${image}">
 <link rel="icon" href="${up(d)}assets/img/logo-accupro.png">
+<link rel="stylesheet" href="https://unpkg.com/lenis@1.3.26/dist/lenis.css">
 <link rel="stylesheet" href="${up(d)}assets/css/style.css">
 </head>
 <body>
@@ -213,6 +214,7 @@ export const footer = (d, C) => `
   </div>
 </footer>
 <a class="wa-float" href="https://wa.me/${C.whatsappIntl}" target="_blank" rel="noopener">${ic('whatsapp', 20)} Chat with us</a>
+<script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js" defer></script>
 <script src="${up(d)}assets/js/main.js" defer></script>
 </body>
 </html>`;
