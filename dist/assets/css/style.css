@@ -13,7 +13,7 @@
   --shadow-sm:0 1px 2px rgba(27,27,24,.05);
   --shadow:0 4px 16px rgba(27,27,24,.07);
   --shadow-lg:0 12px 32px rgba(27,27,24,.10);
-  --r:4px; --r-lg:6px;
+  --r:4px; --r-lg:6px; --r-xl:20px;
   --sans:'Source Sans 3',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
   --display:'Plus Jakarta Sans',var(--sans);
   --container:1200px; --gutter:24px;
@@ -60,7 +60,7 @@ h4{font-size:1.0625rem;font-weight:700;letter-spacing:-.01em;line-height:1.3}
 .pagehero__grid{display:grid;grid-template-columns:1.3fr .9fr;gap:clamp(24px,4vw,48px);align-items:center;padding-block:clamp(28px,4vw,44px)}
 .pagehero__content h1{margin-top:10px}
 .pagehero__content .lede{margin-top:14px}
-.pagehero__frame{border-radius:18px;overflow:hidden;box-shadow:var(--shadow-lg)}
+.pagehero__frame{border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--shadow-lg)}
 /* width:100% is load-bearing — see the note on .hero__frame below: aspect-ratio
    + max-height on an auto-width block derives width from the clamped height
    instead of filling the container unless width is made explicit first. */
@@ -91,7 +91,7 @@ h4{font-size:1.0625rem;font-weight:700;letter-spacing:-.01em;line-height:1.3}
 .hero__arrow:hover{border-color:var(--navy);background:var(--navy-050)}
 .hero__arrow--next svg{transform:rotate(180deg)}
 .hero__media{position:relative}
-.hero__frame{border-radius:22px;overflow:hidden;box-shadow:var(--shadow-lg);position:relative}
+.hero__frame{border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--shadow-lg);position:relative}
 /* Same in-flow-only-when-active trick as .hero__slide: the active slide is
    position:relative so it sets the frame's actual size (from its imgslot's
    aspect-ratio), the other two are absolute + inset:0 so they don't affect
