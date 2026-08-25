@@ -4,6 +4,13 @@
    ========================================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap');
 
+/* Cross-document view transitions — native browser cross-fade between one
+   full page load and the next (Chrome/Edge 126+, Safari 18.2+). No JS: the
+   browser snapshots the outgoing page and the incoming page and cross-fades
+   between them automatically. Unsupported browsers just ignore this rule
+   and navigate as before — nothing to feature-detect or fall back on. */
+@view-transition{navigation:auto}
+
 :root{
   --navy:#2A3490; --navy-700:#212a76; --navy-900:#161c4f; --navy-050:#eef0fa;
   --gold:#C09725; --gold-700:#9a7a1d; --gold-050:#fbf7e9;
@@ -325,7 +332,13 @@ h4{font-size:1.0625rem;font-weight:700;letter-spacing:-.01em;line-height:1.3}
   .footer__grid{grid-template-columns:1fr;gap:28px}
   .wa-float{right:12px;bottom:12px;min-height:48px;padding:0 16px}
 }
-@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto}}
+/* The View Transitions API doesn't watch prefers-reduced-motion on its own —
+   without this, the cross-fade above would still run its default animation
+   for users who've explicitly asked to reduce motion. */
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto}
+  ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}
+}
 @media print{.header,.wa-float,.footer__socials{display:none}}
 
 /* ---------- scroll reveal ----------------------------------------------
