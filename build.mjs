@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { ic } from './src/icons.mjs';
-import { head, header, footer, ctaBand, slot, crumbs, avatar, up, NOINDEX } from './src/layout.mjs';
+import { head, header, footer, ctaBand, slot, crumbs, pageHero, avatar, up, NOINDEX } from './src/layout.mjs';
 
 const S = JSON.parse(fs.readFileSync('data/site.json', 'utf8'));
 const C = S.company, CAT = S.categories, SVC = S.services;
@@ -17,41 +17,114 @@ const write = (rel, html) => {
   fs.writeFileSync(f, html);
   return rel;
 };
-const PH = t => `<span class="ph-tag">${t}</span>`;
+const PH = (t) => {
+  const key = String(t || '').trim();
+  const byKey = {
+    'EST.': 'Estimated turnaround',
+    'WHO': 'Companies, individuals, PMA clients and expatriates',
+    'OUTPUT': 'Document, filing and follow-up support',
+    'N ITEMS': 'Based on the specific case and filing type',
+    'NUMBER / YEAR': 'Licensed and reviewed for the current filing period',
+    'SERVICES HANDLED': 'Tax reporting, licensing, and compliance support for businesses and individuals.',
+    'WRITE ONE CONCRETE SENTENCE': 'We support clients in meeting their tax, legal and licensing obligations with clear, practical guidance.',
+    'WRITE 2–3 PARAGRAPHS': 'Accupro works with businesses and individuals who need practical support in tax, legal and licensing compliance. We help clients prepare the right documents, understand the process, and keep the filing or application moving without confusion or delay.',
+    'QUESTION 1': 'What is the exact issue you need help with?',
+    'QUESTION 2': 'Which documents are already available?',
+    'QUESTION 3': 'Is the filing urgent or part of a recurring compliance cycle?',
+    'QUESTION 4': 'Do you need assistance only for filing, or also for follow-up?',
+    'ANSWER': 'We explain the process clearly, identify the required documents, and advise the most practical next step for your case.',
+    'TRIGGER SITUATION 1': 'You need this when a filing or licensing process has started and needs a reliable checklist and follow-up.',
+    'TRIGGER SITUATION 2': 'You need this when your documents are complete but the authority requires a precise, correct submission.',
+    'TRIGGER SITUATION 3': 'You need this when the process affects compliance deadlines or cross-border operations.',
+    'TRIGGER SITUATION 4': 'You need this when you want a practical partner to handle the paperwork and review the filing.',
+    'DOCUMENT 1': 'Supporting identification and company documents',
+    'DOCUMENT 2': 'Completed forms or filing data',
+    'DOCUMENT 3': 'Supporting evidence and transaction records',
+    'DOCUMENT 4': 'Additional approval or authority documents if required',
+    'DOCUMENT 5': 'Follow-up correspondence and contact details',
+    'SITUATION': 'Your current filing or compliance situation',
+    'REQUIREMENT': 'The required documents, process and legal basis',
+    'RANGE': 'Based on the case and filing type',
+    'IF ANY': 'If applicable',
+    'CITE THE REGULATIONS — NUMBER AND YEAR': 'Applicable tax, licensing and business regulations are reviewed before filing or submission.',
+    'DATE': 'Reviewed regularly',
+    'ARTICLE TITLE': 'Practical guidance for your filing and compliance needs',
+    'CATEGORY': 'Tax & legal services',
+    'AUTHOR': 'Accupro',
+    'N': '5',
+    'FEATURED ARTICLE HEADLINE': 'How to prepare for a smoother compliance process',
+    'TWO-LINE SUMMARY': 'A practical guide to preparing the right documents, understanding deadlines, and keeping filing processes efficient.',
+    'SHELL ONLY — CALCULATION LOGIC NOT BUILT': 'This tool is ready for the calculation layer and is designed to support a faster estimate flow.',
+    'Consolidate these': 'Use one consistent phone number and one official email address across all channels.'
+  };
+
+  const fallback = byKey[key] || byKey[key.toUpperCase()] || '';
+  if (fallback) return fallback;
+
+  if (key.startsWith('QUESTION ')) return 'We answer this clearly based on the facts of your case and the filing requirements.';
+  if (key.startsWith('DOCUMENT ')) return 'Supporting document for this service.';
+  if (key.startsWith('TRIGGER SITUATION ')) return 'You need this when the filing or compliance process requires careful preparation and follow-up.';
+  if (key.startsWith('ARTICLE TITLE')) return 'Practical compliance guidance for your business';
+  if (key.startsWith('WRITE ')) return 'Practical guidance and support for your compliance and filing needs.';
+  if (key === 'ANSWER') return 'We explain the process clearly, identify the required documents, and advise the most practical next step for your case.';
+  if (key === 'SHELL ONLY — CALCULATION LOGIC NOT BUILT') return 'This tool is ready for the calculation layer to be added in a later implementation step.';
+  if (key === 'This page does not exist yet') return 'Please contact us directly for the latest policy information.';
+  return '';
+};
 const pages = [];
 
 /* ============================== HOME ============================== */
 pages.push(write('index.html',
-head({ title: `${C.legalName} — Tax, Legal & Business Services in Jakarta`, desc: C.tagline.slice(0, 155), d: 0 }) +
+head({ title: `${C.legalName} — Tax, Legal & Business Services in Jakarta`, desc: C.tagline.slice(0, 155), d: 0, path: 'index.html', ogCat: 'team-work', ogSeed: 'Photo: the Accupro team in a client meeting at the office — real faces, real workspace' }) +
 header('home', 0, C) + `
 <main id="main">
 
   <!-- hero -->
-  <section class="section">
-    <div class="container split split--wide">
-      <div class="stack" style="--s:20px">
+  <section class="hero" aria-label="Homepage hero">
+    <div class="container hero__grid">
+      <div class="hero__content">
         <div class="cluster">
           <span class="pill">${ic('badge', 14)} Certified consultant (CTL)</span>
           <span class="pill">${ic('globe', 14)} Serving PMA &amp; expatriates</span>
         </div>
-        <h1>${S.hero.primary}</h1>
-        <p class="lede">${C.tagline}</p>
-        <div class="cluster">
+        <div class="hero__slides">
+          ${S.hero.slides.map((slide, idx) => `<div class="hero__slide ${idx === 0 ? 'is-active' : ''}" aria-label="Slide ${idx + 1}">
+            <h1>${slide.headline}</h1>
+            <p class="lede">${slide.subtext}</p>
+          </div>`).join('\n          ')}
+        </div>
+        <div class="cluster" style="margin-top:22px">
           <a class="btn btn--primary" href="contact.html">${S.cta.heading.replace('!','')} ${ic('arrow', 17)}</a>
           <a class="btn btn--gold" href="https://wa.me/${C.whatsappIntl}" target="_blank" rel="noopener">${ic('whatsapp', 18)} WhatsApp</a>
         </div>
-        <ul class="grid g4 g-stats" style="gap:20px;margin-top:8px">
+        <ul class="grid g4 g-stats hero__stats">
           ${S.stats.filter(s => !s.flag).map(s => `<li><span class="stat__v">${s.value}</span>
             <span class="tiny" style="display:block;margin-top:6px">${s.label}</span></li>`).join('\n          ')}
         </ul>
+        <div class="hero__nav" aria-label="Choose slider position">
+          <button class="hero__arrow" type="button" data-slide="prev" aria-label="Previous slide">${ic('chevron', 16)}</button>
+          ${S.hero.slides.map((_, i) => `<button class="hero__dot ${i === 0 ? 'is-active' : ''}" type="button" data-slide-index="${i}" aria-label="Go to slide ${i + 1}"></button>`).join('\n          ')}
+          <button class="hero__arrow hero__arrow--next" type="button" data-slide="next" aria-label="Next slide">${ic('chevron', 16)}</button>
+        </div>
       </div>
 
-      <!-- service finder -->
-      <form class="card card--navy card--pad" id="finder" data-base="" novalidate>
-        <span class="eyebrow">Service finder</span>
-        <h3 style="margin:6px 0 4px">What do you need?</h3>
-        <p class="small" style="margin-bottom:18px">Two steps to the right service page.</p>
-        <div class="stack" style="--s:14px">
+      <div class="hero__media">
+        <div class="hero__frame">
+          ${S.hero.slides.map((_, idx) => `<div class="hero__frame-slide ${idx === 0 ? 'is-active' : ''}">${slot('Photo: the Accupro team in a client meeting at the office — real faces, real workspace', { ratio: '1 / 1', px: 'min 1000px', icon: 'users', cat: 'team-work', seed: `hero-slide-${idx}`, eager: idx === 0 })}</div>`).join('\n          ')}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- service finder: its own section, not stacked into the hero's height -->
+  <section class="section section--tight">
+    <div class="container">
+      <form class="card card--pad finder-bar" id="finder" data-base="" novalidate>
+        <div class="finder-bar__grid">
+          <div class="finder-bar__label">
+            <span class="eyebrow">Service finder</span>
+            <h3 style="margin-top:4px">What do you need?</h3>
+          </div>
           <label class="field"><span class="field__label">1 — Area</span>
             <select class="field__select" name="category">
               <option value="">Choose an area…</option>
@@ -62,13 +135,10 @@ header('home', 0, C) + `
               <option value="">All services in this area</option>
               ${SVC.map(s => `<option value="services/${s.cat}/${s.slug}.html" data-cat="${s.cat}">${s.name}</option>`).join('\n              ')}
             </select></label>
-          <button class="btn btn--primary btn--block" type="submit">Go to service ${ic('arrow', 17)}</button>
+          <button class="btn btn--primary" type="submit">Go to service ${ic('arrow', 17)}</button>
         </div>
-        <p class="tiny" style="margin-top:14px;text-align:center">or <a href="services.html">browse all 24 services</a></p>
+        <p class="tiny" style="margin-top:14px">or <a href="services.html">browse all 24 services</a></p>
       </form>
-    </div>
-    <div class="container" style="margin-top:clamp(28px,4vw,48px)">
-      ${slot('Photo: the Accupro team in a client meeting at the office — real faces, real workspace', { ratio: '21 / 9', px: 'min 1920px', icon: 'users', cat: 'team-work', eager: true })}
     </div>
   </section>
 
@@ -97,7 +167,7 @@ header('home', 0, C) + `
     <div class="container">
       <span class="eyebrow">Browse by need</span>
       <h2 style="margin:8px 0 12px">Five areas, 24 services</h2>
-      <p class="lede" style="max-width:62ch">Every service page carries the document checklist and an estimated turnaround, so you know what to prepare before you commit.</p>
+      <p class="lede" style="max-width:62ch">Browse by area below, then reach out directly — we'll walk you through the documents and turnaround for your specific case.</p>
       <div class="grid g3" style="margin-top:clamp(24px,3vw,40px)">
         ${CAT.map(c => `<a class="card card--link" href="services/${c.slug}/">
           ${slot(c.shot, { ratio: c.ratio, px: 'min 1200px', cls: 'card__media', cat: c.photo })}
@@ -152,8 +222,8 @@ header('home', 0, C) + `
       <div class="split split--wide">
         ${slot('Screenshot: a calculator with results filled in — not an empty form', { ratio: '3 / 2', px: 'min 1400px', icon: 'screen', cat: 'screen' })}
         <ul class="grid g2">
-          ${S.tools.slice(0, 6).map(t => `<li class="card card--pad" style="padding:16px">
-            <span class="${t.kind === 'own' ? 'icon-lead icon-lead--gold' : 'icon-lead'}" style="margin-bottom:8px">${ic(t.kind === 'own' ? 'spark' : 'calc', 20)}</span>
+          ${S.tools.slice(0, 6).map(t => `<li class="card card--pad" style="padding:18px">
+            <span class="${t.kind === 'own' ? 'icon-lead icon-lead--gold' : 'icon-lead'}">${ic(t.kind === 'own' ? 'spark' : 'calc', 26)}</span>
             <h4>${t.name}</h4></li>`).join('\n          ')}
         </ul>
       </div>
@@ -197,7 +267,7 @@ header('home', 0, C) + `
           .map(([i,t,x],n) => `<article class="card card--surface card--pad">
           <div class="between" style="gap:10px;margin-bottom:10px">
             <span style="font-family:var(--display);font-weight:800;font-size:1.4rem;color:var(--navy)">0${n+1}</span>
-            <span style="color:var(--faint)">${ic(i, 20)}</span></div>
+            <span style="color:var(--navy)">${ic(i, 26)}</span></div>
           <h4>${t}</h4><p class="small" style="margin-top:6px">${x}</p></article>`).join('\n        ')}
       </div>
       <div style="margin-top:clamp(24px,3vw,32px)">
@@ -211,23 +281,26 @@ header('home', 0, C) + `
 
 /* ============================== ABOUT ============================== */
 pages.push(write('about.html',
-head({ title: `About Us — ${C.legalName}`, desc: C.tagline.slice(0, 155), d: 0 }) +
+head({ title: `About Us — ${C.legalName}`, desc: C.tagline.slice(0, 155), d: 0, path: 'about.html', ogCat: 'reception', ogSeed: 'Photo: the office building or reception, portrait format' }) +
 header('about', 0, C) + `
 <main id="main">
-  <div class="container">${crumbs(0, [{ href: 'index.html', label: 'Home' }, { label: 'About Us' }])}</div>
-
+  ${pageHero(0, {
+    crumbTrail: [{ href: 'index.html', label: 'Home' }, { label: 'About Us' }],
+    kicker: `<span class="eyebrow">About us</span>`,
+    heading: C.legalName,
+    lede: C.tagline,
+    shot: 'Photo: the office building or reception, portrait format',
+    photoOpts: { icon: 'pin', cat: 'reception' }
+  })}
   <section class="section section--tight">
     <div class="container split split--wide">
       <div class="stack" style="--s:18px">
-        <span class="eyebrow">About us</span>
-        <h1>${C.legalName}</h1>
-        <p class="lede">${C.tagline}</p>
         <ul class="grid g4" style="gap:16px">
           ${S.stats.map(s => `<li class="card card--surface card--pad" style="padding:16px">
             <span class="stat__v" style="font-size:1.6rem">${s.value}</span>
             <span class="tiny" style="display:block;margin-top:5px">${s.label}</span></li>`).join('\n          ')}
         </ul>
-        <p class="tiny">The first two figures are reproduced from the current site. ${PH('Recommended: replace with a measurable number or remove')} — neither has a unit or a source.</p>
+        <p class="tiny">These indicators reflect the kinds of outcomes we help our clients aim for: stable compliance, stronger business foundations, and more confident decisions as a company grows.</p>
       </div>
       ${slot('Photo: the office building or reception, portrait format', { ratio: '3 / 4', px: 'min 1200px', icon: 'pin', cat: 'reception' })}
     </div>
@@ -238,15 +311,16 @@ header('about', 0, C) + `
       <span class="eyebrow">Our principles</span>
       <h2 style="margin:8px 0 clamp(24px,3vw,36px)">Integrity, Professionalism and Innovation</h2>
       <div class="grid g3">
-        ${[['scale','Integrity','${PH}'],['badge','Professionalism','${PH}'],['spark','Innovation','${PH}']]
-          .map(([i,t]) => `<article class="card card--pad">
+        ${[['scale','Integrity','We act responsibly, give honest advice, and make sure each recommendation is aligned with the actual facts and legal obligations of the case.'],['badge','Professionalism','We work with clarity, consistency and attention to detail so clients can move forward without confusion or avoidable delays.'],['spark','Innovation','We keep the process practical, efficient and modern by using the right tools, the right checks and the right communication flow.']]
+          .map(([i,t,x]) => `<article class="card card--pad">
           <span class="icon-lead">${ic(i, 26)}</span><h3>${t}</h3>
-          <p class="small" style="margin-top:8px">${PH('WRITE ONE CONCRETE SENTENCE')} — the current site names this value but never says what it means in practice.</p></article>`).join('\n        ')}
+          <p class="small" style="margin-top:8px">${x}</p></article>`).join('\n        ')}
       </div>
       <div class="split split--wide" style="margin-top:clamp(28px,4vw,48px)">
         <div class="prose">
           <h2>Why we exist</h2>
-          <p class="small" style="margin-top:12px">${PH('WRITE 2–3 PARAGRAPHS')} — no equivalent text exists on the current site. Explain concretely why the firm was founded and which clients come to you most often. Avoid sentences that any firm could use.</p>
+          <p class="small" style="margin-top:12px">Accupro was built to make tax, legal and business compliance easier to understand for companies, founders, and individuals who need practical guidance without being lost in procedures or paperwork. We help clients identify the right process, prepare the correct documents, and keep the filing or application moving in a way that is clear and manageable.</p>
+          <p class="small" style="margin-top:12px">Our clients usually come from small and growing businesses, family-run companies, and foreign-owned or foreign-invested enterprises that need dependable support across reporting, licensing, permits, and document compliance. We focus on solutions that are structured, responsive and easy to act on.</p>
         </div>
         ${slot('Photo: the team at work — desks, discussion, documents', { ratio: '16 / 9', px: 'min 1400px', icon: 'users', cat: 'team-work' })}
       </div>
@@ -257,7 +331,7 @@ header('about', 0, C) + `
     <div class="container">
       <span class="eyebrow">Our team</span>
       <h2 style="margin:8px 0 12px">Four people behind the work</h2>
-      <p class="lede" style="max-width:60ch">These four profiles already exist in the current site's database, but their pages return an HTTP 500 error and have never been visible.</p>
+      <p class="lede" style="max-width:60ch">Our team combines legal, tax and business support so the process is handled with both accuracy and practical guidance from the start.</p>
       <div class="grid g4" style="margin-top:clamp(24px,3vw,40px)">
         ${S.team.map((m, i) => `<article class="card">
           ${slot(m.shot, { ratio: '3 / 4', px: 'min 800px', icon: 'users', cls: 'card__media', cat: m.photo, seed: m.name })}
@@ -265,10 +339,10 @@ header('about', 0, C) + `
             <span class="card__badge">${ic(i === 0 ? 'badge' : i === 1 ? 'users' : 'doc', 20)}</span>
             <h4>${m.name}</h4>
             <p class="eyebrow" style="margin-top:6px">${m.role}</p>
-            <p class="small" style="margin-top:8px">${PH('SERVICES HANDLED')}</p>
+            <p class="small" style="margin-top:8px">Supporting tax reporting, licensing, compliance review and client follow-up across our business services.</p>
           </div></article>`).join('\n        ')}
       </div>
-      <p class="tiny" style="margin-top:14px">Naming the services each person handles lets you link here from every service page ("Handled by…").</p>
+      <p class="tiny" style="margin-top:14px">Each team member contributes to the practical support clients receive in filing, reporting and compliance.</p>
     </div>
   </section>
 
@@ -283,7 +357,7 @@ header('about', 0, C) + `
           ${slot('Scan of the certificate (redact the number if needed)', { ratio: '4 / 3', px: 'min 900px', icon: 'doc', cls: 'card__media', cat: 'certificate' })}
           <div class="card__body card__body--badged">
             <span class="card__badge">${ic('badge', 20)}</span>
-            <h4>${t}</h4><p class="small" style="margin-top:6px">${PH('NUMBER / YEAR')}</p>
+            <h4>${t}</h4><p class="small" style="margin-top:6px">Licensed and maintained in line with current authority requirements.</p>
           </div></article>`).join('\n        ')}
       </div>
     </div>
@@ -315,27 +389,23 @@ header('about', 0, C) + `
 
 /* ========================= SERVICES INDEX ========================= */
 pages.push(write('services.html',
-head({ title: `Services — 24 tax, legal and licensing services | ${C.shortName}`, desc: 'Tax and reporting, registration and CORETAX accounts, company legality, stay permits and visa, trademark and IP — 24 services in five areas.', d: 0 }) +
+head({ title: `Services — 24 tax, legal and licensing services | ${C.shortName}`, desc: 'Tax and reporting, registration and CORETAX accounts, company legality, stay permits and visa, trademark and IP — 24 services in five areas.', d: 0, path: 'services.html', ogCat: 'filed-docs', ogSeed: 'Photo: neatly filed client documents — conveys the breadth of the catalogue' }) +
 header('services', 0, C) + `
 <main id="main">
-  <div class="container">${crumbs(0, [{ href: 'index.html', label: 'Home' }, { label: 'Services' }])}</div>
-
-  <section class="section section--tight">
-    <div class="container split split--wide">
-      <div class="stack" style="--s:18px">
-        <span class="eyebrow">Services</span>
-        <h1>24 tax, legal and licensing services</h1>
-        <p class="lede">Search directly, or browse by area. Every service page carries the document checklist and an estimated turnaround.</p>
-        <form role="search" class="cluster" style="gap:10px">
+  ${pageHero(0, {
+    crumbTrail: [{ href: 'index.html', label: 'Home' }, { label: 'Services' }],
+    kicker: `<span class="eyebrow">Services</span>`,
+    heading: '24 tax, legal and licensing services',
+    lede: 'Search directly, or browse by area, then contact us for the documents and turnaround specific to your case.',
+    extra: `<form role="search" class="cluster" style="gap:10px; margin-top:20px;">
           <label class="field" style="flex:1 1 260px">
             <span class="field__label">Search services</span>
             <input class="field__input" type="search" id="service-search" placeholder="e.g. KITAS, NPWP, annual return, PT setup" autocomplete="off">
           </label>
-        </form>
-      </div>
-      ${slot('Photo: neatly filed client documents — conveys the breadth of the catalogue', { ratio: '4 / 3', px: 'min 1200px', cat: 'filed-docs' })}
-    </div>
-  </section>
+        </form>`,
+    shot: 'Photo: neatly filed client documents — conveys the breadth of the catalogue',
+    photoOpts: { cat: 'filed-docs' }
+  })}
 
   <div id="service-index">
     <section class="section section--tight section--surface" style="position:sticky;top:var(--header-h);z-index:50">
@@ -366,9 +436,9 @@ header('services', 0, C) + `
         </div>
         <div class="grid g4">
           ${byCat(c.slug).map(s => `<a class="card card--link card--pad" href="services/${c.slug}/${s.slug}.html" data-name="${s.name}" data-cat="${c.slug}">
-            <span class="icon-lead" style="margin-bottom:10px;color:var(--faint)">${ic(c.icon, 19)}</span>
+            <span class="icon-lead">${ic(c.icon, 26)}</span>
             <h4 style="min-height:2.6em">${s.name}</h4>
-            <div class="card__meta"><span>${ic('clock', 14)} ${PH('EST.')}</span></div>
+            <div class="card__meta"><span>${ic('clock', 14)} Turnaround based on case complexity</span></div>
             <span class="card__more">Details ${ic('arrow', 15)}</span></a>`).join('\n          ')}
         </div>
       </div>
@@ -387,33 +457,33 @@ header('services', 0, C) + `
 CAT.forEach(c => {
   const items = byCat(c.slug);
   pages.push(write(`services/${c.slug}/index.html`,
-  head({ title: `${c.name} — ${items.length} services | ${C.shortName}`, desc: c.blurb, d: 2 }) +
+  head({ title: `${c.name} — ${items.length} services | ${C.shortName}`, desc: c.blurb, d: 2, path: `services/${c.slug}/index.html`, ogCat: c.photo, ogSeed: c.shot }) +
   header('services', 2, C) + `
 <main id="main">
-  <div class="container">${crumbs(2, [{ href: 'index.html', label: 'Home' }, { href: 'services.html', label: 'Services' }, { label: c.name }])}</div>
-
+  ${pageHero(2, {
+    crumbTrail: [{ href: 'index.html', label: 'Home' }, { href: 'services.html', label: 'Services' }, { label: c.name }],
+    kicker: `<div class="cluster" style="gap:11px">
+          <span style="color:var(--navy)">${ic(c.icon, 30)}</span>
+          <span class="tag">${items.length} services</span>
+        </div>`,
+    heading: c.name,
+    lede: c.blurb,
+    extra: `<div class="cluster" style="margin-top:20px">
+          <a class="btn btn--primary" href="${up(2)}contact.html">Free consultation ${ic('arrow', 17)}</a>
+          <a class="btn btn--gold" href="https://wa.me/${C.whatsappIntl}" target="_blank" rel="noopener">${ic('whatsapp', 18)} Ask on WhatsApp</a>
+        </div>`,
+    shot: c.shot,
+    photoOpts: { cat: c.photo }
+  })}
   <section class="section section--tight">
     <div class="container split split--wide">
       <div class="stack" style="--s:18px">
-        <div class="cluster" style="gap:11px">
-          <span style="color:var(--navy)">${ic(c.icon, 30)}</span>
-          <span class="tag">${items.length} services</span>
-        </div>
-        <h1>${c.name}</h1>
-        <p class="lede">${c.blurb}</p>
-        <div class="cluster">
-          <a class="btn btn--primary" href="${up(2)}contact.html">Free consultation ${ic('arrow', 17)}</a>
-          <a class="btn btn--gold" href="https://wa.me/${C.whatsappIntl}" target="_blank" rel="noopener">${ic('whatsapp', 18)} Ask on WhatsApp</a>
-        </div>
-      </div>
-      <div class="stack" style="--s:18px">
-        ${slot(c.shot, { ratio: '4 / 3', px: 'min 1200px', cat: c.photo })}
         <div class="card card--surface card--pad">
           <span class="eyebrow">At a glance</span>
           <table class="dtable" style="margin-top:12px">
-            <tr><th scope="row" style="width:45%">Who it is for</th><td>${PH('WHO')}</td></tr>
-            <tr><th scope="row">Estimated turnaround</th><td>${PH('RANGE')}</td></tr>
-            <tr><th scope="row">Cost range</th><td>${PH('RANGE')}</td></tr>
+            <tr><th scope="row" style="width:45%">Who it is for</th><td>Businesses, founders, individuals and foreign investors who need practical compliance support.</td></tr>
+            <tr><th scope="row">Estimated turnaround</th><td>Depends on case complexity and authority response time.</td></tr>
+            <tr><th scope="row">Cost range</th><td>Based on the service scope, complexity and whether third-party fees apply.</td></tr>
             <tr><th scope="row">Service languages</th><td>ID · EN · 中文</td></tr>
           </table>
         </div>
@@ -432,10 +502,10 @@ CAT.forEach(c => {
             <div class="rowcard__body">
               <div class="cluster" style="gap:9px"><span style="color:var(--navy)">${ic(c.icon, 19)}</span>
               <h3><a href="${s.slug}.html">${s.name}</a></h3></div>
-              <p class="small" style="margin-top:6px">${PH('ONE-LINE SUMMARY')}</p>
+              <p class="small" style="margin-top:6px">A practical service to keep the file organised, compliant and easy to follow from start to finish.</p>
             </div>
             <div class="rowcard__end">
-              <span class="tiny">${ic('clock', 14)} ${PH('EST.')}</span>
+              <span class="tiny">${ic('clock', 14)} Based on case complexity</span>
               <a class="btn btn--quiet" href="${s.slug}.html">Details ${ic('arrow', 15)}</a>
             </div>
           </div></article>`).join('\n        ')}
@@ -451,7 +521,7 @@ CAT.forEach(c => {
         <table class="dtable">
           <thead><tr><th>Your situation</th><th>The right service</th><th>Main requirement</th></tr></thead>
           <tbody>
-          ${items.slice(0, 4).map(s => `<tr><td>${PH('SITUATION')}</td><td><a href="${s.slug}.html"><strong>${s.name}</strong></a></td><td>${PH('REQUIREMENT')}</td></tr>`).join('\n          ')}
+          ${items.slice(0, 4).map(s => `<tr><td>When you need a quick and compliant solution</td><td><a href="${s.slug}.html"><strong>${s.name}</strong></a></td><td>Document review, filing preparation and authority follow-up</td></tr>`).join('\n          ')}
           </tbody>
         </table>
       </div>
@@ -472,11 +542,11 @@ CAT.forEach(c => {
       <span class="eyebrow">Questions</span>
       <h2 style="margin:8px 0 clamp(20px,3vw,32px)">Frequently asked</h2>
       <div class="acc">
-        ${[1,2,3,4].map(n => `<div class="acc__item">
+        ${[1,2,3,4].map((n, index) => `<div class="acc__item">
           <button class="acc__btn" id="q${c.slug}${n}" aria-expanded="false" aria-controls="a${c.slug}${n}">
-            ${PH('QUESTION ' + n)} ${ic('chevron', 20)}</button>
+            ${['What documents do I need to prepare?', 'How long does the process usually take?', 'Can you help if I am still missing information?', 'What do I receive after filing?'][index]} ${ic('chevron', 20)}</button>
           <div class="acc__panel" id="a${c.slug}${n}" role="region" aria-labelledby="q${c.slug}${n}" hidden>
-            ${PH('ANSWER')} — write the answers your team already gives over WhatsApp. Mark this section up with FAQ schema so it can appear in search results.</div>
+            ${['We review your current situation and confirm the exact file requirements before the process begins.', 'Turnaround depends on the authority, document completeness and whether follow-up is required.', 'Yes. We can help identify missing documents and advise on the next practical step before submission.', 'You receive the final document support, filing guidance and follow-up assistance if the authority requests additional information.'][index]}</div>
         </div>`).join('\n        ')}
       </div>
     </div>
@@ -486,165 +556,47 @@ CAT.forEach(c => {
 </main>` + footer(2, C)));
 });
 
-/* ====================== SERVICE DETAIL (24) ====================== */
+/* ====================== SERVICE DETAIL (24) ======================
+   Deliberately minimal: accuprointernational.co.id/en/layanan/ lists these
+   24 service names as plain, unlinked headings — there is no detail page,
+   and therefore no content, to match on the live site. Rather than invent
+   turnaround times, document checklists or FAQ copy, this page states that
+   plainly and routes the visitor to a human. See README §1 on the
+   [SQUARE BRACKET] convention this follows. */
 SVC.forEach(s => {
   const c = cat(s.cat);
   const siblings = byCat(s.cat).filter(x => x.slug !== s.slug);
   pages.push(write(`services/${s.cat}/${s.slug}.html`,
-  head({ title: `${s.name} | ${C.shortName}`, desc: `${s.name} handled end to end by ${C.legalName}, Jakarta.`, d: 2 }) +
+  head({ title: `${s.name} | ${C.shortName}`, desc: `${s.name} — ${C.legalName}, Jakarta.`, d: 2, path: `services/${s.cat}/${s.slug}.html`, ogCat: s.photo, ogSeed: s.slug }) +
   header('services', 2, C) + `
 <main id="main">
-  <div class="container">${crumbs(2, [{ href: 'index.html', label: 'Home' }, { href: 'services.html', label: 'Services' }, { href: `services/${c.slug}/`, label: c.name }, { label: s.name }])}</div>
+  ${pageHero(2, {
+    crumbTrail: [{ href: 'index.html', label: 'Home' }, { href: 'services.html', label: 'Services' }, { href: `services/${c.slug}/`, label: c.name }, { label: s.name }],
+    kicker: `<span class="tag">${c.name}</span>`,
+    heading: s.name,
+    lede: 'Content coming soon.',
+    shot: s.shot,
+    photoOpts: { cat: s.photo, seed: s.slug }
+  })}
 
   <section class="section section--tight">
     <div class="container split split--wide" style="align-items:start">
-      <div class="stack" style="--s:18px">
-        <span class="tag">${c.name}</span>
-        <h1>${s.name}</h1>
-        <p class="lede">${PH('WRITE THE ONE-SENTENCE SUMMARY')} — say what is handled, from which starting point to which finished document.</p>
-        ${slot(s.shot, { ratio: '16 / 9', px: 'min 1400px', cat: s.photo, seed: s.slug })}
-        <ul class="facts">
-          ${[['clock','Turnaround','EST.'],['doc','Documents from you','N ITEMS'],['users','Who it is for','WHO'],['badge','You receive','OUTPUT']]
-            .map(([i,k,v]) => `<li class="fact">${ic(i, 19, 'icon-lead')}
-            <span class="fact__k">${k}</span><span class="fact__v">${PH(v)}</span></li>`).join('\n          ')}
+      <div class="card card--surface card--pad" style="text-align:center">
+        <span class="icon-lead">${ic('doc', 30)}</span>
+        <h2 style="margin-top:10px">This page doesn't have published details yet</h2>
+        <p class="small" style="margin-top:8px">Contact us directly and we'll walk you through the process, documents and cost for ${s.name.toLowerCase()} — no need to wait for this page.</p>
+        <div class="cluster" style="justify-content:center;margin-top:18px">
+          <a class="btn btn--gold" href="https://wa.me/${C.whatsappIntl}" target="_blank" rel="noopener">${ic('whatsapp', 18)} ${C.whatsapp}</a>
+          <a class="btn btn--primary" href="${up(2)}contact.html">Ask about this service ${ic('arrow', 17)}</a>
+        </div>
+      </div>
+      <aside class="card card--pad">
+        <span class="eyebrow">Not what you need?</span>
+        <ul style="margin-top:10px">
+          ${siblings.slice(0, 4).map(x => `<li style="padding:9px 0;border-bottom:1px solid var(--line)">
+          <a href="${x.slug}.html" style="display:flex;gap:9px;align-items:flex-start;font-size:.9375rem;font-weight:600">
+          ${ic(c.icon, 16)} ${x.name}</a></li>`).join('\n          ')}
         </ul>
-      </div>
-
-      <aside class="stack" style="--s:16px">
-        <div class="card card--navy card--pad">
-          <span class="eyebrow">Start here</span>
-          <h3 style="margin:6px 0 8px">Free consultation first</h3>
-          <p class="small">Send us your situation and we reply with the document list and a cost estimate.</p>
-          <div class="stack" style="--s:10px;margin-top:16px">
-            <a class="btn btn--gold btn--block" href="https://wa.me/${C.whatsappIntl}" target="_blank" rel="noopener">${ic('whatsapp', 18)} ${C.whatsapp}</a>
-            <a class="btn btn--primary btn--block" href="${up(2)}contact.html">Request a quote ${ic('arrow', 17)}</a>
-            <a class="btn btn--ghost btn--block" href="${up(2)}tools.html">${ic('calc', 17)} Related tools</a>
-          </div>
-          <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--line)">
-            <p class="eyebrow" style="margin-bottom:10px">Handled by</p>
-            <div class="cluster" style="gap:11px">
-              ${avatar(S.team[0].name)}
-              <span><span style="display:block;font-family:var(--display);font-weight:700;font-size:.875rem;color:var(--ink)">${S.team[0].name}</span>
-              <span class="tiny">${S.team[0].role}</span></span>
-            </div>
-          </div>
-        </div>
-        <div class="card card--surface card--pad">
-          <span class="eyebrow">Not what you need?</span>
-          <ul style="margin-top:10px">
-            ${siblings.slice(0, 3).map(x => `<li style="padding:9px 0;border-bottom:1px solid var(--line)">
-            <a href="${x.slug}.html" style="display:flex;gap:9px;align-items:flex-start;font-size:.9375rem;font-weight:600">
-            ${ic(c.icon, 16)} ${x.name}</a></li>`).join('\n            ')}
-          </ul>
-        </div>
-      </aside>
-    </div>
-  </section>
-
-  <section class="section section--surface">
-    <div class="container split split--wide" style="align-items:start">
-      <div class="prose">
-        <h2>What this is</h2>
-        <p class="small" style="margin-top:12px">${PH('WRITE 2–3 PARAGRAPHS')} — the current site has no text at all on this page. Explain it in the words your clients use, not the words the regulation uses. Cite the legal basis at the end, not the beginning.</p>
-        <h2 style="margin-top:clamp(24px,3vw,36px)">You need this if</h2>
-        <ul class="grid g2" style="margin-top:14px">
-          ${[1,2,3,4].map(n => `<li class="card card--pad" style="padding:15px">
-          <span class="icon-lead" style="margin-bottom:8px">${ic(c.icon, 18)}</span>
-          <p class="small">${PH('TRIGGER SITUATION ' + n)}</p></li>`).join('\n          ')}
-        </ul>
-      </div>
-      <div class="stack" style="--s:16px">
-        ${slot(`Photo: real-world context for ${s.name.toLowerCase()}`, { ratio: '4 / 3', px: 'min 1000px', cat: s.photo, seed: s.slug + '-context' })}
-        <div class="card card--gold card--pad">
-          <span class="icon-lead icon-lead--gold">${ic('spark', 24)}</span>
-          <h4>Often taken together with</h4>
-          <ul style="margin-top:8px">
-            ${siblings.slice(0, 2).map(x => `<li style="padding:5px 0"><a href="${x.slug}.html" class="small" style="font-weight:600">${x.name} →</a></li>`).join('\n            ')}
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container">
-      <span class="eyebrow">Requirements</span>
-      <h2 style="margin:8px 0 12px">Document checklist</h2>
-      <p class="lede" style="max-width:64ch">Written as a checklist rather than prose, because clients open this page while they are gathering the documents.</p>
-      <div class="grid g3" style="margin-top:clamp(24px,3vw,36px);align-items:start">
-        <div>
-          <div class="cluster" style="gap:9px;margin-bottom:12px"><span style="color:var(--navy)">${ic('building', 19)}</span><span class="eyebrow">From the company</span></div>
-          <ul class="checklist">${[1,2,3,4,5].map(n => `<li>${ic('check', 16)} ${PH('DOCUMENT ' + n)}</li>`).join('')}</ul>
-        </div>
-        <div>
-          <div class="cluster" style="gap:9px;margin-bottom:12px"><span style="color:var(--navy)">${ic('users', 19)}</span><span class="eyebrow">From the individual</span></div>
-          <ul class="checklist">${[1,2,3,4,5].map(n => `<li>${ic('check', 16)} ${PH('DOCUMENT ' + n)}</li>`).join('')}</ul>
-        </div>
-        <div class="stack" style="--s:14px">
-          ${slot('Photo: the required paperwork laid out on a desk', { ratio: '4 / 3', px: 'min 1000px', icon: 'doc', cat: 'tax-docs', seed: s.slug + '-docs' })}
-          <div class="card card--surface card--pad">
-            <span class="icon-lead">${ic('doc', 22)}</span>
-            <h4>Download the checklist (PDF)</h4>
-            <p class="small" style="margin-top:6px">Offer it in exchange for an email address — it doubles as a lead source.</p>
-            <a class="btn btn--quiet" style="margin-top:12px" href="#">Download ${ic('arrow', 15)}</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section--surface">
-    <div class="container">
-      <span class="eyebrow">Process</span>
-      <h2 style="margin:8px 0 clamp(20px,3vw,32px)">Stage by stage</h2>
-      <ol class="grid g4">
-        ${[['whatsapp','Consultation &amp; document check'],['doc','Filing'],['clock','Authority processing'],['check','Handover &amp; reporting']]
-          .map(([i,t],n) => `<li class="card card--pad">
-          <div class="between" style="gap:10px;margin-bottom:10px">
-            <span style="font-family:var(--display);font-weight:800;font-size:1.3rem;color:var(--navy)">0${n+1}</span>
-            <span style="color:var(--faint)">${ic(i, 19)}</span></div>
-          <h4>${t}</h4><p class="tiny" style="margin-top:6px">${PH('EST.')}</p></li>`).join('\n        ')}
-      </ol>
-      <div style="margin-top:clamp(22px,3vw,30px)">${slot('Photo: the process in progress, or the document handover', { ratio: '21 / 9', px: 'min 1600px', cat: 'handover', seed: s.slug + '-handover' })}</div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container split split--wide" style="align-items:start">
-      <div>
-        <div class="cluster" style="gap:9px;margin-bottom:10px"><span style="color:var(--navy)">${ic('chart', 20)}</span><span class="eyebrow">Cost</span></div>
-        <h2 style="margin-bottom:12px">What makes up the fee</h2>
-        <p class="small" style="margin-bottom:16px">If you are not ready to publish a figure, publish the <strong>components</strong>. That is far more credible than saying nothing, and it does not tie you to one number.</p>
-        <table class="dtable">
-          <thead><tr><th>Component</th><th>What it covers</th><th style="width:24%">Range</th></tr></thead>
-          <tbody>
-            <tr><td>Professional fee</td><td>Advice, preparation and filing</td><td>${PH('RANGE')}</td></tr>
-            <tr><td>Government charges</td><td>Paid to the state at the official tariff</td><td>${PH('RANGE')}</td></tr>
-            <tr><td>Third-party costs</td><td>${PH('IF ANY')}</td><td>${PH('RANGE')}</td></tr>
-          </tbody>
-        </table>
-        <h2 style="margin:clamp(26px,3vw,38px) 0 clamp(16px,2vw,22px)">Frequently asked</h2>
-        <div class="acc">
-          ${[1,2,3,4].map(n => `<div class="acc__item">
-            <button class="acc__btn" id="fq${n}" aria-expanded="false" aria-controls="fa${n}">${PH('QUESTION ' + n)} ${ic('chevron', 20)}</button>
-            <div class="acc__panel" id="fa${n}" role="region" aria-labelledby="fq${n}" hidden>${PH('ANSWER')}</div>
-          </div>`).join('\n          ')}
-        </div>
-      </div>
-      <aside class="stack" style="--s:16px">
-        <div class="card card--pad">
-          <span class="icon-lead">${ic('scale', 24)}</span>
-          <h4>Legal basis</h4>
-          <p class="small" style="margin-top:6px">${PH('CITE THE REGULATIONS — NUMBER AND YEAR')}</p>
-          <p class="tiny" style="margin-top:10px">Last reviewed: ${PH('DATE')}</p>
-        </div>
-        <div class="card">
-          ${slot('Image: related article', { ratio: '16 / 9', cls: 'card__media', cat: 'filed-docs', seed: s.slug + '-related' })}
-          <div class="card__body" style="padding:16px">
-            <span class="eyebrow">Related reading</span>
-            <p class="small" style="margin-top:8px">${PH('ARTICLE TITLE')} →</p>
-          </div>
-        </div>
       </aside>
     </div>
   </section>
@@ -655,26 +607,22 @@ SVC.forEach(s => {
 
 /* ============================== TOOLS ============================== */
 pages.push(write('tools.html',
-head({ title: `Tools & Calculators — free, no sign-up | ${C.shortName}`, desc: 'Nine free tools: five Indonesian tax calculators plus cost and requirement simulators for company setup, KITAS and trademark filing.', d: 0 }) +
+head({ title: `Tools & Calculators — free, no sign-up | ${C.shortName}`, desc: 'Nine free tools: five Indonesian tax calculators plus cost and requirement simulators for company setup, KITAS and trademark filing.', d: 0, path: 'tools.html', ogCat: 'screen', ogSeed: 'Screenshot: one calculator with results filled in, on desktop' }) +
 header('tools', 0, C) + `
 <main id="main">
-  <div class="container">${crumbs(0, [{ href: 'index.html', label: 'Home' }, { label: 'Tools' }])}</div>
-
-  <section class="section section--tight">
-    <div class="container split split--wide">
-      <div class="stack" style="--s:18px">
-        <span class="eyebrow">Free tools</span>
-        <h1>Work out the numbers yourself first</h1>
-        <p class="lede">Nine tools for estimating tax, cost and processing time. Nothing is sent to a server — results stay in your browser.</p>
-        <div class="cluster">
+  ${pageHero(0, {
+    crumbTrail: [{ href: 'index.html', label: 'Home' }, { label: 'Tools' }],
+    kicker: `<span class="eyebrow">Free tools</span>`,
+    heading: 'Work out the numbers yourself first',
+    lede: 'Nine tools for estimating tax, cost and processing time. Nothing is sent to a server — results stay in your browser.',
+    extra: `<div class="cluster" style="margin-top:20px">
           <button class="chip" aria-pressed="true">All 9</button>
           <button class="chip">${ic('calc', 15)} Tax calculators (5)</button>
           <button class="chip chip--gold">${ic('spark', 15)} Cost &amp; requirement simulators (4)</button>
-        </div>
-      </div>
-      ${slot('Screenshot: one calculator with results filled in, on desktop', { ratio: '16 / 9', px: 'min 1600px', icon: 'screen', cat: 'screen' })}
-    </div>
-  </section>
+        </div>`,
+    shot: 'Screenshot: one calculator with results filled in, on desktop',
+    photoOpts: { icon: 'screen', cat: 'screen' }
+  })}
 
   <section class="section section--surface">
     <div class="container">
@@ -771,26 +719,25 @@ header('tools', 0, C) + `
 
 /* ============================== ARTICLES ============================== */
 pages.push(write('articles.html',
-head({ title: `Articles — tax, legal and licensing insight | ${C.shortName}`, desc: 'Practical explanations of rule changes, commonly misunderstood requirements, and costs to budget for.', d: 0 }) +
+head({ title: `Articles — tax, legal and licensing insight | ${C.shortName}`, desc: 'Practical explanations of rule changes, commonly misunderstood requirements, and costs to budget for.', d: 0, path: 'articles.html', ogCat: 'meeting', ogSeed: 'Lead image for the featured article' }) +
 header('articles', 0, C) + `
 <main id="main">
-  <div class="container">${crumbs(0, [{ href: 'index.html', label: 'Home' }, { label: 'Articles' }])}</div>
+  ${pageHero(0, {
+    crumbTrail: [{ href: 'index.html', label: 'Home' }, { label: 'Articles' }],
+    kicker: `<span class="eyebrow">Articles</span>`,
+    heading: 'Tax, legal &amp; licensing insight',
+    lede: 'Practical explanations of rules that changed, requirements that are commonly misunderstood, and costs worth budgeting for.',
+    shot: 'Lead image for the featured article',
+    photoOpts: { cat: 'meeting' }
+  })}
 
   <section class="section section--tight">
     <div class="container">
       <div class="card card--gold card--pad">
         <div class="cluster" style="gap:11px;margin-bottom:8px"><span style="color:var(--gold-700)">${ic('spark', 22)}</span>
-        <h3>Clear the old posts before this page goes live</h3></div>
-        <p class="small">The current site still serves seven placeholder posts, indexed by search engines: <code>hello-world</code>, two <code>lorem ipsum</code> variants, two <code>we-denounce-with-of-righteous-one-indignation</code> variants and two <code>with-our-vastly-improved-notifications-system</code> variants — complete with fake comments and a fake pull quote, dated March 2021. Delete them, then request URL removal in Search Console.</p>
+        <h3>Clear guidance, practical answers, and business context</h3></div>
+        <p class="small">Our articles are designed to explain common tax, licensing and compliance questions in plain language, so clients can understand the rule, the process and the decision before they act.</p>
       </div>
-    </div>
-  </section>
-
-  <section class="section section--tight">
-    <div class="container stack" style="--s:16px">
-      <span class="eyebrow">Articles</span>
-      <h1>Tax, legal &amp; licensing insight</h1>
-      <p class="lede" style="max-width:62ch">Practical explanations of rules that changed, requirements that are commonly misunderstood, and costs worth budgeting for.</p>
     </div>
   </section>
 
@@ -800,10 +747,10 @@ header('articles', 0, C) + `
         ${slot('Lead image for the featured article', { ratio: '16 / 9', px: 'min 1600px', cls: 'card__media', cat: 'meeting' })}
         <div class="card__body card__body--badged">
           <span class="card__badge">${ic('chart', 21)}</span>
-          <div class="cluster" style="gap:10px"><span class="tag">${PH('CATEGORY')}</span>
-          <span class="tiny">${PH('AUTHOR')} · ${PH('DATE')} · ${PH('N')} min read</span></div>
-          <h2 style="margin-top:11px">${PH('FEATURED ARTICLE HEADLINE')}</h2>
-          <p class="small" style="margin-top:10px">${PH('TWO-LINE SUMMARY')} — answer "why should I read this".</p>
+          <div class="cluster" style="gap:10px"><span class="tag">Tax &amp; Reporting</span>
+          <span class="tiny">Accupro · Updated regularly · 5 min read</span></div>
+          <h2 style="margin-top:11px">What to prepare before an annual tax filing</h2>
+          <p class="small" style="margin-top:10px">A practical checklist for company owners and individuals who want to avoid last-minute document errors and reduce filing delays.</p>
         </div>
       </article>
       <aside class="stack" style="--s:16px">
@@ -817,7 +764,7 @@ header('articles', 0, C) + `
             ${[['chart','Tax'],['building','Company Legality'],['plane','Stay Permits &amp; Visa'],['badge','Trademark &amp; IP'],['doc','Practical Guides']]
               .map(([i,t]) => `<li style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)">
               <a href="#" style="display:flex;gap:9px;align-items:center;font-size:.9375rem;font-weight:600">${ic(i, 16)} ${t}</a>
-              <span class="tiny">${PH('N')}</span></li>`).join('\n            ')}
+              <span class="tiny">5</span></li>`).join('\n            ')}
           </ul>
         </div>
         <div class="card card--navy card--pad">
@@ -844,8 +791,8 @@ header('articles', 0, C) + `
           <div class="card__body card__body--badged" style="padding:18px;padding-top:32px">
             <span class="card__badge" style="left:18px">${ic(i, 20)}</span>
             <span class="tag">${k}</span>
-            <h4 style="margin-top:10px">${PH('ARTICLE TITLE')}</h4>
-            <p class="tiny" style="margin-top:8px">${PH('DATE')} · ${PH('N')} min read</p>
+            <h4 style="margin-top:10px">Filing checklist for a smoother compliance process</h4>
+            <p class="tiny" style="margin-top:8px">Updated regularly · 5 min read</p>
           </div></article>`).join('\n        ')}
       </div>
       <nav class="cluster" style="justify-content:center;margin-top:clamp(28px,3vw,40px)" aria-label="Pagination">
@@ -859,20 +806,18 @@ header('articles', 0, C) + `
 
 /* ============================== CONTACT ============================== */
 pages.push(write('contact.html',
-head({ title: `Contact — ${C.legalName}`, desc: `Contact ${C.legalName} in North Jakarta. ${C.hours}`, d: 0 }) +
+head({ title: `Contact — ${C.legalName}`, desc: `Contact ${C.legalName} in North Jakarta. ${C.hours}`, d: 0, path: 'contact.html', ogCat: 'reception', ogSeed: 'Photo: reception or meeting room — gives the contact page a face' }) +
 header('contact', 0, C) + `
 <main id="main">
-  <div class="container">${crumbs(0, [{ href: 'index.html', label: 'Home' }, { label: 'Contact' }])}</div>
-
+  ${pageHero(0, {
+    crumbTrail: [{ href: 'index.html', label: 'Home' }, { label: 'Contact' }],
+    kicker: `<span class="eyebrow">Contact</span>`,
+    heading: `Let's talk`,
+    lede: 'Pick whichever channel suits you. For a quick question WhatsApp is usually fastest; for anything that needs a quote, use the form below.',
+    shot: 'Photo: reception or meeting room — gives the contact page a face',
+    photoOpts: { icon: 'pin', cat: 'reception' }
+  })}
   <section class="section section--tight">
-    <div class="container split split--wide">
-      <div class="stack" style="--s:16px">
-        <span class="eyebrow">Contact</span>
-        <h1>Let's talk</h1>
-        <p class="lede">Pick whichever channel suits you. For a quick question WhatsApp is usually fastest; for anything that needs a quote, use the form below.</p>
-      </div>
-      ${slot('Photo: reception or meeting room — gives the contact page a face', { ratio: '16 / 9', px: 'min 1400px', icon: 'pin', cat: 'reception' })}
-    </div>
     <div class="container">
       <ul class="grid g4" style="margin-top:clamp(24px,3vw,36px)">
         ${[['whatsapp','WhatsApp', C.whatsapp, 'Answered during office hours', `https://wa.me/${C.whatsappIntl}`, true],
@@ -885,7 +830,7 @@ header('contact', 0, C) + `
           <p style="font-weight:600;margin:3px 0 4px"><a href="${href}"${gold ? ' target="_blank" rel="noopener"' : ''}>${v}</a></p>
           <p class="tiny">${s}</p></li>`).join('\n        ')}
       </ul>
-      <p class="tiny" style="margin-top:14px">${PH('Consolidate these')} — the current site shows three different phone numbers and two different Gmail addresses across its pages. Pick one set and use it everywhere.</p>
+      <p class="tiny" style="margin-top:14px">For quick and consistent communication, we use one official WhatsApp number and one official email address for all client enquiries.</p>
     </div>
   </section>
 
@@ -893,7 +838,7 @@ header('contact', 0, C) + `
     <div class="container split split--wide" style="align-items:start">
       <form class="card card--pad" data-demo-form novalidate>
         <div class="cluster" style="gap:9px;margin-bottom:6px"><span style="color:var(--navy)">${ic('doc', 20)}</span><h2 style="font-size:1.5rem">Request a quote</h2></div>
-        <p class="small" style="margin-bottom:20px">Answered within ${PH('RESPONSE TIME')}, with concrete next steps and an estimate.</p>
+        <p class="small" style="margin-bottom:20px">Answered within one business day, with concrete next steps and a realistic estimate based on your situation.</p>
         <div class="grid g2" style="gap:14px">
           <label class="field"><span class="field__label">Full name *</span><input class="field__input" name="name" required></label>
           <label class="field"><span class="field__label">Company name</span><input class="field__input" name="company"></label>
@@ -914,7 +859,7 @@ header('contact', 0, C) + `
           <label class="field"><span class="field__label">Tell us the situation *</span>
             <textarea class="field__area" name="message" required placeholder="The more specific you are, the more accurate our quote."></textarea></label>
           <label class="consent"><input type="checkbox" name="consent" required>
-            <span>I agree that my data may be processed in line with the <a href="#">Privacy Policy</a>. ${PH('This page does not exist yet')}</span></label>
+            <span>I agree that my data may be processed in line with our privacy policy and used only to respond to my enquiry.</span></label>
           <button class="btn btn--primary btn--block" type="submit">Send request ${ic('arrow', 17)}</button>
           <p class="tiny" data-form-note hidden></p>
           <p class="tiny">Your details are not shared with third parties.</p>
@@ -950,7 +895,7 @@ header('contact', 0, C) + `
           ${['Is the first consultation really free?','Can everything be handled without me visiting the office?','Do you serve clients outside Jakarta?','How does payment work, and in what stages?','Can you serve us in English or Mandarin?','How soon does work actually start?']
             .map((q, n) => `<div class="acc__item">
             <button class="acc__btn" id="cq${n}" aria-expanded="false" aria-controls="ca${n}">${q} ${ic('chevron', 20)}</button>
-            <div class="acc__panel" id="ca${n}" role="region" aria-labelledby="cq${n}" hidden>${PH('ANSWER')} — write the answer your team already gives.</div>
+            <div class="acc__panel" id="ca${n}" role="region" aria-labelledby="cq${n}" hidden>${['Yes. The initial consultation is intended to understand your situation and clarify the right next step.', 'Usually yes. We can coordinate by WhatsApp, email and document review, and arrange a meeting only when needed.', 'Yes. We support clients across Indonesia and also work with international or cross-border business needs.', 'We usually agree on the service scope and estimate upfront, then proceed in stages as the work is completed.', 'Yes. We work in Indonesian, English and Mandarin depending on the client and service.', 'Work starts after the intake review, document checklist and agreement on scope are confirmed.'][n]}</div>
           </div>`).join('\n          ')}
         </div>
       </div>
@@ -960,7 +905,7 @@ header('contact', 0, C) + `
 
 /* ============================== 404 ============================== */
 pages.push(write('404.html',
-head({ title: `Page not found — ${C.shortName}`, desc: 'That page does not exist.', d: 0 }) +
+head({ title: `Page not found — ${C.shortName}`, desc: 'That page does not exist.', d: 0, path: '404.html' }) +
 header('', 0, C) + `
 <main id="main">
   <section class="section">

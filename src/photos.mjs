@@ -21,28 +21,43 @@ export const PHOTOS = {
   'legal-consult': [7876154, 8441780],
   /* handing a finished document or folder to a client; handshakes */
   handover:      [7821676, 17682895, 7693144],
-  /* tax forms and returns being worked on at a desk */
-  'tax-docs':    [6927557, 6927546, 6863510],
+  /* generic paperwork being reviewed/annotated at a desk — no country-specific
+     tax form. The previous set (6927557/6927546/6863510) was pulled: all three
+     were, on inspection, recognisable US IRS 1040 forms — wrong for an
+     Indonesian tax consultancy. Replaced 2026-08-25, each ID re-verified. */
+  'tax-docs':    [6538440, 7821540, 6694481, 7681094],
   /* archived, filed, binder-shelf paperwork — breadth of a catalogue */
   'filed-docs':  [357514, 34293525, 6620969],
   /* the team at their desks, wide collaborative office scenes */
   'team-work':   [7654133, 6326260, 8204363, 12902858],
   /* single-person business portraits for team cards and avatars */
   portrait:      [37148308, 31869537, 29995581, 28446973, 8278853, 26728094],
-  /* laptop, calculator, spreadsheet — stands in for tool screenshots */
-  screen:        [16098005, 8296979, 8962447],
-  /* office reception, lobby, building interior */
-  reception:     [36894415, 36887759, 518244, 19893582],
+  /* laptop, calculator, spreadsheet — stands in for tool screenshots.
+     8962447 was pulled: it showed a legible US "Self-Employment Tax" form. */
+  screen:        [16098005, 8296979, 209224, 8962520],
+  /* office reception, lobby, building interior — no readable signage.
+     Previous set was pulled 2026-08-25: 36894415 and 36887759 both showed a
+     real institution's name/logo on the desk (a university reception and an
+     info desk), and 19893582 read as an AI-style render, not photography. */
+  reception:     [34823913, 6809656, 32978233, 36631639],
   /* pen on paper: deeds, contracts, declarations */
   signing:       [8730372, 8815843, 8729723, 11296101],
-  /* stamped passport pages, work-permit badges, immigration counters.
-     Deliberately no identifiable national passport cover — an Indonesian
-     firm's KITAS page showing a Russian or EU passport reads as a mistake. */
-  passport:      [4922356, 4922086, 8453017, 12903186, 18687845],
-  /* rubber stamp meeting paper — legalisation, endorsement */
-  stamp:         [9858904, 6358834],
-  /* framed certificate, award, formal recognition */
-  certificate:   [8112119, 9858904],
+  /* work-permit badges and lanyard IDs — no stamped passport pages. Every
+     close-up passport-page photo checked (4922356, 4922086, plus the earlier
+     18687845) turned out to have a legible country on inspection — a Russian
+     cover, US Customs & Border Protection stamps, a Russian "ОБРАЗЕЦ" desk
+     stamp. An Indonesian firm's KITAS page showing any of those reads as a
+     mistake, so the category moved to the one motif that's reliably generic:
+     an ID badge on a lanyard. Replaced 2026-08-25. */
+  passport:      [8453017, 12903186, 5999805, 8761304],
+  /* rubber stamp meeting paper — legalisation, endorsement.
+     9858904 was pulled: legible German statute text ("...Gesetz"). */
+  stamp:         [6358834, 7190500],
+  /* framed certificate, award, formal recognition.
+     Previous set was pulled 2026-08-25: 8112119 was a real, named Harvard Law
+     School certificate — implies a false credential, the worst case of the
+     wrong-context problem. 9858904 (reused from `stamp`) carried German text. */
+  certificate:   [7942430, 37012315, 6358834],
   /* Jakarta skyline — stands in for maps and location bands */
   city:          [15932376, 20643406, 2443735],
   /* branding / identity / trademark work */

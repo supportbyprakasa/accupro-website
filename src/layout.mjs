@@ -58,23 +58,76 @@ ${trail.map((t, i) => i === trail.length - 1
   : `  <li><a href="${up(d)}${t.href}">${t.label}</a><span aria-hidden="true">/</span></li>`).join('\n')}
 </ol></nav>`;
 
+/* Every sub-page's banner: breadcrumb, then a contained split (text beside a
+   framed photo) rather than a full-bleed photo band with text stacked below
+   it. The old stacked version added the photo's height on top of the text's
+   height; here they share the same row, so the section is only ever as tall
+   as the taller of the two — consistently a few hundred px shorter, and it
+   matches the homepage hero's visual language instead of a different pattern.
+   `kicker` is the pre-rendered eyebrow/tag/icon row above the heading;
+   `extra` is optional pre-rendered HTML after the lede (a search field, filter
+   chips, buttons) for the handful of pages that need it. */
+export const pageHero = (d, { crumbTrail, kicker, heading, lede, extra = '', shot, photoOpts = {} }) => `
+<div class="container">${crumbs(d, crumbTrail)}</div>
+<section class="pagehero">
+  <div class="container pagehero__grid">
+    <div class="pagehero__content">
+      ${kicker}
+      <h1>${heading}</h1>
+      <p class="lede">${lede}</p>
+      ${extra}
+    </div>
+    <div class="pagehero__frame">
+      ${slot(shot, { ratio: '4 / 3', px: 'min 1000px', ...photoOpts })}
+    </div>
+  </div>
+</section>`;
+
 /* Preview builds carry a robots meta tag on every page. This site is a verbatim
    rebuild of a live client site, so an indexable staging copy would compete with
    the real domain as duplicate content. Set PREVIEW=1 for a staging build. */
 export const NOINDEX = process.env.PREVIEW === '1';
 
-export const head = ({ title, desc, d = 0 }) => `<!doctype html>
+/* Matches the SITE_URL build environment variable already declared in
+   netlify.toml, so link previews resolve to the deployed preview URL without
+   a second place to configure it. */
+const SITE_URL = (process.env.SITE_URL || 'https://accupro-preview.netlify.app').replace(/\/$/, '');
+
+/* `path` is the page's own dist-relative URL (e.g. 'services/tax-reporting/
+   corporate-tax-processing.html') — used for the canonical link and og:url.
+   `ogCat`/`ogSeed` reuse the same photo category + hash seed as that page's
+   own hero image, via the same photoUrl() the hero itself calls, so the link
+   preview shows the page's real hero photo instead of a generic placeholder
+   or nothing at all. */
+export const head = ({ title, desc, d = 0, path = '', ogCat = 'team-work', ogSeed = '' }) => {
+  const url = `${SITE_URL}/${path.replace(/index\.html$/, '')}`;
+  const image = photoUrl(ogCat, ogSeed || path || title, { ratio: '1200 / 630', w: 1200 });
+  return `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>
-<meta name="description" content="${desc}">${NOINDEX ? '\n<meta name="robots" content="noindex, nofollow">' : ''}
+<meta name="description" content="${attr(desc)}">${NOINDEX ? '\n<meta name="robots" content="noindex, nofollow">' : ''}
+<link rel="canonical" href="${url}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Accupro">
+<meta property="og:title" content="${attr(title)}">
+<meta property="og:description" content="${attr(desc)}">
+<meta property="og:url" content="${url}">
+<meta property="og:image" content="${image}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${attr(title)}">
+<meta name="twitter:description" content="${attr(desc)}">
+<meta name="twitter:image" content="${image}">
 <link rel="icon" href="${up(d)}assets/img/logo-accupro.png">
 <link rel="stylesheet" href="${up(d)}assets/css/style.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>`;
+};
 
 export const header = (active, d = 0, C) => `
 <header class="header">

@@ -49,6 +49,66 @@ h4{font-size:1.0625rem;font-weight:700;letter-spacing:-.01em;line-height:1.3}
 .section--tight{padding-block:clamp(36px,4vw,56px)}
 .section--surface{background:var(--surface)}
 .section--navy{background:var(--navy);color:#D7DAEF}
+
+/* ---------- sub-page banner — contained split, not a full-bleed band ----------
+   Text and photo share one row instead of stacking (photo band on top, text
+   block below), which is what made every one of these run 500-600px+ tall.
+   Sharing a row means the section is only ever as tall as the taller side —
+   usually the text, since the frame is capped. Same visual language as the
+   homepage hero (framed photo, light surface) instead of a separate pattern. */
+.pagehero{background:var(--surface-2)}
+.pagehero__grid{display:grid;grid-template-columns:1.3fr .9fr;gap:clamp(24px,4vw,48px);align-items:center;padding-block:clamp(28px,4vw,44px)}
+.pagehero__content h1{margin-top:10px}
+.pagehero__content .lede{margin-top:14px}
+.pagehero__frame{border-radius:18px;overflow:hidden;box-shadow:var(--shadow-lg)}
+/* width:100% is load-bearing — see the note on .hero__frame below: aspect-ratio
+   + max-height on an auto-width block derives width from the clamped height
+   instead of filling the container unless width is made explicit first. */
+.pagehero__frame .imgslot{width:100%;border:none;border-radius:0;padding:0;aspect-ratio:4/3;max-height:340px;background:var(--surface)}
+.pagehero__frame .imgslot > img{top:0;left:0;width:100%;height:100%;object-fit:cover;max-width:none;pointer-events:none}
+/* Hide the placeholder brief only once the photo has actually painted — if the
+   CDN request fails (network hiccup, ad blocker, a bot-mitigation challenge),
+   the icon stays visible instead of leaving a blank frame with no fallback. */
+.pagehero__frame .imgslot:has(>img[data-ok]) > svg,
+.pagehero__frame .imgslot:has(>img[data-ok]) > .imgslot__label,
+.pagehero__frame .imgslot:has(>img[data-ok]) > .imgslot__spec{display:none}
+.pagehero__frame .imgslot .imgslot__spec{display:none}
+
+/* ---------- homepage hero — light theme, framed photo, floating finder ---------- */
+.hero{background:linear-gradient(180deg,var(--paper) 0%,var(--surface) 100%);padding-block:clamp(20px,3vw,36px) clamp(28px,4vw,44px);overflow:hidden}
+.hero__grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,4vw,64px);align-items:start}
+.hero__content{display:flex;flex-direction:column;gap:20px}
+.hero__slides{position:relative;min-height:190px}
+.hero__slide{position:absolute;inset:0 auto auto 0;width:100%;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .5s ease, visibility .5s ease}
+.hero__slide.is-active{position:relative;opacity:1;visibility:visible;pointer-events:auto}
+.hero__slide h1{font-size:clamp(2.25rem,1.7rem + 2.4vw,3.375rem)}
+.hero__slide .lede{margin-top:14px;max-width:52ch}
+.hero__stats{gap:20px;margin-top:6px;padding-top:22px;border-top:1px solid var(--line)}
+.hero__nav{display:flex;align-items:center;gap:10px;margin-top:4px}
+.hero__dot{width:9px;height:9px;border-radius:50%;background:var(--line-strong);border:1px solid var(--line-strong)}
+.hero__dot.is-active{background:var(--navy);border-color:var(--navy)}
+.hero__arrow{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;border:1px solid var(--line-strong);color:var(--navy);background:var(--paper)}
+.hero__arrow:hover{border-color:var(--navy);background:var(--navy-050)}
+.hero__arrow--next svg{transform:rotate(180deg)}
+.hero__media{position:relative}
+.hero__frame{border-radius:22px;overflow:hidden;box-shadow:var(--shadow-lg);position:relative}
+/* Same in-flow-only-when-active trick as .hero__slide: the active slide is
+   position:relative so it sets the frame's actual size (from its imgslot's
+   aspect-ratio), the other two are absolute + inset:0 so they don't affect
+   layout and just crossfade in behind it. */
+.hero__frame-slide{position:absolute;inset:0;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .5s ease, visibility .5s ease}
+.hero__frame-slide.is-active{position:relative;opacity:1;visibility:visible;pointer-events:auto}
+.hero__frame .imgslot{border:none;border-radius:0;padding:0;background:var(--surface-2)}
+.hero__frame .imgslot > img{top:0;left:0;width:100%;height:100%;object-fit:cover;max-width:none;pointer-events:none}
+.hero__frame .imgslot:has(>img[data-ok]) > svg,
+.hero__frame .imgslot:has(>img[data-ok]) > .imgslot__label,
+.hero__frame .imgslot:has(>img[data-ok]) > .imgslot__spec{display:none}
+.hero__frame .imgslot .imgslot__spec{display:none}
+
+/* ---------- service finder bar — its own section, not stacked into the hero ---------- */
+.finder-bar__grid{display:grid;grid-template-columns:auto 1fr 1fr auto;gap:18px;align-items:end}
+.finder-bar__label h3{font-size:1.0625rem}
+.finder-bar .field{min-width:0}
 .section--navy h1,.section--navy h2,.section--navy h3,.section--navy h4{color:#fff}
 .section--navy .small,.section--navy .tiny{color:#A8AEDB}
 .stack>*+*{margin-top:var(--s,16px)}
@@ -233,6 +293,17 @@ h4{font-size:1.0625rem;font-weight:700;letter-spacing:-.01em;line-height:1.3}
   .g4{grid-template-columns:repeat(2,minmax(0,1fr))}
   .g3{grid-template-columns:repeat(2,minmax(0,1fr))}
   .split--wide,.split--narrow{grid-template-columns:1fr}
+  .hero__grid{grid-template-columns:1fr}
+  .hero__frame{max-width:480px;margin-inline:auto}
+  .pagehero__grid{grid-template-columns:1fr}
+  /* width:100% is load-bearing: margin-inline:auto disables this grid item's
+     default stretch-fill, and without an explicit width the imgslot child's
+     own width:100% has nothing definite to resolve against — that circular
+     reference collapsed the whole frame to 0×0 on narrow viewports. */
+  .pagehero__frame{width:100%;max-width:480px;margin-inline:auto;order:-1}
+  .finder-bar__grid{grid-template-columns:1fr 1fr;row-gap:16px}
+  .finder-bar__label{grid-column:1/-1}
+  .finder-bar .btn{grid-column:1/-1}
   .footer__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .logos{grid-template-columns:repeat(3,minmax(0,1fr))}
   .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -245,6 +316,7 @@ h4{font-size:1.0625rem;font-weight:700;letter-spacing:-.01em;line-height:1.3}
   :root{--gutter:16px;--header-h:66px}
   .g2,.g3,.g4{grid-template-columns:1fr}
   .g-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .finder-bar__grid{grid-template-columns:1fr}
   .logos{grid-template-columns:repeat(2,minmax(0,1fr))}
   .facts{grid-template-columns:1fr}
   .btn{width:100%}

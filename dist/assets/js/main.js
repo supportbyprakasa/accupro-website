@@ -24,6 +24,46 @@
     });
   }
 
+  /* ---- homepage hero: headline/subtext/photo crossfade ------------------ */
+  var hero = document.querySelector('.hero');
+  if (hero) {
+    var slides = Array.prototype.slice.call(hero.querySelectorAll('.hero__slide'));
+    var frameSlides = Array.prototype.slice.call(hero.querySelectorAll('.hero__frame-slide'));
+    var dots = Array.prototype.slice.call(hero.querySelectorAll('.hero__dot'));
+    var arrows = Array.prototype.slice.call(hero.querySelectorAll('.hero__arrow'));
+    var activeIndex = 0;
+    /* Only the .is-active slide is position:relative (in flow); the other two
+       are position:absolute (out of flow) — so .hero__slides' height always
+       tracks whichever slide is actually showing, no JS measurement needed.
+       Same trick for .hero__frame-slide, so the photo crossfades in sync with
+       the headline instead of sitting there static. */
+    function showSlide(index) {
+      activeIndex = (index + slides.length) % slides.length;
+      slides.forEach(function (slide, i) {
+        slide.classList.toggle('is-active', i === activeIndex);
+      });
+      frameSlides.forEach(function (slide, i) {
+        slide.classList.toggle('is-active', i === activeIndex);
+      });
+      dots.forEach(function (dot, i) {
+        dot.classList.toggle('is-active', i === activeIndex);
+      });
+    }
+    dots.forEach(function (dot) {
+      dot.addEventListener('click', function () {
+        showSlide(Number(dot.dataset.slideIndex));
+      });
+    });
+    arrows.forEach(function (arrow) {
+      arrow.addEventListener('click', function () {
+        showSlide(activeIndex + (arrow.dataset.slide === 'next' ? 1 : -1));
+      });
+    });
+    setInterval(function () {
+      showSlide(activeIndex + 1);
+    }, 6000);
+  }
+
   /* ---- accordions ------------------------------------------------------ */
   document.querySelectorAll('.acc__btn').forEach(function (btn) {
     btn.addEventListener('click', function () {

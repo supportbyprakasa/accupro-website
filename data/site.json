@@ -26,10 +26,19 @@
     }
   },
   "hero": {
-    "headlines": [
-      "Reliable Tax Expert, the Right Solution",
-      "Easy Tax, Smooth Business",
-      "Optimize Tax, Maximize Profit"
+    "slides": [
+      {
+        "headline": "Reliable Tax Expert, the Right Solution",
+        "subtext": "Our expert team at PT. Accurate Pro International provides tax consultation, planning and processing for your business's success."
+      },
+      {
+        "headline": "Easy Tax, Smooth Business",
+        "subtext": "PT. Accurate Pro International helps you manage tax efficiently and accurately, minimising risk and maximising business profit."
+      },
+      {
+        "headline": "Optimize Tax, Maximize Profit",
+        "subtext": "PT. Accurate Pro International provides a measured tax planning strategy to reduce your tax burden and increase your business profitability."
+      }
     ],
     "primary": "Reliable Tax Expert, the Right Solution"
   },
