@@ -93,6 +93,13 @@
   @media print{
     .cover{background:var(--navy) !important; -webkit-print-color-adjust:exact; print-color-adjust:exact}
     .highlight, .problem{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+    /* Keep each self-contained block on one page instead of splitting it
+       across a page break — this is what was cutting the before/after bars
+       and the "Catatan Angka" box in half. */
+    .highlight, .problem, .point, .ba-item, .calc-item, .cover{
+      break-inside:avoid; page-break-inside:avoid;
+    }
+    h2, .sec__eyebrow{break-after:avoid; page-break-after:avoid}
   }
 </style>
 </head>
