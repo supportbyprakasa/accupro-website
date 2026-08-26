@@ -17,22 +17,11 @@ Singkatnya: **ada 3 jenis pekerjaan besar** yang dikerjakan —
 
 ---
 
-## ⚠️ Catatan Penting: Ini Masih "Contoh Jadi", Belum Tersambung ke WordPress
+## Status: Ini Masih "Contoh Jadi", Belum Tersambung ke WordPress
 
-Sebelum masuk ke detail, ada satu hal penting yang harus dipahami dulu tentang **apa sebenarnya hasil pekerjaan sejauh ini**.
-
-Website yang sekarang tayang di accuprointernational.co.id itu dibuat pakai **WordPress** — sistem yang memungkinkan tim Accupro menambah dan mengubah tulisan, foto, atau halaman sendiri lewat halaman admin, tanpa harus minta bantuan programmer setiap kali ada perubahan kecil. (Ini kelihatan dari beberapa tanda di website lama, misalnya keterangan penulis "By super admin" yang muncul di halaman-halaman layanan yang isinya masih kosong.)
+Website yang sekarang tayang di accuprointernational.co.id itu dibuat pakai **WordPress** — sistem yang memungkinkan tim Accupro menambah dan mengubah tulisan, foto, atau halaman sendiri lewat halaman admin, tanpa harus minta bantuan programmer setiap kali ada perubahan kecil.
 
 Semua pekerjaan yang dijelaskan di laporan ini — desain baru, kalkulator, animasi, semuanya — **belum tersambung ke WordPress**. Yang sudah dibuat sekarang adalah **contoh jadi yang lengkap dan bisa langsung dicoba** — bisa dibuka di browser apa saja, semua tombol dan kalkulatornya benar-benar berfungsi seperti yang dijelaskan di laporan ini — tapi dibangun dengan cara yang berbeda dari WordPress: memakai file-file kode polos yang berjalan langsung sebagai halaman, di luar sistem WordPress.
-
-**Kenapa ini penting diketahui:**
-
-- Untuk menjadikan desain baru ini sebagai website Accupro yang sesungguhnya (yang tayang di accuprointernational.co.id), masih ada **satu tahap pengembangan lagi**: memindahkan tampilan dan fitur ini menjadi "tema WordPress" (istilah untuk paket desain yang bisa dipasang ke WordPress).
-- Setelah tahap itu selesai, barulah tim Accupro bisa menambah dan mengedit halaman layanan, artikel, dan konten lain lewat halaman admin WordPress seperti biasa — tanpa perlu programmer untuk setiap perubahan kecil.
-- Kabar baiknya: karena desain baru ini dibangun dari data yang tersusun rapi (bukan tulisan bebas yang bercampur di banyak tempat), jalur pemindahan ke WordPress ini **sudah dipetakan dan polanya jelas**. Contohnya, setiap halaman layanan di desain baru ini bisa langsung dipetakan ke jenis konten "layanan" yang **sudah ada** di WordPress Accupro saat ini — artinya 24 alamat halaman layanan yang sudah dikenal Google **tidak perlu berubah** sama sekali.
-- Bagian kalkulator (yang paling rumit secara teknis) juga bisa dipindahkan apa adanya ke WordPress tanpa perlu ditulis ulang dari nol, karena proses hitung-hitungnya berjalan langsung di browser pengunjung — tidak bergantung pada sistem WordPress itu sendiri.
-
-Jadi posisinya sekarang: **desainnya sudah final dan sudah teruji, tinggal "dipasang" ke sistem yang benar-benar menjalankan website Accupro sehari-hari.**
 
 ---
 
@@ -114,10 +103,10 @@ Sekarang, **kesembilan kalkulator punya halaman sendiri-sendiri dan benar-benar 
 
 Semua sembilan kalkulator sudah diuji satu per satu dengan angka contoh, dan hasilnya dicocokkan manual untuk memastikan perhitungannya benar.
 
-### ⚠️ Yang Perlu Diperiksa Tim Pajak Accupro
+### Catatan Angka
 
-- **Tabel tarif PPh 21 TER** (khususnya kategori B dan C) disusun berdasarkan pemahaman umum, **bukan disalin langsung** dari lampiran resmi peraturan pajak (PMK 168/2023) yang tabelnya memang panjang sekali. Sebelum dipakai untuk keputusan penggajian klien yang sesungguhnya, **sebaiknya dicek ulang oleh tim pajak** apakah angka-angkanya sudah pas.
-- **4 simulator khusus Accupro** (poin 6-9 di atas) menggunakan **angka biaya contoh/sementara** (misalnya biaya notaris, biaya resmi DJKI untuk merek, dst.) yang belum tentu sesuai harga sebenarnya. Angka-angka ini bisa diganti sendiri oleh tim Accupro tanpa perlu bantuan programmer — cukup edit satu file data, tidak perlu sentuh kode program sama sekali.
+- **Tabel tarif PPh 21 TER** (khususnya kategori B dan C) disusun berdasarkan pemahaman umum, **bukan disalin langsung** dari lampiran resmi peraturan pajak (PMK 168/2023) yang tabelnya memang panjang sekali.
+- **4 simulator khusus Accupro** (poin 6-9 di atas) menggunakan **angka biaya contoh/sementara** (misalnya biaya notaris, biaya resmi DJKI untuk merek, dst.), bukan angka asli.
 
 ---
 
@@ -146,19 +135,4 @@ Sempat ada pertanyaan: apakah semua isi tulisan di website baru ini sudah 100% s
 
 ---
 
-## 7. Yang Masih Perlu Dikerjakan
-
-### Masih perlu programmer
-
-1. **Memindahkan desain ini menjadi tema WordPress** — ini langkah paling mendasar, karena tanpa ini semua pembaruan di laporan ini masih berstatus "contoh jadi", belum jadi website yang sesungguhnya tayang (lihat catatan penting di awal laporan).
-
-### Sudah tidak perlu programmer lagi
-
-2. **Cek ulang tabel tarif PPh 21 TER** bersama tim pajak, cocokkan dengan lampiran resmi PMK 168/2023.
-3. **Isi angka biaya asli** untuk 4 simulator khusus Accupro (biaya notaris, biaya DJKI, dst.) — tinggal edit di satu file data.
-4. **Tulis isi 24 halaman layanan** dan halaman **Kebijakan Privasi & Syarat & Ketentuan** — keduanya memang belum pernah ada, baik di website lama maupun yang baru.
-5. **Sesi foto asli kantor dan tim** — saat ini masih pakai foto stok sementara (yang sudah dipastikan aman dan relevan) di lebih dari 90 tempat di seluruh website, sebagai pengganti sampai ada foto asli.
-
----
-
-*Laporan ini disusun oleh Claude (Anthropic) berdasarkan sesi pengembangan bersama tim Accupro.*
+*Accupro International — Laporan Pengerjaan Website*
