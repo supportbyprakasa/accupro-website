@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laporan Pembaruan Website — Accupro International</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+  :root{
+    --navy:#2A3490; --navy-deep:#161C4F; --gold:#C09725; --gold-soft:#F6EFDB;
+    --paper:#FFFDF9; --surface:#F6F4EC; --ink:#221F18; --body:#4E4B40; --muted:#82806F;
+    --line:#E7E2D2;
+    --display:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+    --sans:'Source Sans 3',ui-sans-serif,system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--paper); color:var(--body); font-family:var(--sans); font-size:18px; line-height:1.7}
+  h1,h2,h3{font-family:var(--display); color:var(--ink); font-weight:800; line-height:1.25; margin:0}
+  p{margin:0}
+  .wrap{max-width:760px; margin-inline:auto; padding:0 24px 80px}
+
+  /* header / cover */
+  .cover{background:var(--navy); color:#fff; padding:56px 24px 64px; text-align:center}
+  .cover__brand{display:inline-flex; align-items:center; gap:10px; margin-bottom:36px}
+  .cover__brand svg{width:32px; height:30px}
+  .cover__brand span{font-family:var(--display); font-weight:800; letter-spacing:.03em; font-size:1.0625rem}
+  .cover h1{font-size:clamp(1.7rem,1.3rem+2vw,2.3rem); max-width:22ch; margin-inline:auto; color:#fff}
+  .cover p{margin-top:16px; color:#C3C7E6; font-size:1.0625rem; max-width:42ch; margin-inline:auto}
+  .cover__date{margin-top:28px; font-size:.875rem; color:#9AA1D6; letter-spacing:.03em}
+
+  /* intro */
+  .intro{padding:48px 0 8px}
+  .intro p{max-width:60ch}
+  .intro p + p{margin-top:16px}
+
+  /* highlight box */
+  .highlight{background:var(--gold-soft); border-radius:16px; padding:26px 28px; margin:40px 0}
+  .highlight__label{display:inline-block; font-family:var(--display); font-size:.75rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#8A5A12; background:#fff; padding:4px 12px; border-radius:100px; margin-bottom:14px}
+  .highlight p{font-size:1rem}
+  .highlight p + p{margin-top:12px}
+
+  /* section */
+  .sec{padding:44px 0; border-top:1px solid var(--line)}
+  .sec__eyebrow{display:block; font-family:var(--display); font-size:.8125rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--gold); margin-bottom:10px}
+  .sec h2{font-size:clamp(1.35rem,1.1rem+1vw,1.7rem)}
+  .sec__body{margin-top:18px}
+  .sec__body p{max-width:62ch}
+  .sec__body p + p{margin-top:14px}
+
+  /* simple point list */
+  .points{margin-top:20px; display:grid; gap:16px}
+  .point{display:grid; grid-template-columns:34px 1fr; gap:14px; align-items:start}
+  .point__mark{width:34px; height:34px; border-radius:50%; background:var(--navy); color:#fff; display:flex; align-items:center; justify-content:center; flex:none}
+  .point__mark svg{width:16px; height:16px}
+  .point__title{font-family:var(--display); font-weight:700; color:var(--ink); font-size:1.0625rem}
+  .point__desc{font-size:.9375rem; margin-top:4px; color:var(--body)}
+
+  /* problem cards (photo issues) */
+  .problem{background:#FBEFE9; border-radius:12px; padding:18px 20px; margin-top:14px}
+  .problem__where{font-family:var(--display); font-weight:700; color:#8A3B12; font-size:.9375rem}
+  .problem__what{margin-top:5px; font-size:.9375rem}
+
+  /* before/after */
+  .ba{margin-top:22px; display:grid; gap:22px}
+  .ba-item{}
+  .ba-item__label{font-family:var(--display); font-weight:700; color:var(--ink); font-size:.9375rem; margin-bottom:10px}
+  .ba-bar-row{display:flex; align-items:center; gap:12px; margin-top:6px}
+  .ba-bar-row__tag{width:64px; font-size:.75rem; color:var(--muted); flex:none}
+  .ba-bar-row__track{flex:1; background:var(--surface); border-radius:6px; height:22px; position:relative; overflow:hidden}
+  .ba-bar-row__fill{height:100%; border-radius:6px; display:flex; align-items:center; padding-inline:10px}
+  .ba-bar-row__fill span{font-size:.75rem; color:#fff; font-weight:600; white-space:nowrap}
+  .ba-bar-row__fill--before{background:#C7C2AC}
+  .ba-bar-row__fill--after{background:var(--navy)}
+
+  /* feature list (calculators) */
+  .calc-list{margin-top:18px; display:grid; gap:2px; background:var(--line); border-radius:12px; overflow:hidden}
+  .calc-item{background:var(--paper); padding:14px 18px; display:flex; align-items:center; gap:12px; font-size:.9375rem}
+  .calc-item__n{font-family:var(--display); font-weight:700; color:var(--gold); font-size:.875rem; width:20px; flex:none}
+
+  /* status pills */
+  .status{display:inline-flex; align-items:center; gap:6px; font-size:.8125rem; font-weight:600; padding:4px 11px; border-radius:100px}
+  .status--ok{background:#E7ECFB; color:var(--navy)}
+  .status--wait{background:#F6EFDB; color:#8A5A12}
+
+  .note{font-size:.875rem; color:var(--muted); margin-top:12px}
+
+  footer{padding:44px 24px; text-align:center; color:var(--muted); font-size:.875rem; border-top:1px solid var(--line)}
+
+  @media(max-width:600px){
+    body{font-size:16.5px}
+    .cover{padding:44px 20px 52px}
+  }
+  @media print{
+    .cover{background:var(--navy) !important; -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .highlight, .problem{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover__brand">
+    <svg viewBox="0 0 34 32" fill="none" aria-hidden="true">
+      <path d="M17 2 L30 28 L22 28 L17 16 L12 28 L4 28 Z" fill="#fff"/>
+      <path d="M17 2 L30 28 L22 28 L17 16 Z" fill="#C09725"/>
+    </svg>
+    <span>ACCUPRO INTERNATIONAL</span>
+  </div>
+  <h1>Apa yang Sudah Dikerjakan pada Website Baru Anda</h1>
+  <p>Ringkasan sederhana semua pembaruan, dibandingkan dengan website yang sekarang tayang di accuprointernational.co.id.</p>
+  <div class="cover__date">26 Agustus 2026</div>
+</div>
+
+<div class="wrap">
+
+  <div class="intro">
+    <p>Dokumen ini merangkum semua pekerjaan yang sudah selesai pada website baru Accupro. Ditulis sesederhana mungkin, supaya siapa pun di tim Accupro bisa langsung paham — tidak perlu latar belakang teknis untuk membacanya.</p>
+    <p>Ada tiga pekerjaan besar: <strong>memperbaiki hal yang salah</strong> di website lama, <strong>mendesain ulang tampilan</strong> supaya lebih rapi dan modern, dan <strong>membuat sembilan kalkulator</strong> yang sekarang benar-benar bisa dipakai menghitung.</p>
+  </div>
+
+  <div class="highlight">
+    <span class="highlight__label">Penting dibaca dulu</span>
+    <p><strong>Website baru ini belum tayang menggantikan yang lama.</strong> Yang sudah dibuat sekarang adalah contoh lengkap yang bisa dicoba dan sudah berfungsi semuanya — tapi masih terpisah dari sistem yang dipakai Accupro sehari-hari (WordPress) untuk mengelola website.</p>
+    <p>Supaya bisa benar-benar menggantikan website yang lama, masih ada satu tahap pengerjaan lagi: memindahkan desain dan fitur ini ke dalam sistem WordPress. Setelah itu selesai, tim Accupro bisa mengubah tulisan atau menambah halaman sendiri, seperti biasa, tanpa perlu bantuan programmer setiap kali.</p>
+  </div>
+
+  <!-- 1 -->
+  <section class="sec">
+    <span class="sec__eyebrow">Bagian 1</span>
+    <h2>Foto yang Ternyata Salah Tempat</h2>
+    <div class="sec__body">
+      <p>Ini yang paling penting diketahui lebih dulu. Beberapa foto yang dipasang di website lama ternyata bukan cuma "kurang pas" — tapi benar-benar salah, dan bisa memalukan kalau sampai dilihat klien.</p>
+
+      <div class="problem">
+        <div class="problem__where">Halaman tentang sertifikat</div>
+        <div class="problem__what">Foto yang dipasang ternyata sertifikat asli dari Harvard Law School, atas nama orang lain yang sama sekali tidak ada hubungannya dengan Accupro.</div>
+      </div>
+      <div class="problem">
+        <div class="problem__where">Halaman Kontak</div>
+        <div class="problem__what">Foto "kantor" yang dipasang ternyata lobi sebuah universitas di Vietnam — papan namanya kelihatan jelas di foto.</div>
+      </div>
+      <div class="problem">
+        <div class="problem__where">Halaman seputar pajak (7 halaman)</div>
+        <div class="problem__what">Foto dokumen pajak yang dipasang ternyata formulir pajak resmi Amerika Serikat, bukan dokumen pajak Indonesia.</div>
+      </div>
+      <div class="problem">
+        <div class="problem__where">Halaman KITAS Kerja</div>
+        <div class="problem__what">Foto paspor yang dipasang ternyata paspor Rusia, lengkap dengan tulisan huruf Rusia yang terbaca jelas.</div>
+      </div>
+
+      <p class="note">Semua foto di atas sudah diganti dengan foto yang sudah diperiksa satu per satu secara manual, supaya kejadian serupa tidak terulang.</p>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="sec">
+    <span class="sec__eyebrow">Bagian 2</span>
+    <h2>Bagian Paling Atas Setiap Halaman, Didesain Ulang</h2>
+    <div class="sec__body">
+      <p>Bagian paling atas halaman — yang pertama kali dilihat pengunjung — sebelumnya terlalu tinggi (pengunjung harus scroll banyak sebelum sampai ke isi), dan di beberapa layar komputer besar, fotonya malah terpotong menyisakan area kosong.</p>
+      <p>Sekarang, foto dan tulisan diletakkan berdampingan, bukan ditumpuk — hasilnya bagian ini jadi jauh lebih ringkas:</p>
+
+      <div class="ba">
+        <div class="ba-item">
+          <div class="ba-item__label">Halaman Utama (Beranda)</div>
+          <div class="ba-bar-row">
+            <span class="ba-bar-row__tag">Sebelum</span>
+            <div class="ba-bar-row__track"><div class="ba-bar-row__fill ba-bar-row__fill--before" style="width:100%"><span>Sangat tinggi</span></div></div>
+          </div>
+          <div class="ba-bar-row">
+            <span class="ba-bar-row__tag">Sekarang</span>
+            <div class="ba-bar-row__track"><div class="ba-bar-row__fill ba-bar-row__fill--after" style="width:58%"><span>Turun hampir separuh</span></div></div>
+          </div>
+        </div>
+        <div class="ba-item">
+          <div class="ba-item__label">Semua Halaman Lain</div>
+          <div class="ba-bar-row">
+            <span class="ba-bar-row__tag">Sebelum</span>
+            <div class="ba-bar-row__track"><div class="ba-bar-row__fill ba-bar-row__fill--before" style="width:100%"><span>Tinggi</span></div></div>
+          </div>
+          <div class="ba-bar-row">
+            <span class="ba-bar-row__tag">Sekarang</span>
+            <div class="ba-bar-row__track"><div class="ba-bar-row__fill ba-bar-row__fill--after" style="width:69%"><span>Lebih ringkas</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <p style="margin-top:26px">Perubahan lain di bagian ini:</p>
+      <div class="points">
+        <div class="point">
+          <div class="point__mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <div><div class="point__title">Foto sekarang punya bingkai membulat dengan bayangan halus</div><div class="point__desc">Kesannya lebih rapi dan mewah, seperti foto di brosur — bukan sekadar foto tempel biasa.</div></div>
+        </div>
+        <div class="point">
+          <div class="point__mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <div><div class="point__title">Foto di halaman utama berganti mengikuti judul yang berputar</div><div class="point__desc">Sebelumnya judulnya berganti-ganti tapi fotonya diam saja — sekarang keduanya berganti bersamaan.</div></div>
+        </div>
+        <div class="point">
+          <div class="point__mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <div><div class="point__title">Semua kerusakan tampilan sudah diperbaiki</div><div class="point__desc">Tombol yang sempat hilang, foto yang hilang di HP, tulisan yang tidak kelihatan karena warnanya sama dengan latar — semua sudah dites ulang di HP, tablet, dan komputer.</div></div>
+        </div>
+        <div class="point">
+          <div class="point__mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <div><div class="point__title">Kalau link website ini dibagikan lewat WhatsApp, sekarang muncul pratinjau rapi</div><div class="point__desc">Sebelumnya kalau di-share, tidak muncul gambar apa pun.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="sec">
+    <span class="sec__eyebrow">Bagian 3</span>
+    <h2>Website Terasa Lebih Halus Dipakai</h2>
+    <div class="sec__body">
+      <p>Tiga sentuhan kecil ditambahkan supaya website tidak terasa kaku — semuanya otomatis mati sendiri kalau pengunjung mengatur perangkatnya untuk mengurangi animasi, jadi tetap nyaman untuk semua orang.</p>
+      <div class="points">
+        <div class="point">
+          <div class="point__mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <div><div class="point__title">Scroll terasa lebih halus</div><div class="point__desc">Ada sedikit "momentum" saat menggulir halaman, tidak langsung berhenti kaku.</div></div>
+        </div>
+        <div class="point">
+          <div class="point__mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <div><div class="point__title">Konten muncul perlahan saat digulir</div><div class="point__desc">Kartu-kartu (layanan, testimoni, dll) muncul dengan gerakan halus begitu terlihat di layar.</div></div>
+        </div>
+        <div class="point">
+          <div class="point__mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <div><div class="point__title">Berpindah halaman jadi mulus</div><div class="point__desc">Sebelumnya berganti halaman terasa kasar/kedip — sekarang ada efek memudar yang halus.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="sec">
+    <span class="sec__eyebrow">Bagian 4</span>
+    <h2>Sembilan Kalkulator — Sekarang Beneran Bisa Menghitung</h2>
+    <div class="sec__body">
+      <p>Ini pembaruan paling besar. Sebelumnya, halaman kalkulator cuma tampilan kosong — diisi dan ditekan "Hitung", tidak terjadi apa-apa. Sekarang, kesembilannya benar-benar berfungsi: pengunjung isi form, tekan Hitung, dan hasilnya langsung muncul lengkap dengan penjelasannya.</p>
+
+      <div class="calc-list">
+        <div class="calc-item"><span class="calc-item__n">1</span> Kalkulator PPh Badan (pajak perusahaan)</div>
+        <div class="calc-item"><span class="calc-item__n">2</span> Kalkulator PPh 21 bulanan (potongan gaji karyawan)</div>
+        <div class="calc-item"><span class="calc-item__n">3</span> Kalkulator PPh 21 tahunan</div>
+        <div class="calc-item"><span class="calc-item__n">4</span> Kalkulator PPh 23 (jasa, sewa, dividen)</div>
+        <div class="calc-item"><span class="calc-item__n">5</span> Kalkulator PPh final Pasal 4(2) (sewa/jual-beli properti, konstruksi)</div>
+        <div class="calc-item"><span class="calc-item__n">6</span> Simulator biaya &amp; waktu pendirian perusahaan</div>
+        <div class="calc-item"><span class="calc-item__n">7</span> Cek syarat dokumen &amp; waktu proses KITAS</div>
+        <div class="calc-item"><span class="calc-item__n">8</span> Simulator biaya pendaftaran merek dagang</div>
+        <div class="calc-item"><span class="calc-item__n">9</span> Cek daftar kewajiban pajak bulanan</div>
+      </div>
+
+      <p style="margin-top:20px">Hasil perhitungan juga otomatis tersimpan di HP/komputer pengunjung, jadi kalau mereka buka lagi nanti, riwayat perhitungannya masih ada — dan ada tombol untuk langsung menghubungi Accupro soal hasil itu.</p>
+
+      <div class="highlight" style="margin-top:22px">
+        <span class="highlight__label">Perlu dicek tim pajak</span>
+        <p>Rumus untuk kalkulator nomor 2 (khususnya) disusun berdasarkan pemahaman umum tentang aturan pajak yang berlaku, bukan disalin langsung dari tabel resmi pemerintah yang memang panjang sekali. Sebaiknya dicek ulang oleh tim pajak sebelum dipakai untuk keputusan penggajian klien yang sesungguhnya.</p>
+        <p>Angka biaya di kalkulator nomor 6–9 juga masih contoh sementara (misalnya biaya notaris) — tinggal diganti sendiri dengan angka asli, tanpa perlu bantuan programmer.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="sec">
+    <span class="sec__eyebrow">Bagian 5</span>
+    <h2>Apakah Isinya Sudah Sama dengan Website Lama?</h2>
+    <div class="sec__body">
+      <p>Bagian ini sempat ditanyakan, jadi sudah dicek langsung satu per satu:</p>
+
+      <div class="points">
+        <div class="point">
+          <div class="point__mark" style="background:var(--gold)"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <div><div class="point__title">Halaman utama, tentang kami, testimoni, dan info kontak</div><div class="point__desc"><span class="status status--ok">Sudah sama persis</span> dengan yang ada di website lama.</div></div>
+        </div>
+        <div class="point">
+          <div class="point__mark" style="background:var(--gold)"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M12 9v3m0 4h.01M4.93 4.93l14.14 14.14"/></svg></div>
+          <div><div class="point__title">24 halaman detail layanan (misalnya "Pengurusan NPWP")</div><div class="point__desc"><span class="status status--wait">Belum ada isinya di website lama</span> — bahkan halamannya tidak bisa dibuka sama sekali di sana, cuma nama layanannya saja yang muncul, tanpa link. Karena itu, di website baru ini halaman-halamannya sengaja dikosongkan dulu (cuma judul + "segera hadir"), sampai tim Accupro yang menulis isinya sendiri.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="sec">
+    <span class="sec__eyebrow">Bagian 6</span>
+    <h2>Yang Masih Perlu Dikerjakan</h2>
+    <div class="sec__body">
+      <p><strong>Masih butuh programmer:</strong> memindahkan semua pembaruan ini ke dalam sistem WordPress, supaya website ini bisa benar-benar menggantikan yang lama.</p>
+      <p style="margin-top:20px"><strong>Sudah tidak butuh programmer lagi — bisa dikerjakan tim Accupro sendiri:</strong></p>
+      <div class="points">
+        <div class="point">
+          <div class="point__mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <div><div class="point__desc">Cek ulang rumus kalkulator pajak bulanan bersama tim pajak</div></div>
+        </div>
+        <div class="point">
+          <div class="point__mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <div><div class="point__desc">Isi angka biaya asli di 4 kalkulator simulasi (notaris, DJKI, dst.)</div></div>
+        </div>
+        <div class="point">
+          <div class="point__mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <div><div class="point__desc">Tulis isi 24 halaman layanan, dan halaman Kebijakan Privasi &amp; Syarat Ketentuan</div></div>
+        </div>
+        <div class="point">
+          <div class="point__mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <div><div class="point__desc">Sesi foto asli kantor dan tim, untuk menggantikan foto stok sementara</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  Disusun oleh Claude (Anthropic) berdasarkan sesi pengembangan bersama tim Accupro International.
+</footer>
+
+</body>
+</html>
