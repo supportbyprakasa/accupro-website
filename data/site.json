@@ -401,19 +401,35 @@
       "slug": "company-setup-cost",
       "name": "Company Setup Cost Simulator",
       "note": "Estimated cost and timeline by entity type, paid-up capital and domicile.",
-      "kind": "own"
+      "kind": "own",
+      "_config_note": "PLACEHOLDER figures — replace with real prices before this tool goes live. Nothing else needs to change; build.mjs reads this object as-is.",
+      "config": {
+        "notaryFee": { "pt": 8000000, "pma": 15000000, "cv": 5000000, "yayasan": 6000000 },
+        "ossFee": 2000000,
+        "virtualOffice": { "jakarta": 6000000, "other": 3500000 },
+        "timelineDays": { "pt": 14, "pma": 21, "cv": 10, "yayasan": 14, "default": 14 }
+      }
     },
     {
       "slug": "kitas-requirements",
       "name": "KITAS Requirements & Timeline Checker",
       "note": "Pick a KITAS type, get the document checklist and a stage-by-stage estimate.",
-      "kind": "own"
+      "kind": "own",
+      "_config_note": "PLACEHOLDER figures — replace with real timelines before this tool goes live.",
+      "config": {
+        "timelineWeeks": { "work": 5, "investor": 4, "family": 3, "default": 4 }
+      }
     },
     {
       "slug": "trademark-cost",
       "name": "Trademark Filing Cost Simulator",
       "note": "Per class of goods or services, distinguishing local and foreign applicants.",
-      "kind": "own"
+      "kind": "own",
+      "_config_note": "PLACEHOLDER figures — the DJKI official fee is a real government rate and should be checked/updated; the service fee is Accupro's own and is entirely a placeholder.",
+      "config": {
+        "officialFeePerClass": { "local-umkm": 1000000, "local": 1800000, "foreign": 3000000 },
+        "serviceFee": 2500000
+      }
     },
     {
       "slug": "monthly-obligations",

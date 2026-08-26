@@ -83,6 +83,61 @@ export const pageHero = (d, { crumbTrail, kicker, heading, lede, extra = '', sho
   </div>
 </section>`;
 
+/* One tool's detail page: pageHero, then Input | Result+History+Bridge.
+   `formHTML` is the only per-tool part — everything else (result rendering,
+   history, copy button) is generic and driven by assets/js/calculators.js,
+   keyed off `slug` via the form's data-tool attribute. `toolConfig` is
+   inlined as window.TOOL_CONFIG for the four "Accupro-only" simulators,
+   whose numbers are business placeholders meant to be edited in
+   data/site.json — the five tax calculators use real, hardcoded rates
+   instead and ignore this. */
+export const toolShell = (d, C, { crumbTrail, kicker, heading, lede, shot, photoOpts, slug, formHTML, bridgeHref, bridgeLabel, bridgeText, resultLabel, toolConfig }) => `
+${pageHero(d, { crumbTrail, kicker, heading, lede, shot, photoOpts })}
+<section class="section">
+  <div class="container">
+    <div class="grid g2" style="align-items:start">
+      <form class="card card--pad" id="tool-form" data-tool="${slug}" novalidate>
+        <div class="cluster" style="gap:9px;margin-bottom:14px"><span style="color:var(--navy)">${ic('calc', 20)}</span><span class="eyebrow">Input</span></div>
+        ${formHTML}
+        <div class="cluster" style="margin-top:18px"><button class="btn btn--primary" type="submit" style="flex:1 1 auto">Calculate</button><button class="btn btn--quiet" type="reset">Reset</button></div>
+      </form>
+      <div class="stack" style="--s:16px">
+        <div class="card card--navy card--pad">
+          <div class="cluster" style="gap:9px;margin-bottom:12px"><span style="color:var(--navy)">${ic('chart', 20)}</span><span class="eyebrow">Result</span></div>
+          <p class="eyebrow" style="color:var(--faint)">${resultLabel}</p>
+          <p class="stat__v" id="result-headline" style="font-size:2.2rem;margin:4px 0 14px;word-break:break-word">—</p>
+          <table class="dtable" id="result-table"><tbody></tbody></table>
+          <p class="tiny" id="result-note" style="margin-top:10px"></p>
+          <div class="cluster" style="margin-top:14px"><button class="btn btn--quiet" type="button" id="btn-copy">Copy result</button></div>
+        </div>
+        <div class="card card--surface card--pad">
+          <div class="cluster" style="gap:9px;margin-bottom:8px"><span style="color:var(--navy)">${ic('clock', 19)}</span><span class="eyebrow">Calculation history</span></div>
+          <ul class="stack" style="--s:8px" id="calc-history"></ul>
+          <button class="btn btn--quiet btn--sm" type="button" id="btn-clear-history" style="margin-top:12px">Clear history</button>
+        </div>
+        <div class="card card--gold card--pad">
+          <div class="cluster" style="gap:9px;margin-bottom:8px"><span style="color:var(--gold-700)">${ic('arrow', 19)}</span><span class="eyebrow eyebrow--gold">Bridge to a service</span></div>
+          <h4>${bridgeText}</h4>
+          <p class="small" style="margin-top:6px">We can verify this figure and handle the filing or application for you.</p>
+          <a class="btn btn--gold btn--sm" style="margin-top:12px" href="${up(d)}${bridgeHref}">${bridgeLabel} ${ic('arrow', 15)}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section section--surface">
+  <div class="container">
+    <div class="card card--pad cluster" style="gap:22px;flex-wrap:wrap">
+      <span class="icon-lead" style="margin:0">${ic('scale', 30)}</span>
+      <div><h3>This result is an estimate</h3>
+      <p class="small" style="margin-top:6px">Figures are indicative and do not replace an official computation. Ask us to verify before you file or budget against it.</p></div>
+      <a class="btn btn--primary" href="${up(d)}contact.html">Ask us to verify ${ic('arrow', 17)}</a>
+    </div>
+  </div>
+</section>
+${toolConfig ? `<script>window.TOOL_CONFIG = ${JSON.stringify(toolConfig)};</script>` : ''}
+`;
+
 /* Preview builds carry a robots meta tag on every page. This site is a verbatim
    rebuild of a live client site, so an indexable staging copy would compete with
    the real domain as duplicate content. Set PREVIEW=1 for a staging build. */
@@ -169,7 +224,7 @@ export const ctaBand = (d, C, CTA) => `
   </div>
 </section>`;
 
-export const footer = (d, C) => `
+export const footer = (d, C, extraJS = []) => `
 <footer class="footer">
   <div class="container">
     <div class="footer__grid">
@@ -216,5 +271,6 @@ export const footer = (d, C) => `
 <a class="wa-float" href="https://wa.me/${C.whatsappIntl}" target="_blank" rel="noopener">${ic('whatsapp', 20)} Chat with us</a>
 <script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js" defer></script>
 <script src="${up(d)}assets/js/main.js" defer></script>
+${extraJS.map(src => `<script src="${up(d)}${src}" defer></script>`).join('\n')}
 </body>
 </html>`;

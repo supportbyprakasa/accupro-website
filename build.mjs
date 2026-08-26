@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { ic } from './src/icons.mjs';
-import { head, header, footer, ctaBand, slot, crumbs, pageHero, avatar, up, NOINDEX } from './src/layout.mjs';
+import { head, header, footer, ctaBand, slot, crumbs, pageHero, toolShell, avatar, up, NOINDEX } from './src/layout.mjs';
 
 const S = JSON.parse(fs.readFileSync('data/site.json', 'utf8'));
 const C = S.company, CAT = S.categories, SVC = S.services;
@@ -629,76 +629,25 @@ header('tools', 0, C) + `
       <span class="eyebrow">Tax calculators</span>
       <h2 style="margin:8px 0 clamp(20px,3vw,32px)">Five Indonesian income-tax calculators</h2>
       <div class="grid g3">
-        ${S.tools.filter(t => t.kind === 'tax').map(t => `<article class="card card--pad">
-          <span class="icon-lead">${ic('calc', 24)}</span>
+        ${S.tools.filter(t => t.kind === 'tax').map(t => `<a class="card card--link card--pad" href="tools/${t.slug}.html">
+          <span class="icon-lead">${ic('calc', 26)}</span>
           <h3>${t.name}</h3>
           <p class="small" style="margin-top:8px">${t.note}</p>
-          <p class="tiny" style="margin-top:12px">${PH('SHELL ONLY — CALCULATION LOGIC NOT BUILT')}</p>
-        </article>`).join('\n        ')}
+          <span class="card__more">Open calculator ${ic('arrow', 16)}</span>
+        </a>`).join('\n        ')}
       </div>
 
       <span class="eyebrow eyebrow--gold" style="display:block;margin-top:clamp(32px,4vw,52px)">Accupro-only</span>
       <h2 style="margin:8px 0 clamp(20px,3vw,32px)">Four simulators no competitor offers</h2>
       <div class="grid g4">
-        ${S.tools.filter(t => t.kind === 'own').map(t => `<article class="card card--gold">
+        ${S.tools.filter(t => t.kind === 'own').map(t => `<a class="card card--link card--gold" href="tools/${t.slug}.html">
           ${slot(`Screenshot: ${t.name}`, { ratio: '16 / 9', px: 'min 1200px', icon: 'screen', cls: 'card__media', cat: 'screen', seed: t.name })}
           <div class="card__body card__body--badged">
             <span class="card__badge card__badge--gold">${ic('spark', 20)}</span>
             <h4>${t.name}</h4>
             <p class="small" style="margin-top:8px">${t.note}</p>
-          </div></article>`).join('\n        ')}
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container">
-      <span class="eyebrow">Anatomy</span>
-      <h2 style="margin:8px 0 12px">How each tool is laid out</h2>
-      <p class="lede" style="max-width:66ch">The shell below is built and styled. The calculation logic is deliberately not wired up — see README.md for where to add it.</p>
-      <div class="grid g2" style="margin-top:clamp(24px,3vw,36px);align-items:start">
-        <form class="card card--pad" onsubmit="return false">
-          <div class="cluster" style="gap:9px;margin-bottom:14px"><span style="color:var(--navy)">${ic('calc', 20)}</span><span class="eyebrow">Input</span></div>
-          <div class="card card--gold card--pad" style="padding:15px;margin-bottom:16px">
-            <div class="cluster" style="gap:8px;margin-bottom:6px"><span style="color:var(--gold-700)">${ic('scale', 16)}</span>
-            <span class="eyebrow eyebrow--gold" style="font-size:.6875rem">Rate guidance — shown before you fill anything in</span></div>
-            <p class="small">State the applicable rates and the legal basis up front, so the user can see where the number comes from.</p>
-          </div>
-          <div class="stack" style="--s:14px">
-            <label class="field"><span class="field__label">Taxpayer type</span>
-              <select class="field__select"><option>General corporate</option><option>Listed company (Tbk.)</option><option>MSME</option></select></label>
-            <label class="field"><span class="field__label">Gross turnover</span>
-              <input class="field__input" type="text" inputmode="numeric" placeholder="Rp"></label>
-            <label class="field"><span class="field__label">Taxable income</span>
-              <input class="field__input" type="text" inputmode="numeric" placeholder="Rp"></label>
-            <label class="field"><span class="field__label">Rate</span>
-              <input class="field__input" type="text" value="Automatic from the selection above" readonly></label>
-            <div class="cluster"><button class="btn btn--primary" style="flex:1 1 auto">Calculate</button><button class="btn btn--quiet" type="reset">Reset</button></div>
-          </div>
-        </form>
-        <div class="stack" style="--s:16px">
-          <div class="card card--navy card--pad">
-            <div class="cluster" style="gap:9px;margin-bottom:12px"><span style="color:var(--navy)">${ic('chart', 20)}</span><span class="eyebrow">Result</span></div>
-            <p class="eyebrow" style="color:var(--faint)">Tax payable</p>
-            <p class="stat__v" style="font-size:2.4rem;margin:4px 0 14px">Rp 0</p>
-            <table class="dtable">
-              <tr><th scope="row">Tax base</th><td>Rp 0</td></tr>
-              <tr><th scope="row">Applicable rate</th><td>0%</td></tr>
-              <tr><th scope="row">Facility applied</th><td>—</td></tr>
-            </table>
-            <div class="cluster" style="margin-top:14px"><button class="btn btn--quiet">Copy result</button><button class="btn btn--quiet">Download PDF</button></div>
-          </div>
-          <div class="card card--surface card--pad">
-            <div class="cluster" style="gap:9px;margin-bottom:8px"><span style="color:var(--navy)">${ic('clock', 19)}</span><span class="eyebrow">Calculation history</span></div>
-            <p class="small">Keep it in <code>localStorage</code> so it survives a page reload. The competitor's version discards history the moment the tab closes.</p>
-          </div>
-          <div class="card card--gold card--pad">
-            <div class="cluster" style="gap:9px;margin-bottom:8px"><span style="color:var(--gold-700)">${ic('arrow', 19)}</span><span class="eyebrow eyebrow--gold">Bridge to a service</span></div>
-            <h4>Need help filing this?</h4>
-            <p class="small" style="margin-top:6px">Link to the service that matches the result. This is where a free tool turns into an enquiry.</p>
-            <a class="btn btn--gold btn--sm" style="margin-top:12px" href="services.html">See services ${ic('arrow', 15)}</a>
-          </div>
-        </div>
+            <span class="card__more">Open simulator ${ic('arrow', 16)}</span>
+          </div></a>`).join('\n        ')}
       </div>
     </div>
   </section>
@@ -708,7 +657,7 @@ header('tools', 0, C) + `
       <div class="card card--pad cluster" style="gap:22px;flex-wrap:wrap">
         <span class="icon-lead" style="margin:0">${ic('scale', 30)}</span>
         <div><h3>These results are estimates</h3>
-        <p class="small" style="margin-top:6px">Publish a clear disclaimer: figures are indicative and do not replace an official computation. Then offer verification by your team — that is the most natural way in.</p></div>
+        <p class="small" style="margin-top:6px">Figures are indicative and do not replace an official computation. Ask us to verify before you file or budget against it.</p></div>
         <a class="btn btn--primary" href="contact.html">Ask us to verify ${ic('arrow', 17)}</a>
       </div>
     </div>
@@ -716,6 +665,92 @@ header('tools', 0, C) + `
 
   ${ctaBand(0, C, S.cta)}
 </main>` + footer(0, C)));
+
+/* ====================== TOOL CALCULATORS (9) ======================
+   Each page: pageHero + Input | Result/History/Bridge, wired up by
+   assets/js/calculators.js (real math for the five tax calculators; the
+   four "own" simulators read window.TOOL_CONFIG, sourced from this
+   service's `config` in data/site.json). See calculators.js's file header
+   for the accuracy caveat on the PPh 21 TER bracket tables. */
+const numField = (label, name, opts = {}) => `<label class="field"><span class="field__label">${label}</span>
+              <input class="field__input" name="${name}" type="text" inputmode="numeric" placeholder="Rp" ${opts.required !== false ? 'required' : ''}></label>`;
+const selectField = (label, name, options) => `<label class="field"><span class="field__label">${label}</span>
+              <select class="field__select" name="${name}">
+                ${options.map(([v, t]) => `<option value="${v}">${t}</option>`).join('\n                ')}
+              </select></label>`;
+
+const TOOL_FORMS = {
+  'pph-badan': `<div class="stack" style="--s:14px">
+    ${selectField('Taxpayer type', 'taxpayerType', [['general', 'General corporate'], ['listed', 'Listed company (Tbk., ≥40% public float)'], ['msme', 'MSME (turnover ≤ Rp 4.8B)']])}
+    ${numField('Gross annual turnover', 'turnover')}
+    ${numField('Taxable income (fiscal profit)', 'taxableIncome')}
+  </div>`,
+  'pph21-ter': `<div class="stack" style="--s:14px">
+    ${selectField('PTKP status', 'ptkpStatus', [['TK/0', 'TK/0 — single, no dependants'], ['TK/1', 'TK/1'], ['TK/2', 'TK/2'], ['TK/3', 'TK/3'], ['K/0', 'K/0 — married, no dependants'], ['K/1', 'K/1'], ['K/2', 'K/2'], ['K/3', 'K/3']])}
+    ${numField('Gross monthly income', 'grossMonthly')}
+  </div>`,
+  'pph21-masa': `<div class="stack" style="--s:14px">
+    ${selectField('PTKP status', 'ptkpStatus', [['TK/0', 'TK/0 — single, no dependants'], ['TK/1', 'TK/1'], ['TK/2', 'TK/2'], ['TK/3', 'TK/3'], ['K/0', 'K/0 — married, no dependants'], ['K/1', 'K/1'], ['K/2', 'K/2'], ['K/3', 'K/3']])}
+    ${numField('Gross annual income', 'grossAnnual')}
+  </div>`,
+  pph23: `<div class="stack" style="--s:14px">
+    ${selectField('Income type', 'incomeType', [['dividend', 'Dividends'], ['interest', 'Interest / loan guarantee reward'], ['royalty', 'Royalties'], ['prize', 'Prizes and awards'], ['rent', 'Rent of assets (not land/buildings)'], ['service', 'Technical, management or consulting fees'], ['otherService', 'Other services (PMK 141/2015 list)']])}
+    ${numField('Gross amount', 'amount')}
+    ${selectField('NPWP status of the recipient', 'hasNpwp', [['yes', 'Registered'], ['no', 'Not registered (rate doubled)']])}
+  </div>`,
+  'pph4-2': `<div class="stack" style="--s:14px">
+    ${selectField('Transaction type', 'transactionType', [['rentLandBuilding', 'Rent of land / buildings'], ['saleLandBuilding', 'Sale/transfer of land or buildings'], ['saleLandBuildingRSS', 'Sale/transfer — simple housing (RSS/RS)'], ['constructionExecutionQualified', 'Construction execution — certified contractor'], ['constructionExecutionSmall', 'Construction execution — small qualified contractor'], ['constructionExecutionUnqualified', 'Construction execution — no certification'], ['constructionSupervisionQualified', 'Construction planning/supervision — qualified'], ['constructionSupervisionUnqualified', 'Construction planning/supervision — unqualified']])}
+    ${numField('Gross transaction amount', 'amount')}
+  </div>`,
+  'company-setup-cost': `<div class="stack" style="--s:14px">
+    ${selectField('Entity type', 'entityType', [['pt', 'PT (local)'], ['pma', 'PT PMA (foreign-owned)'], ['cv', 'CV'], ['yayasan', 'Yayasan (foundation)']])}
+    ${numField('Planned paid-up capital', 'paidUpCapital')}
+    ${selectField('Registered office domicile', 'domicile', [['jakarta', 'Jakarta'], ['other', 'Other city']])}
+  </div>`,
+  'kitas-requirements': `<div class="stack" style="--s:14px">
+    ${selectField('KITAS type', 'kitasType', [['work', 'Work KITAS'], ['investor', 'Investor KITAS'], ['family', 'Family Reunification KITAS']])}
+  </div>`,
+  'trademark-cost': `<div class="stack" style="--s:14px">
+    ${selectField('Applicant type', 'applicantType', [['local-umkm', 'Local — UMKM (reduced fee)'], ['local', 'Local — standard'], ['foreign', 'Foreign applicant']])}
+    ${numField('Number of classes', 'numClasses', { required: false })}
+  </div>`,
+  'monthly-obligations': `<div class="stack" style="--s:14px">
+    ${selectField('Entity type', 'entityType', [['company', 'Company'], ['individual', 'Individual']])}
+    ${selectField('PKP status', 'pkpStatus', [['no', 'Not PKP-registered'], ['yes', 'PKP-registered']])}
+  </div>`
+};
+const TOOL_META = {
+  'pph-badan': { resultLabel: 'Tax payable', bridgeHref: 'services/tax-reporting/corporate-tax-processing.html', bridgeLabel: 'See Corporate Tax Processing', bridgeText: 'Need help filing this?' },
+  'pph21-ter': { resultLabel: 'Monthly withholding', bridgeHref: 'services/tax-reporting/individual-tax-processing.html', bridgeLabel: 'See Individual Tax Processing', bridgeText: 'Need this run for your whole payroll?' },
+  'pph21-masa': { resultLabel: 'Annual tax payable', bridgeHref: 'services/tax-reporting/individual-annual-tax-return.html', bridgeLabel: 'See Individual Annual Tax Return', bridgeText: 'Need help with the annual filing?' },
+  pph23: { resultLabel: 'Tax to withhold', bridgeHref: 'services/tax-reporting/corporate-tax-processing.html', bridgeLabel: 'See Corporate Tax Processing', bridgeText: 'Need help with withholding compliance?' },
+  'pph4-2': { resultLabel: 'Final tax due', bridgeHref: 'services/tax-reporting/corporate-tax-processing.html', bridgeLabel: 'See Corporate Tax Processing', bridgeText: 'Need help filing this?' },
+  'company-setup-cost': { resultLabel: 'Estimated total cost', bridgeHref: 'services/company-legality/company-establishment.html', bridgeLabel: 'See company establishment', bridgeText: 'Ready to set up your company?' },
+  'kitas-requirements': { resultLabel: 'Estimated timeline', bridgeHref: 'services/stay-permits-visa/', bridgeLabel: 'See stay permits & visa', bridgeText: 'Ready to start your KITAS?' },
+  'trademark-cost': { resultLabel: 'Estimated total cost', bridgeHref: 'services/trademark-ip/', bridgeLabel: 'See trademark & IP', bridgeText: 'Ready to file your trademark?' },
+  'monthly-obligations': { resultLabel: 'This month', bridgeHref: 'services/tax-reporting/', bridgeLabel: 'See tax & reporting', bridgeText: 'Want us to handle these for you?' }
+};
+S.tools.forEach(t => {
+  const meta = TOOL_META[t.slug];
+  pages.push(write(`tools/${t.slug}.html`,
+  head({ title: `${t.name} | ${C.shortName}`, desc: `${t.note} Free, no sign-up.`, d: 1, path: `tools/${t.slug}.html`, ogCat: 'screen', ogSeed: t.slug }) +
+  header('tools', 1, C) + `
+<main id="main">
+  ${toolShell(1, C, {
+    crumbTrail: [{ href: 'index.html', label: 'Home' }, { href: 'tools.html', label: 'Tools' }, { label: t.name }],
+    kicker: `<span class="tag">${t.kind === 'own' ? 'Accupro-only' : 'Tax calculator'}</span>`,
+    heading: t.name,
+    lede: t.note,
+    shot: `Screenshot: ${t.name}`,
+    photoOpts: { icon: 'screen', cat: 'screen', seed: t.slug },
+    slug: t.slug,
+    formHTML: TOOL_FORMS[t.slug],
+    toolConfig: t.config,
+    ...meta
+  })}
+  ${ctaBand(1, C, S.cta)}
+</main>` + footer(1, C, ['assets/js/calculators.js'])));
+});
 
 /* ============================== ARTICLES ============================== */
 pages.push(write('articles.html',
@@ -935,7 +970,8 @@ const BASE = process.env.SITE_URL || 'https://accuprointernational.co.id';
 const urls = ['index.html','about.html','services.html','tools.html','articles.html','contact.html']
   .map(u => ({ loc: u === 'index.html' ? '/' : '/' + u, pri: u === 'index.html' ? '1.0' : '0.8' }))
   .concat(CAT.map(c => ({ loc: `/services/${c.slug}/`, pri: '0.7' })))
-  .concat(SVC.map(s => ({ loc: `/services/${s.cat}/${s.slug}.html`, pri: '0.6' })));
+  .concat(SVC.map(s => ({ loc: `/services/${s.cat}/${s.slug}.html`, pri: '0.6' })))
+  .concat(S.tools.map(t => ({ loc: `/tools/${t.slug}.html`, pri: '0.6' })));
 write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url><loc>${BASE}${u.loc}</loc><priority>${u.pri}</priority></url>`).join('\n')}

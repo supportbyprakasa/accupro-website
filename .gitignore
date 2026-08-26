@@ -8,6 +8,7 @@ shots/
 # output, keep the assets. (See README §4.)
 dist/*.html
 dist/services/
+dist/tools/*.html
 dist/sitemap.xml
 dist/robots.txt
 dist/_headers
