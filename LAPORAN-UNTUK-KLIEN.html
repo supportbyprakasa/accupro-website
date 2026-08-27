@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Laporan Pembaruan Website — Accupro International</title>
+<title>Laporan Pengerjaan — Struktur Halaman & Section — Accupro International</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap">
 <style>
   :root{
@@ -24,65 +24,58 @@
   .cover__brand{display:inline-flex; align-items:center; gap:10px; margin-bottom:36px}
   .cover__brand svg{width:32px; height:30px}
   .cover__brand span{font-family:var(--display); font-weight:800; letter-spacing:.03em; font-size:1.0625rem}
-  .cover h1{font-size:clamp(1.7rem,1.3rem+2vw,2.3rem); max-width:22ch; margin-inline:auto; color:#fff}
-  .cover p{margin-top:16px; color:#C3C7E6; font-size:1.0625rem; max-width:42ch; margin-inline:auto}
+  .cover h1{font-size:clamp(1.6rem,1.2rem+2vw,2.15rem); max-width:24ch; margin-inline:auto; color:#fff}
+  .cover p{margin-top:16px; color:#C3C7E6; font-size:1.0625rem; max-width:44ch; margin-inline:auto}
   .cover__date{margin-top:28px; font-size:.875rem; color:#9AA1D6; letter-spacing:.03em}
 
   /* intro */
   .intro{padding:48px 0 8px}
-  .intro p{max-width:60ch}
+  .intro p{max-width:62ch}
   .intro p + p{margin-top:16px}
 
+  /* legend */
+  .legend{margin-top:28px; display:grid; gap:10px}
+  .legend__item{display:flex; align-items:center; gap:12px; font-size:.9375rem}
+  .legend__item span.desc{color:var(--body)}
+
   /* highlight box */
-  .highlight{background:var(--gold-soft); border-radius:16px; padding:26px 28px; margin:40px 0}
-  .highlight__label{display:inline-block; font-family:var(--display); font-size:.75rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#8A5A12; background:#fff; padding:4px 12px; border-radius:100px; margin-bottom:14px}
-  .highlight p{font-size:1rem}
-  .highlight p + p{margin-top:12px}
+  .highlight{background:var(--gold-soft); border-radius:16px; padding:22px 24px; margin:28px 0}
+  .highlight__label{display:inline-block; font-family:var(--display); font-size:.75rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#8A5A12; background:#fff; padding:4px 12px; border-radius:100px; margin-bottom:12px}
+  .highlight p{font-size:.9375rem}
+  .highlight p + p{margin-top:10px}
 
-  /* section */
-  .sec{padding:44px 0; border-top:1px solid var(--line)}
-  .sec__eyebrow{display:block; font-family:var(--display); font-size:.8125rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--gold); margin-bottom:10px}
-  .sec h2{font-size:clamp(1.35rem,1.1rem+1vw,1.7rem)}
-  .sec__body{margin-top:18px}
-  .sec__body p{max-width:62ch}
-  .sec__body p + p{margin-top:14px}
+  /* page section */
+  .page{padding:44px 0; border-top:1px solid var(--line)}
+  .page__eyebrow{display:block; font-family:var(--display); font-size:.8125rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--gold); margin-bottom:10px}
+  .page h2{font-size:clamp(1.3rem,1.05rem+1vw,1.6rem)}
+  .page__meta{margin-top:6px; font-size:.875rem; color:var(--muted)}
 
-  /* simple point list */
-  .points{margin-top:20px; display:grid; gap:16px}
-  .point{display:grid; grid-template-columns:34px 1fr; gap:14px; align-items:start}
-  .point__mark{width:34px; height:34px; border-radius:50%; background:var(--navy); color:#fff; display:flex; align-items:center; justify-content:center; flex:none}
-  .point__mark svg{width:16px; height:16px}
-  .point__title{font-family:var(--display); font-weight:700; color:var(--ink); font-size:1.0625rem}
-  .point__desc{font-size:.9375rem; margin-top:4px; color:var(--body)}
-
-  /* problem cards (photo issues) */
-  .problem{background:#FBEFE9; border-radius:12px; padding:18px 20px; margin-top:14px}
-  .problem__where{font-family:var(--display); font-weight:700; color:#8A3B12; font-size:.9375rem}
-  .problem__what{margin-top:5px; font-size:.9375rem}
-
-  /* before/after */
-  .ba{margin-top:22px; display:grid; gap:22px}
-  .ba-item{}
-  .ba-item__label{font-family:var(--display); font-weight:700; color:var(--ink); font-size:.9375rem; margin-bottom:10px}
-  .ba-bar-row{display:flex; align-items:center; gap:12px; margin-top:6px}
-  .ba-bar-row__tag{width:64px; font-size:.75rem; color:var(--muted); flex:none}
-  .ba-bar-row__track{flex:1; background:var(--surface); border-radius:6px; height:22px; position:relative; overflow:hidden}
-  .ba-bar-row__fill{height:100%; border-radius:6px; display:flex; align-items:center; padding-inline:10px}
-  .ba-bar-row__fill span{font-size:.75rem; color:#fff; font-weight:600; white-space:nowrap}
-  .ba-bar-row__fill--before{background:#C7C2AC}
-  .ba-bar-row__fill--after{background:var(--navy)}
-
-  /* feature list (calculators) */
-  .calc-list{margin-top:18px; display:grid; gap:2px; background:var(--line); border-radius:12px; overflow:hidden}
-  .calc-item{background:var(--paper); padding:14px 18px; display:flex; align-items:center; gap:12px; font-size:.9375rem}
-  .calc-item__n{font-family:var(--display); font-weight:700; color:var(--gold); font-size:.875rem; width:20px; flex:none}
+  /* section-item list */
+  .slist{margin-top:22px; display:grid; gap:10px}
+  .sitem{background:var(--surface); border-radius:12px; padding:15px 18px}
+  .sitem__top{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+  .sitem__title{font-family:var(--display); font-weight:700; color:var(--ink); font-size:.9688rem}
+  .sitem__desc{font-size:.9063rem; margin-top:6px; color:var(--body)}
 
   /* status pills */
-  .status{display:inline-flex; align-items:center; gap:6px; font-size:.8125rem; font-weight:600; padding:4px 11px; border-radius:100px}
-  .status--ok{background:#E7ECFB; color:var(--navy)}
-  .status--wait{background:#F6EFDB; color:#8A5A12}
+  .status{display:inline-flex; align-items:center; gap:6px; font-size:.75rem; font-weight:700; padding:4px 11px; border-radius:100px; flex:none; white-space:nowrap}
+  .status--new{background:var(--navy); color:#fff}
+  .status--redesign{background:var(--gold-soft); color:#8A5A12}
+  .status--fixed{background:#E7ECFB; color:var(--navy)}
+  .status--same{background:#EDEAE0; color:var(--muted)}
 
-  .note{font-size:.875rem; color:var(--muted); margin-top:12px}
+  .note{font-size:.875rem; color:var(--muted); margin-top:14px}
+
+  /* feature list (calculators) */
+  .calc-list{margin-top:16px; display:grid; gap:2px; background:var(--line); border-radius:12px; overflow:hidden}
+  .calc-item{background:var(--paper); padding:12px 18px; display:flex; align-items:center; gap:12px; font-size:.9063rem}
+  .calc-item__n{font-family:var(--display); font-weight:700; color:var(--gold); font-size:.8125rem; width:20px; flex:none}
+
+  /* summary table */
+  table{width:100%; border-collapse:collapse; margin-top:18px; font-size:.9063rem}
+  th,td{text-align:left; padding:11px 14px; border-bottom:1px solid var(--line); vertical-align:top}
+  th{font-family:var(--display); font-weight:700; font-size:.75rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted)}
+  tr{break-inside:avoid}
 
   footer{padding:44px 24px; text-align:center; color:var(--muted); font-size:.875rem; border-top:1px solid var(--line)}
 
@@ -92,14 +85,11 @@
   }
   @media print{
     .cover{background:var(--navy) !important; -webkit-print-color-adjust:exact; print-color-adjust:exact}
-    .highlight, .problem{-webkit-print-color-adjust:exact; print-color-adjust:exact}
-    /* Keep each self-contained block on one page instead of splitting it
-       across a page break — this is what was cutting the before/after bars
-       and the "Catatan Angka" box in half. */
-    .highlight, .problem, .point, .ba-item, .calc-item, .cover{
+    .highlight, .sitem, .status--redesign, .status--new, .status--fixed, .status--same{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .highlight, .sitem, .calc-item, .cover, tr{
       break-inside:avoid; page-break-inside:avoid;
     }
-    h2, .sec__eyebrow{break-after:avoid; page-break-after:avoid}
+    h2, .page__eyebrow{break-after:avoid; page-break-after:avoid}
   }
 </style>
 </head>
@@ -113,176 +103,196 @@
     </svg>
     <span>ACCUPRO INTERNATIONAL</span>
   </div>
-  <h1>Apa yang Sudah Dikerjakan pada Website Baru Anda</h1>
-  <p>Ringkasan sederhana semua pembaruan, dibandingkan dengan website yang sekarang tayang di accuprointernational.co.id.</p>
-  <div class="cover__date">26 Agustus 2026</div>
+  <h1>Laporan Pengerjaan — Struktur Halaman &amp; Section</h1>
+  <p>Rincian pekerjaan per halaman, lalu per section di dalamnya (urut dari atas ke bawah), dibandingkan dengan website yang sekarang tayang di accuprointernational.co.id.</p>
+  <div class="cover__date">27 Agustus 2026</div>
 </div>
 
 <div class="wrap">
 
   <div class="intro">
-    <p>Dokumen ini merangkum semua pekerjaan yang sudah selesai pada website baru Accupro. Ditulis sesederhana mungkin, supaya siapa pun di tim Accupro bisa langsung paham — tidak perlu latar belakang teknis untuk membacanya.</p>
-    <p>Ada tiga pekerjaan besar: <strong>memperbaiki hal yang salah</strong> di website lama, <strong>mendesain ulang tampilan</strong> supaya lebih rapi dan modern, dan <strong>membuat sembilan kalkulator</strong> yang sekarang benar-benar bisa dipakai menghitung.</p>
-  </div>
+    <p>Dokumen ini merinci setiap halaman satu per satu. Di dalam tiap halaman, setiap bagian (section 1, section 2, dst — sesuai urutan tampil) ditandai statusnya, supaya jelas mana yang benar-benar baru, mana yang cuma dirapikan, dan mana yang memang dibiarkan sama seperti semula.</p>
+    <p>Total ada <strong>10 jenis halaman</strong>. Beberapa dipakai berulang dengan pola tampilan yang sama: 5 halaman kategori, 24 halaman detail layanan, dan 9 halaman kalkulator.</p>
 
-  <div class="highlight">
-    <span class="highlight__label">Status saat ini</span>
-    <p><strong>Website baru ini belum tayang menggantikan yang lama.</strong> Yang sudah dibuat sekarang adalah contoh lengkap yang bisa dicoba dan sudah berfungsi semuanya — tapi masih terpisah dari sistem yang dipakai Accupro sehari-hari (WordPress) untuk mengelola website.</p>
+    <div class="legend">
+      <div class="legend__item"><span class="status status--new">Baru</span><span class="desc">Section ini tidak ada sebelumnya, dibuat dari nol.</span></div>
+      <div class="legend__item"><span class="status status--redesign">Didesain ulang</span><span class="desc">Sudah ada sebelumnya, tapi tampilan/strukturnya dibangun ulang.</span></div>
+      <div class="legend__item"><span class="status status--fixed">Diperbaiki</span><span class="desc">Strukturnya tetap sama, ada perbaikan kecil (ikon, warna, teks, dsb).</span></div>
+      <div class="legend__item"><span class="status status--same">Tidak diubah</span><span class="desc">Dibiarkan seperti semula, dicantumkan supaya gambaran halamannya lengkap.</span></div>
+    </div>
+
+    <div class="highlight" style="margin-top:26px">
+      <span class="highlight__label">Sama di semua halaman</span>
+      <p><strong>Header</strong> — logo, menu (Home / Services / Tools / About Us / Articles / Contact), pilihan bahasa, tombol "Free consultation".</p>
+      <p><strong>Footer</strong> — 4 kolom (profil &amp; sosial media, daftar layanan, tautan perusahaan, info kontak) + hak cipta.</p>
+      <p><strong>Tombol WhatsApp</strong> mengambang di pojok kanan bawah.</p>
+    </div>
   </div>
 
   <!-- 1 -->
-  <section class="sec">
-    <span class="sec__eyebrow">Bagian 1</span>
-    <h2>Foto yang Ternyata Salah Tempat</h2>
-    <div class="sec__body">
-      <p>Ini yang paling penting diketahui lebih dulu. Beberapa foto yang dipasang di website lama ternyata bukan cuma "kurang pas" — tapi benar-benar salah, dan bisa memalukan kalau sampai dilihat klien.</p>
-
-      <div class="problem">
-        <div class="problem__where">Halaman tentang sertifikat</div>
-        <div class="problem__what">Foto yang dipasang ternyata sertifikat asli dari Harvard Law School, atas nama orang lain yang sama sekali tidak ada hubungannya dengan Accupro.</div>
-      </div>
-      <div class="problem">
-        <div class="problem__where">Halaman Kontak</div>
-        <div class="problem__what">Foto "kantor" yang dipasang ternyata lobi sebuah universitas di Vietnam — papan namanya kelihatan jelas di foto.</div>
-      </div>
-      <div class="problem">
-        <div class="problem__where">Halaman seputar pajak (7 halaman)</div>
-        <div class="problem__what">Foto dokumen pajak yang dipasang ternyata formulir pajak resmi Amerika Serikat, bukan dokumen pajak Indonesia.</div>
-      </div>
-      <div class="problem">
-        <div class="problem__where">Halaman KITAS Kerja</div>
-        <div class="problem__what">Foto paspor yang dipasang ternyata paspor Rusia, lengkap dengan tulisan huruf Rusia yang terbaca jelas.</div>
-      </div>
-
-      <p class="note">Semua foto di atas sudah diganti dengan foto yang sudah diperiksa satu per satu secara manual, supaya kejadian serupa tidak terulang.</p>
+  <section class="page">
+    <span class="page__eyebrow">Halaman 1 dari 10</span>
+    <h2>Beranda — index.html</h2>
+    <p class="page__meta">9 section, urut dari atas</p>
+    <div class="slist">
+      <div class="sitem"><div class="sitem__top"><span class="status status--redesign">Didesain ulang</span><span class="sitem__title">Section 1 — Hero</span></div><div class="sitem__desc">Sebelumnya foto selebar layar penuh dengan overlay gelap, judul &amp; tombol menumpuk di bawahnya. Sekarang: foto dan tulisan berdampingan dalam bingkai membulat, latar terang, foto berganti otomatis mengikuti 3 judul yang bergantian berputar.</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--new">Baru</span><span class="sitem__title">Section 2 — Kotak "Service Finder"</span></div><div class="sitem__desc">Pilih area layanan → pilih layanan spesifik → langsung diarahkan ke halamannya. Sebelumnya menempel di dalam section Hero, sekarang jadi section sendiri tepat di bawahnya.</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">Section 3 — "What You Can Get"</span></div><div class="sitem__desc">3 kartu (Taxes, Legality, Book Keeping).</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--fixed">Diperbaiki</span><span class="sitem__title">Section 4 — "Five areas, 24 services"</span></div><div class="sitem__desc">6 kartu kategori layanan. Ikonnya diperbesar; kalimat pembuka diperbarui karena kalimat lama menyebut sesuatu yang sudah tidak berlaku lagi.</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">Section 5 — Blok navy "For foreign-owned business"</span></div><div class="sitem__desc">Info khusus untuk PMA/investor asing, 6 tautan layanan terkait.</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--fixed">Diperbaiki</span><span class="sitem__title">Section 6 — "Work out the numbers first"</span></div><div class="sitem__desc">Pratinjau kalkulator. Ikon diperbesar &amp; jarak dirapikan; tautannya sekarang mengarah ke kalkulator yang benar-benar berfungsi.</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">Section 7 — "What clients say"</span></div><div class="sitem__desc">4 testimoni, deretan logo klien.</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--fixed">Diperbaiki</span><span class="sitem__title">Section 8 — "Four steps"</span></div><div class="sitem__desc">Cara kerja 4 langkah. Ikon yang sebelumnya pudar/kecil diperbesar dan diberi warna tegas.</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">Section 9 — CTA band</span></div><div class="sitem__desc">"Consult Your Business for Free Now!"</div></div>
     </div>
   </section>
 
   <!-- 2 -->
-  <section class="sec">
-    <span class="sec__eyebrow">Bagian 2</span>
-    <h2>Bagian Paling Atas Setiap Halaman, Didesain Ulang</h2>
-    <div class="sec__body">
-      <p>Bagian paling atas halaman — yang pertama kali dilihat pengunjung — sebelumnya terlalu tinggi (pengunjung harus scroll banyak sebelum sampai ke isi), dan di beberapa layar komputer besar, fotonya malah terpotong menyisakan area kosong.</p>
-      <p>Sekarang, foto dan tulisan diletakkan berdampingan, bukan ditumpuk — hasilnya bagian ini jadi jauh lebih ringkas:</p>
-
-      <div class="ba">
-        <div class="ba-item">
-          <div class="ba-item__label">Halaman Utama (Beranda)</div>
-          <div class="ba-bar-row">
-            <span class="ba-bar-row__tag">Sebelum</span>
-            <div class="ba-bar-row__track"><div class="ba-bar-row__fill ba-bar-row__fill--before" style="width:100%"><span>Sangat tinggi</span></div></div>
-          </div>
-          <div class="ba-bar-row">
-            <span class="ba-bar-row__tag">Sekarang</span>
-            <div class="ba-bar-row__track"><div class="ba-bar-row__fill ba-bar-row__fill--after" style="width:58%"><span>Turun hampir separuh</span></div></div>
-          </div>
-        </div>
-        <div class="ba-item">
-          <div class="ba-item__label">Semua Halaman Lain</div>
-          <div class="ba-bar-row">
-            <span class="ba-bar-row__tag">Sebelum</span>
-            <div class="ba-bar-row__track"><div class="ba-bar-row__fill ba-bar-row__fill--before" style="width:100%"><span>Tinggi</span></div></div>
-          </div>
-          <div class="ba-bar-row">
-            <span class="ba-bar-row__tag">Sekarang</span>
-            <div class="ba-bar-row__track"><div class="ba-bar-row__fill ba-bar-row__fill--after" style="width:69%"><span>Lebih ringkas</span></div></div>
-          </div>
-        </div>
-      </div>
-
-      <p style="margin-top:26px">Perubahan lain di bagian ini:</p>
-      <div class="points">
-        <div class="point">
-          <div class="point__mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></div>
-          <div><div class="point__title">Foto sekarang punya bingkai membulat dengan bayangan halus</div><div class="point__desc">Kesannya lebih rapi dan mewah, seperti foto di brosur — bukan sekadar foto tempel biasa.</div></div>
-        </div>
-        <div class="point">
-          <div class="point__mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></div>
-          <div><div class="point__title">Foto di halaman utama berganti mengikuti judul yang berputar</div><div class="point__desc">Sebelumnya judulnya berganti-ganti tapi fotonya diam saja — sekarang keduanya berganti bersamaan.</div></div>
-        </div>
-        <div class="point">
-          <div class="point__mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></div>
-          <div><div class="point__title">Semua kerusakan tampilan sudah diperbaiki</div><div class="point__desc">Tombol yang sempat hilang, foto yang hilang di HP, tulisan yang tidak kelihatan karena warnanya sama dengan latar — semua sudah dites ulang di HP, tablet, dan komputer.</div></div>
-        </div>
-        <div class="point">
-          <div class="point__mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></div>
-          <div><div class="point__title">Kalau link website ini dibagikan lewat WhatsApp, sekarang muncul pratinjau rapi</div><div class="point__desc">Sebelumnya kalau di-share, tidak muncul gambar apa pun.</div></div>
-        </div>
-      </div>
+  <section class="page">
+    <span class="page__eyebrow">Halaman 2 dari 10</span>
+    <h2>Tentang Kami — about.html</h2>
+    <p class="page__meta">6 section + CTA band</p>
+    <div class="slist">
+      <div class="sitem"><div class="sitem__top"><span class="status status--redesign">Didesain ulang</span><span class="sitem__title">Section 1 — Hero</span></div><div class="sitem__desc">Sama seperti pola baru di semua halaman lain: foto dan judul berdampingan, bukan foto besar dengan tulisan di bawahnya.</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">Section 2 — Statistik</span></div><div class="sitem__desc">95% / 80% / 24 / 3, dengan foto kantor.</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">Section 3 — "Integrity, Professionalism and Innovation" + "Why we exist"</span></div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">Section 4 — "Four people behind the work"</span></div><div class="sitem__desc">4 kartu tim.</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">Section 5 — "Licences, certification and memberships"</span></div><div class="sitem__desc">4 lisensi.</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">Section 6 — "Two offices in North Jakarta"</span></div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">CTA band</span></div></div>
     </div>
   </section>
 
   <!-- 3 -->
-  <section class="sec">
-    <span class="sec__eyebrow">Bagian 3</span>
-    <h2>Website Terasa Lebih Halus Dipakai</h2>
-    <div class="sec__body">
-      <p>Tiga sentuhan kecil ditambahkan supaya website tidak terasa kaku — semuanya otomatis mati sendiri kalau pengunjung mengatur perangkatnya untuk mengurangi animasi, jadi tetap nyaman untuk semua orang.</p>
-      <div class="points">
-        <div class="point">
-          <div class="point__mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></div>
-          <div><div class="point__title">Scroll terasa lebih halus</div><div class="point__desc">Ada sedikit "momentum" saat menggulir halaman, tidak langsung berhenti kaku.</div></div>
-        </div>
-        <div class="point">
-          <div class="point__mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></div>
-          <div><div class="point__title">Konten muncul perlahan saat digulir</div><div class="point__desc">Kartu-kartu (layanan, testimoni, dll) muncul dengan gerakan halus begitu terlihat di layar.</div></div>
-        </div>
-        <div class="point">
-          <div class="point__mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></div>
-          <div><div class="point__title">Berpindah halaman jadi mulus</div><div class="point__desc">Sebelumnya berganti halaman terasa kasar/kedip — sekarang ada efek memudar yang halus.</div></div>
-        </div>
-      </div>
+  <section class="page">
+    <span class="page__eyebrow">Halaman 3 dari 10</span>
+    <h2>Daftar Layanan — services.html</h2>
+    <p class="page__meta">3 bagian utama + CTA band</p>
+    <div class="slist">
+      <div class="sitem"><div class="sitem__top"><span class="status status--redesign">Didesain ulang</span><span class="sitem__title">Bagian 1 — Hero + kotak pencarian layanan</span></div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">Bagian 2 — Bar filter kategori</span></div><div class="sitem__desc">Menempel di atas layar saat di-scroll.</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--fixed">Diperbaiki</span><span class="sitem__title">Bagian 3 — 5 kelompok kategori</span></div><div class="sitem__desc">Masing-masing berisi kartu ringkasan kategori + daftar kartu layanan di dalamnya. Ikon di setiap kartu layanan (24 kartu total) sebelumnya kecil dan pudar warnanya — sudah diperbesar dan dipertegas.</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">CTA band</span></div></div>
     </div>
   </section>
 
   <!-- 4 -->
-  <section class="sec">
-    <span class="sec__eyebrow">Bagian 4</span>
-    <h2>Sembilan Kalkulator — Sekarang Beneran Bisa Menghitung</h2>
-    <div class="sec__body">
-      <p>Ini pembaruan paling besar. Sebelumnya, halaman kalkulator cuma tampilan kosong — diisi dan ditekan "Hitung", tidak terjadi apa-apa. Sekarang, kesembilannya benar-benar berfungsi: pengunjung isi form, tekan Hitung, dan hasilnya langsung muncul lengkap dengan penjelasannya.</p>
-
-      <div class="calc-list">
-        <div class="calc-item"><span class="calc-item__n">1</span> Kalkulator PPh Badan (pajak perusahaan)</div>
-        <div class="calc-item"><span class="calc-item__n">2</span> Kalkulator PPh 21 bulanan (potongan gaji karyawan)</div>
-        <div class="calc-item"><span class="calc-item__n">3</span> Kalkulator PPh 21 tahunan</div>
-        <div class="calc-item"><span class="calc-item__n">4</span> Kalkulator PPh 23 (jasa, sewa, dividen)</div>
-        <div class="calc-item"><span class="calc-item__n">5</span> Kalkulator PPh final Pasal 4(2) (sewa/jual-beli properti, konstruksi)</div>
-        <div class="calc-item"><span class="calc-item__n">6</span> Simulator biaya &amp; waktu pendirian perusahaan</div>
-        <div class="calc-item"><span class="calc-item__n">7</span> Cek syarat dokumen &amp; waktu proses KITAS</div>
-        <div class="calc-item"><span class="calc-item__n">8</span> Simulator biaya pendaftaran merek dagang</div>
-        <div class="calc-item"><span class="calc-item__n">9</span> Cek daftar kewajiban pajak bulanan</div>
-      </div>
-
-      <p style="margin-top:20px">Hasil perhitungan juga otomatis tersimpan di HP/komputer pengunjung, jadi kalau mereka buka lagi nanti, riwayat perhitungannya masih ada — dan ada tombol untuk langsung menghubungi Accupro soal hasil itu.</p>
-
-      <div class="highlight" style="margin-top:22px">
-        <span class="highlight__label">Catatan angka</span>
-        <p>Rumus untuk kalkulator nomor 2 disusun berdasarkan pemahaman umum tentang aturan pajak yang berlaku, bukan disalin langsung dari tabel resmi pemerintah yang memang panjang sekali.</p>
-        <p>Angka biaya di kalkulator nomor 6–9 (misalnya biaya notaris) masih angka contoh, bukan angka asli.</p>
-      </div>
+  <section class="page">
+    <span class="page__eyebrow">Halaman 4 dari 10</span>
+    <h2>Halaman Kategori — 5 halaman</h2>
+    <p class="page__meta">Tax &amp; Reporting, Registration &amp; Tax Accounts, Company Legality, Stay Permits &amp; Visa, Trademark &amp; IP — kelimanya pakai satu pola tampilan yang sama, 5 section + CTA band</p>
+    <div class="slist">
+      <div class="sitem"><div class="sitem__top"><span class="status status--redesign">Didesain ulang</span><span class="sitem__title">Section 1 — Hero</span></div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">Section 2 — "At a glance"</span></div><div class="sitem__desc">Tabel ringkasan (siapa target, estimasi waktu, kisaran biaya, bahasa layanan).</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">Section 3 — "Services in this area"</span></div><div class="sitem__desc">Tabel perbandingan layanan di kategori itu.</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">Section 4 — "Which one do I need?"</span></div><div class="sitem__desc">Panduan memilih.</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">Section 5 — "Frequently asked"</span></div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">CTA band</span></div></div>
     </div>
   </section>
 
   <!-- 5 -->
-  <section class="sec">
-    <span class="sec__eyebrow">Bagian 5</span>
-    <h2>Apakah Isinya Sudah Sama dengan Website Lama?</h2>
-    <div class="sec__body">
-      <p>Bagian ini sempat ditanyakan, jadi sudah dicek langsung satu per satu:</p>
-
-      <div class="points">
-        <div class="point">
-          <div class="point__mark" style="background:var(--gold)"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></div>
-          <div><div class="point__title">Halaman utama, tentang kami, testimoni, dan info kontak</div><div class="point__desc"><span class="status status--ok">Sudah sama persis</span> dengan yang ada di website lama.</div></div>
-        </div>
-        <div class="point">
-          <div class="point__mark" style="background:var(--gold)"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M12 9v3m0 4h.01M4.93 4.93l14.14 14.14"/></svg></div>
-          <div><div class="point__title">24 halaman detail layanan (misalnya "Pengurusan NPWP")</div><div class="point__desc"><span class="status status--wait">Belum ada isinya di website lama</span> — bahkan halamannya tidak bisa dibuka sama sekali di sana, cuma nama layanannya saja yang muncul, tanpa link. Karena itu, di website baru ini halaman-halamannya sengaja dikosongkan dulu (cuma judul + "segera hadir"), sampai tim Accupro yang menulis isinya sendiri.</div></div>
-        </div>
-      </div>
+  <section class="page">
+    <span class="page__eyebrow">Halaman 5 dari 10</span>
+    <h2>Halaman Detail Layanan — 24 halaman</h2>
+    <p class="page__meta">Mis. "Pengurusan NPWP", "KITAS Kerja" — semua 24 halaman pakai satu pola tampilan yang sama, 2 section + CTA band</p>
+    <div class="slist">
+      <div class="sitem"><div class="sitem__top"><span class="status status--redesign">Didesain ulang</span><span class="sitem__title">Section 1 — Hero</span></div><div class="sitem__desc">Nama layanan + kategori.</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--new">Baru</span><span class="sitem__title">Section 2 — Kartu "Content coming soon"</span></div><div class="sitem__desc">Ditambah daftar layanan lain di kategori yang sama.</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">CTA band</span></div></div>
     </div>
+    <p class="note">Section 2 ini sempat dibangun lengkap (rincian proses, syarat dokumen, biaya, FAQ untuk tiap satu-satu dari 24 layanan), lalu dikosongkan kembali sesuai instruksi — karena website lama memang tidak punya isi apa pun di 24 halaman ini (bahkan tidak ada link ke sana sama sekali). Jadi sekarang section 2 hanya menampilkan status jujur: belum ada tulisan, dengan ajakan menghubungi Accupro langsung.</p>
+  </section>
+
+  <!-- 6 -->
+  <section class="page">
+    <span class="page__eyebrow">Halaman 6 dari 10</span>
+    <h2>Tools &amp; Calculators — tools.html</h2>
+    <p class="page__meta">3 bagian + CTA band</p>
+    <div class="slist">
+      <div class="sitem"><div class="sitem__top"><span class="status status--redesign">Didesain ulang</span><span class="sitem__title">Bagian 1 — Hero</span></div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--new">Baru</span><span class="sitem__title">Bagian 2 — Grid 5 kalkulator pajak + grid 4 simulator Accupro</span></div><div class="sitem__desc">Sebelumnya kartu-kartu ini cuma tampilan tanpa link (statis), sekarang masing-masing mengarah ke halaman kalkulatornya sendiri yang berfungsi.</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">Bagian 3 — Kotak disclaimer</span></div><div class="sitem__desc">"These results are estimates".</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">CTA band</span></div></div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="page">
+    <span class="page__eyebrow">Halaman 7 dari 10</span>
+    <h2>Halaman Kalkulator — 9 halaman</h2>
+    <p class="page__meta">Satu halaman per kalkulator — semua sectionnya baru, tidak ada sebelumnya sama sekali</p>
+    <div class="slist">
+      <div class="sitem"><div class="sitem__top"><span class="status status--new">Baru</span><span class="sitem__title">Section 1 — Hero</span></div><div class="sitem__desc">Nama kalkulator.</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--new">Baru</span><span class="sitem__title">Section 2 — Form input (kiri) + Result, riwayat perhitungan, dan tombol ke layanan terkait (kanan)</span></div><div class="sitem__desc">Pengunjung isi form, tekan Hitung, hasil dan rinciannya langsung muncul di sisi kanan. Riwayat perhitungan tersimpan otomatis di perangkat pengunjung.</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--new">Baru</span><span class="sitem__title">Section 3 — Kotak disclaimer</span></div><div class="sitem__desc">"This result is an estimate".</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">CTA band</span></div></div>
+    </div>
+
+    <p style="margin-top:26px; font-weight:700; font-family:var(--display); color:var(--ink); font-size:.9688rem">Daftar 9 halamannya:</p>
+    <div class="calc-list">
+      <div class="calc-item"><span class="calc-item__n">1</span> Kalkulator PPh Badan</div>
+      <div class="calc-item"><span class="calc-item__n">2</span> Kalkulator PPh 21 TER (bulanan)</div>
+      <div class="calc-item"><span class="calc-item__n">3</span> Kalkulator PPh 21 Tahunan</div>
+      <div class="calc-item"><span class="calc-item__n">4</span> Kalkulator PPh 23</div>
+      <div class="calc-item"><span class="calc-item__n">5</span> Kalkulator PPh Pasal 4(2)</div>
+      <div class="calc-item"><span class="calc-item__n">6</span> Simulator Biaya &amp; Waktu Pendirian Perusahaan</div>
+      <div class="calc-item"><span class="calc-item__n">7</span> Cek Syarat Dokumen &amp; Waktu KITAS</div>
+      <div class="calc-item"><span class="calc-item__n">8</span> Simulator Biaya Pendaftaran Merek</div>
+      <div class="calc-item"><span class="calc-item__n">9</span> Cek Kewajiban Pajak Bulanan</div>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="page">
+    <span class="page__eyebrow">Halaman 8 dari 10</span>
+    <h2>Halaman Artikel — articles.html</h2>
+    <p class="page__meta">4 section + CTA band</p>
+    <div class="slist">
+      <div class="sitem"><div class="sitem__top"><span class="status status--redesign">Didesain ulang</span><span class="sitem__title">Section 1 — Hero</span></div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">Section 2 — Kotak highlight</span></div><div class="sitem__desc">"Clear guidance, practical answers...".</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">Section 3 — Artikel unggulan</span></div><div class="sitem__desc">+ form pencarian + daftar kategori.</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">Section 4 — Filter kategori</span></div><div class="sitem__desc">+ grid 6 artikel contoh + navigasi halaman.</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">CTA band</span></div></div>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section class="page">
+    <span class="page__eyebrow">Halaman 9 dari 10</span>
+    <h2>Halaman Kontak — contact.html</h2>
+    <p class="page__meta">4 section. Halaman ini tidak diakhiri CTA band karena isinya sendiri sudah ajakan kontak.</p>
+    <div class="slist">
+      <div class="sitem"><div class="sitem__top"><span class="status status--redesign">Didesain ulang</span><span class="sitem__title">Section 1 — Hero</span></div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">Section 2 — 4 kartu metode kontak</span></div><div class="sitem__desc">WhatsApp, telepon utama, telepon kedua, email.</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">Section 3 — Form "Request a quote"</span></div><div class="sitem__desc">+ kartu 2 kantor + jam operasional + peta.</div></div>
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">Section 4 — FAQ "Before you write"</span></div><div class="sitem__desc">6 pertanyaan.</div></div>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section class="page">
+    <span class="page__eyebrow">Halaman 10 dari 10</span>
+    <h2>Halaman Tidak Ditemukan — 404.html</h2>
+    <div class="slist">
+      <div class="sitem"><div class="sitem__top"><span class="status status--same">Tidak diubah</span><span class="sitem__title">Satu section</span></div><div class="sitem__desc">Pesan halaman tidak ada + tombol ke Services dan Contact.</div></div>
+    </div>
+  </section>
+
+  <!-- summary -->
+  <section class="page">
+    <span class="page__eyebrow">Ringkasan</span>
+    <h2>Ringkasan Perubahan per Jenis Section</h2>
+    <table>
+      <thead><tr><th>Status</th><th>Jumlah jenis section</th></tr></thead>
+      <tbody>
+        <tr><td><span class="status status--new">Baru</span></td><td>3 pola section — Service Finder di beranda; kartu "Coming soon" (dipakai di 24 halaman); seluruh halaman kalkulator (9 halaman)</td></tr>
+        <tr><td><span class="status status--redesign">Didesain ulang</span></td><td>8 — Hero di: Beranda, Tentang Kami, Daftar Layanan, Kategori ×5 halaman, Detail Layanan ×24 halaman, Tools, Artikel, Kontak</td></tr>
+        <tr><td><span class="status status--fixed">Diperbaiki</span></td><td>4 — Five areas, Work out the numbers, Four steps di beranda; kartu layanan di Daftar Layanan</td></tr>
+        <tr><td><span class="status status--same">Tidak diubah</span></td><td>Sisanya — kerangka konten dan tabel yang sudah ada sebelumnya dipertahankan</td></tr>
+      </tbody>
+    </table>
+    <p class="note">Catatan konsisten di semua Hero (section 1) setiap halaman: foto dan tulisan sekarang berdampingan dalam satu baris (bukan foto besar di atas, tulisan menumpuk di bawah), foto dibingkai membulat dengan bayangan halus, dan tingginya turun signifikan dibanding pola sebelumnya — dari yang tadinya bisa mencapai 1.100-an piksel di halaman utama, sekarang berkisar 400–650 piksel tergantung halamannya.</p>
   </section>
 
 </div>
