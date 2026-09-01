@@ -62,7 +62,7 @@ $accupro_count = count( $accupro_items );
 										<span style="color:var(--navy)"><?php echo accupro_icon( $accupro_icon ? $accupro_icon : 'chart', 19 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 										<h3><a href="<?php echo esc_url( get_permalink( $accupro_item ) ); ?>"><?php echo esc_html( get_the_title( $accupro_item ) ); ?></a></h3>
 									</div>
-									<p class="small" style="margin-top:6px"><?php echo esc_html( accupro_summary( $accupro_item ) ); ?></p>
+									<p class="small" style="margin-top:9px"><?php echo esc_html( accupro_summary( $accupro_item ) ); ?></p>
 								</div>
 								<div class="rowcard__end">
 									<a class="btn btn--quiet" href="<?php echo esc_url( get_permalink( $accupro_item ) ); ?>">

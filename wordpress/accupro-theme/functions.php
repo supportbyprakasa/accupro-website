@@ -99,6 +99,20 @@ function accupro_enqueue_assets() {
 			true
 		);
 
+		// Label antarmuka kalkulator hidup di JavaScript, jadi tidak bisa lewat
+		// __() di template. Dikirim dari sini supaya tetap melewati gettext dan
+		// terbaca TranslatePress seperti teks lainnya.
+		wp_localize_script(
+			'accupro-calculators',
+			'TOOL_I18N',
+			array(
+				'emptyHistory' => __( 'Belum ada perhitungan — riwayat disimpan di perangkat Anda sendiri.', 'accupro' ),
+				'checkInputs'  => __( 'Periksa isian di atas', 'accupro' ),
+				'fillFields'   => __( 'Lengkapi semua kolom, lalu hitung lagi.', 'accupro' ),
+				'copied'       => __( 'Tersalin', 'accupro' ),
+			)
+		);
+
 		$config = get_post_meta( get_the_ID(), 'accupro_tool_config', true );
 
 		// Sudah divalidasi sebagai JSON saat disimpan (lihat inc/metaboxes.php
@@ -165,3 +179,62 @@ function accupro_excerpt_more() {
 	return '…';
 }
 add_filter( 'excerpt_more', 'accupro_excerpt_more' );
+
+/**
+ * Matikan pemilih bahasa mengambang milik TranslatePress.
+ *
+ * Tema sudah menampilkan pemilih bahasa di header, dan yang mengambang muncul
+ * di pojok kanan bawah — tepat menumpuk tombol WhatsApp. Dua tombol bulat yang
+ * saling menimpa di sudut yang sama membuat keduanya sulit ditekan.
+ *
+ * Dicabut lewat hook, bukan lewat pengaturan plugin, supaya keputusan ini ikut
+ * berpindah bersama tema dan tidak hilang kalau pengaturan TranslatePress
+ * disimpan ulang dari dasbor.
+ */
+function accupro_remove_trp_floater() {
+	if ( ! class_exists( 'TRP_Translate_Press' ) ) {
+		return;
+	}
+
+	foreach ( array( 'TRP_Language_Switcher_V2', 'TRP_Language_Switcher' ) as $class ) {
+		if ( ! class_exists( $class ) ) {
+			continue;
+		}
+
+		foreach ( array( 'render_floater', 'add_floater_language_switcher' ) as $method ) {
+			accupro_remove_object_hook( 'wp_footer', $class, $method );
+		}
+	}
+}
+add_action( 'wp_head', 'accupro_remove_trp_floater', 1 );
+
+/**
+ * Lepas satu callback objek dari sebuah hook tanpa memegang instansinya.
+ *
+ * remove_action() butuh objek yang sama persis. Plugin ini menyimpan
+ * instansinya di dalam dirinya sendiri, jadi callback-nya dicari lewat nama
+ * kelas dan nama metode.
+ *
+ * @param string $hook   Nama hook.
+ * @param string $class  Nama kelas.
+ * @param string $method Nama metode.
+ */
+function accupro_remove_object_hook( $hook, $class, $method ) {
+	global $wp_filter;
+
+	if ( empty( $wp_filter[ $hook ] ) ) {
+		return;
+	}
+
+	foreach ( $wp_filter[ $hook ]->callbacks as $priority => $callbacks ) {
+		foreach ( $callbacks as $id => $callback ) {
+			if ( ! is_array( $callback['function'] ) || ! is_object( $callback['function'][0] ) ) {
+				continue;
+			}
+
+			if ( $callback['function'][0] instanceof $class && $callback['function'][1] === $method ) {
+				unset( $wp_filter[ $hook ]->callbacks[ $priority ][ $id ] );
+			}
+		}
+	}
+}

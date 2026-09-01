@@ -44,13 +44,6 @@ Tags: business, custom-menu, translation-ready
   border: 0;
 }
 
-/* ---- pemilih bahasa TranslatePress -------------------------------------- */
-/* TranslatePress mencetak daftarnya sendiri; ratakan agar sejajar dengan
-   tautan navigasi di sebelahnya, bukan bertumpuk sebagai daftar. */
-.langs .trp-language-switcher { display: inline-flex; align-items: center; }
-.langs .trp-language-switcher > div { padding: 0; }
-.langs .trp-language-switcher a { display: inline-flex; align-items: center; }
-
 /* ---- navigasi halaman --------------------------------------------------- */
 .pagination { display: flex; flex-wrap: wrap; gap: 8px; margin-top: clamp(28px, 3vw, 40px); }
 .pagination .page-numbers {
@@ -67,37 +60,6 @@ Tags: business, custom-menu, translation-ready
 }
 .pagination .page-numbers.current,
 .pagination .page-numbers:hover { border-color: var(--navy); background: var(--navy-050); color: var(--navy); }
-
-/* ==========================================================================
-   Switch bahasa
-   --------------------------------------------------------------------------
-   TranslatePress mencetak <ul><li> dengan gambar bendera. Kotak .langs sudah
-   ada di assets/css/style.css; di sini hanya meratakan keluaran TRP supaya
-   masuk ke dalamnya sebagai satu baris, bukan daftar bertumpuk.
-   ========================================================================== */
-
-.langs ul,
-.langs .trp-language-switcher,
-.langs .trp-language-switcher > div { display: flex; align-items: center; gap: 2px; margin: 0; padding: 0; list-style: none; }
-.langs li { margin: 0; list-style: none; }
-.langs a,
-.langs .trp-ls-shortcode-language a {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 5px 9px;
-  font-size: .75rem;
-  font-weight: 600;
-  color: var(--muted);
-  border-radius: 2px;
-  white-space: nowrap;
-}
-.langs img.trp-flag-image { width: 16px; height: auto; display: block; }
-.langs .trp-ls-shortcode-current-language a,
-.langs a[aria-current="true"] { background: var(--navy); color: #fff; }
-/* TRP menyembunyikan daftar sampai di-hover; di header kami mau semuanya
-   terlihat sekaligus, karena hanya tiga bahasa. */
-.langs .trp-ls-shortcode-language { display: flex !important; height: auto !important; overflow: visible !important; }
 
 /* Logo gambar dari Media Library. Versi statis memakai tanda SVG berukuran
    tetap, jadi ukuran untuk <img> ini memang hanya ada di sisi WordPress. */

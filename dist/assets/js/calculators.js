@@ -16,6 +16,13 @@
 (function () {
   'use strict';
 
+  /* Label antarmuka. Halaman boleh menyediakan window.TOOL_I18N untuk
+     menimpanya — WordPress mengirimkannya lewat wp_localize_script supaya
+     teksnya bisa diterjemahkan lewat gettext. Tanpa itu, teks bawaan di bawah
+     yang dipakai, sehingga versi statis berjalan persis seperti sebelumnya. */
+  var I18N = (typeof window !== 'undefined' && window.TOOL_I18N) || {};
+  function t(key, fallback) { return I18N[key] || fallback; }
+
   /* ---- number formatting -------------------------------------------- */
   var idr = new Intl.NumberFormat('id-ID', { maximumFractionDigits: 0 });
   function fmtRp(n) { return 'Rp ' + idr.format(Math.round(n || 0)); }
@@ -327,7 +334,7 @@
   function renderHistory(slug, listEl) {
     var entries = loadHistory(slug);
     if (!entries.length) {
-      listEl.innerHTML = '<li class="tiny" style="color:var(--faint)">No calculations yet — your history stays on this device.</li>';
+      listEl.innerHTML = '<li class="tiny" style="color:var(--faint)">' + t('emptyHistory', 'No calculations yet — your history stays on this device.') + '</li>';
       return;
     }
     listEl.innerHTML = entries.map(function (e) {
@@ -361,9 +368,9 @@
     try {
       result = calc(form.elements, cfg);
     } catch (err) {
-      resultHeadline.textContent = 'Check the inputs above';
+      resultHeadline.textContent = t('checkInputs', 'Check the inputs above');
       resultTable.querySelector('tbody') && (resultTable.innerHTML = '');
-      resultNote.textContent = 'Fill in every field, then calculate again.';
+      resultNote.textContent = t('fillFields', 'Fill in every field, then calculate again.');
       return;
     }
     lastResult = result;
@@ -391,7 +398,7 @@
       if (navigator.clipboard) {
         navigator.clipboard.writeText(text).then(function () {
           var original = copyBtn.textContent;
-          copyBtn.textContent = 'Copied';
+          copyBtn.textContent = t('copied', 'Copied');
           setTimeout(function () { copyBtn.textContent = original; }, 1500);
         });
       }

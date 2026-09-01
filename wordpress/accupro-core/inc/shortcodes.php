@@ -108,7 +108,7 @@ function accupro_sc_layanan( $atts ) {
 					<div class="rowcard__media"><?php echo accupro_sc_media( $item->ID, '1 / 1' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
 					<div class="rowcard__body">
 						<h3><a href="<?php echo esc_url( get_permalink( $item ) ); ?>"><?php echo esc_html( get_the_title( $item ) ); ?></a></h3>
-						<p class="small" style="margin-top:6px"><?php echo esc_html( accupro_service_summary( $item ) ); ?></p>
+						<p class="small" style="margin-top:9px"><?php echo esc_html( accupro_service_summary( $item ) ); ?></p>
 					</div>
 					<div class="rowcard__end">
 						<a class="btn btn--quiet" href="<?php echo esc_url( get_permalink( $item ) ); ?>">
@@ -280,7 +280,7 @@ function accupro_sc_tim() {
 			<div class="card__body">
 				<h3><?php echo esc_html( get_the_title( $item ) ); ?></h3>
 				<?php if ( $role ) : ?>
-					<p class="tiny" style="margin-top:4px"><?php echo esc_html( $role ); ?></p>
+					<p class="tiny" style="margin-top:7px"><?php echo esc_html( $role ); ?></p>
 				<?php endif; ?>
 			</div>
 		</article>
@@ -366,9 +366,11 @@ function accupro_sc_kontak() {
 			<div class="card card--pad">
 				<span class="icon-lead"><?php echo accupro_sc_icon( 'phone', 22 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 				<h3 style="margin-top:10px"><?php esc_html_e( 'Telepon', 'accupro' ); ?></h3>
+				<div class="stack" style="--s:8px;margin-top:10px">
 				<?php foreach ( $phones as $phone ) : ?>
 					<p class="small"><a href="tel:<?php echo esc_attr( accupro_tel( $phone ) ); ?>"><?php echo esc_html( $phone ); ?></a></p>
 				<?php endforeach; ?>
+				</div>
 			</div>
 		<?php endif; ?>
 
@@ -376,9 +378,11 @@ function accupro_sc_kontak() {
 			<div class="card card--pad">
 				<span class="icon-lead"><?php echo accupro_sc_icon( 'mail', 22 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 				<h3 style="margin-top:10px"><?php esc_html_e( 'Email', 'accupro' ); ?></h3>
+				<div class="stack" style="--s:8px;margin-top:10px">
 				<?php foreach ( $emails as $email ) : ?>
 					<p class="small"><a href="mailto:<?php echo esc_attr( $email ); ?>"><?php echo esc_html( $email ); ?></a></p>
 				<?php endforeach; ?>
+				</div>
 			</div>
 		<?php endif; ?>
 
@@ -386,9 +390,9 @@ function accupro_sc_kontak() {
 			<div class="card card--pad">
 				<span class="icon-lead"><?php echo accupro_sc_icon( 'pin', 22 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 				<h3 style="margin-top:10px"><?php esc_html_e( 'Kantor', 'accupro' ); ?></h3>
-				<p class="small"><?php echo esc_html( implode( ', ', $addr ) ); ?></p>
+				<p class="small" style="margin-top:10px"><?php echo esc_html( implode( ', ', $addr ) ); ?></p>
 				<?php if ( $hours ) : ?>
-					<p class="tiny" style="margin-top:6px"><?php echo accupro_sc_icon( 'clock', 14 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php echo esc_html( $hours ); ?></p>
+					<p class="tiny" style="margin-top:10px"><?php echo accupro_sc_icon( 'clock', 14 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php echo esc_html( $hours ); ?></p>
 				<?php endif; ?>
 			</div>
 		<?php endif; ?>

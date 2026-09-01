@@ -79,19 +79,92 @@ function accupro_utility_bar() {
 /**
  * Pemilih bahasa.
  *
- * Situs ini memakai TranslatePress untuk id / en / ch, dan TranslatePress
- * menyediakan shortcode-nya sendiri. Kalau plugin itu tidak aktif, tidak ada
- * yang dicetak — lebih baik kosong daripada tiga tautan yang menuju halaman
- * yang tidak ada.
+ * Situs ini memakai TranslatePress untuk id / en / ch. Datanya diambil dari
+ * TranslatePress, tapi markup-nya milik tema: tiga tautan di dalam kotak
+ * .langs, persis seperti desain yang sudah disusun.
+ *
+ * Shortcode bawaan TranslatePress sengaja tidak dipakai. Keluarannya sebuah
+ * dropdown selebar 150px yang, di header ini, menabrak tombol "Konsultasi
+ * gratis" di sebelahnya — dan menekannya dengan CSS berarti melawan gaya
+ * plugin di setiap pembaruan.
+ *
+ * Kalau TranslatePress tidak aktif, tidak ada yang dicetak: tiga tautan menuju
+ * halaman yang tidak ada lebih buruk daripada tidak ada tombol.
  */
 function accupro_language_switcher() {
-	if ( ! shortcode_exists( 'language-switcher' ) ) {
+	$languages = accupro_languages();
+
+	if ( count( $languages ) < 2 ) {
 		return;
 	}
 
 	echo '<div class="langs" aria-label="' . esc_attr__( 'Bahasa', 'accupro' ) . '">';
-	echo do_shortcode( '[language-switcher]' );
+
+	foreach ( $languages as $code => $lang ) {
+		printf(
+			'<a href="%1$s" hreflang="%2$s"%3$s>%4$s</a>',
+			esc_url( $lang['url'] ),
+			esc_attr( $lang['hreflang'] ),
+			$lang['current'] ? ' aria-current="true"' : '',
+			esc_html( $lang['label'] )
+		);
+	}
+
 	echo '</div>';
+}
+
+/**
+ * Bahasa yang dipublikasikan, beserta URL halaman ini dalam tiap bahasa.
+ *
+ * @return array<string,array{label:string,hreflang:string,url:string,current:bool}>
+ */
+function accupro_languages() {
+	static $cache = null;
+
+	if ( null !== $cache ) {
+		return $cache;
+	}
+
+	$cache = array();
+
+	if ( ! class_exists( 'TRP_Translate_Press' ) ) {
+		return $cache;
+	}
+
+	$settings  = get_option( 'trp_settings', array() );
+	$published = isset( $settings['publish-languages'] ) ? (array) $settings['publish-languages'] : array();
+
+	if ( ! $published ) {
+		return $cache;
+	}
+
+	$trp       = TRP_Translate_Press::get_trp_instance();
+	$converter = $trp->get_component( 'url_converter' );
+	$current   = function_exists( 'trp_get_locale' ) ? trp_get_locale() : get_locale();
+
+	// Label pendek, bukan nama lengkap: ruang di header hanya cukup untuk tiga
+	// tombol kecil, dan kode bahasa lebih cepat dikenali daripada nama negara.
+	$labels = array(
+		'id_ID' => 'ID',
+		'en_US' => 'EN',
+		'en_GB' => 'EN',
+		'zh_CN' => '中文',
+	);
+
+	foreach ( $published as $code ) {
+		$url = $converter && method_exists( $converter, 'get_url_for_language' )
+			? $converter->get_url_for_language( $code, null, '' )
+			: home_url( '/' );
+
+		$cache[ $code ] = array(
+			'label'    => isset( $labels[ $code ] ) ? $labels[ $code ] : strtoupper( substr( $code, 0, 2 ) ),
+			'hreflang' => str_replace( '_', '-', $code ),
+			'url'      => $url,
+			'current'  => $code === $current,
+		);
+	}
+
+	return $cache;
 }
 
 /**

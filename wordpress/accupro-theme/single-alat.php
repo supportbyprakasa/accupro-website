@@ -80,7 +80,7 @@ while ( have_posts() ) :
 									<span class="eyebrow"><?php esc_html_e( 'Hasil', 'accupro' ); ?></span>
 								</div>
 								<p class="eyebrow" style="color:var(--faint)"><?php echo esc_html( $accupro_label ? $accupro_label : __( 'Hasil hitung', 'accupro' ) ); ?></p>
-								<p class="stat__v" id="result-headline" style="font-size:2.2rem;margin:4px 0 14px;word-break:break-word">—</p>
+								<p class="stat__v" id="result-headline" style="font-size:2.2rem;margin:9px 0 14px;word-break:break-word">—</p>
 								<table class="dtable" id="result-table"><tbody></tbody></table>
 								<p class="tiny" id="result-note" style="margin-top:10px"></p>
 								<div class="cluster" style="margin-top:14px">
@@ -104,7 +104,7 @@ while ( have_posts() ) :
 										<span class="eyebrow eyebrow--gold"><?php esc_html_e( 'Lanjut ke layanan', 'accupro' ); ?></span>
 									</div>
 									<h4><?php esc_html_e( 'Perlu kami yang mengurus?', 'accupro' ); ?></h4>
-									<p class="small" style="margin-top:6px"><?php esc_html_e( 'Kami bisa memverifikasi angka ini sekaligus mengurus pelaporan atau pengajuannya.', 'accupro' ); ?></p>
+									<p class="small" style="margin-top:9px"><?php esc_html_e( 'Kami bisa memverifikasi angka ini sekaligus mengurus pelaporan atau pengajuannya.', 'accupro' ); ?></p>
 									<a class="btn btn--gold btn--sm" style="margin-top:12px" href="<?php echo esc_url( get_permalink( $accupro_bridge ) ); ?>">
 										<?php echo esc_html( get_the_title( $accupro_bridge ) ); ?> <?php echo accupro_icon( 'arrow', 15 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 									</a>

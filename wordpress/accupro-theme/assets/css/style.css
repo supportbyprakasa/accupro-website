@@ -48,7 +48,19 @@ h4{font-size:1.0625rem;font-weight:700;letter-spacing:-.01em;line-height:1.3}
 .eyebrow--gold{color:var(--gold)}
 .small{font-size:.9375rem;line-height:1.6;color:var(--muted)}
 .tiny{font-size:.8125rem;line-height:1.55;color:var(--faint)}
+/* Irama vertikal untuk blok teks panjang. Sebelumnya hanya paragraf beruntun
+   yang diberi jarak, sehingga judul menempel rapat ke teks di bawahnya — dan
+   di WordPress, .prose membungkus keluaran editor yang isinya bisa judul,
+   daftar, tabel, atau gambar, bukan hanya paragraf. */
+.prose>*+*{margin-top:1em}
 .prose p + p{margin-top:1em}
+.prose h2{margin-top:1.7em;margin-bottom:.1em}
+.prose h3{margin-top:1.4em;margin-bottom:.1em}
+.prose h4{margin-top:1.2em;margin-bottom:.1em}
+.prose>:first-child{margin-top:0}
+.prose ul,.prose ol{padding-left:1.25em}
+.prose li+li{margin-top:.4em}
+.prose>.grid,.prose>.stack,.prose>figure,.prose>table{margin-top:1.7em}
 
 /* ---------- layout ---------- */
 .container{width:100%;max-width:var(--container);margin-inline:auto;padding-inline:var(--gutter)}
@@ -364,4 +376,31 @@ h4{font-size:1.0625rem;font-weight:700;letter-spacing:-.01em;line-height:1.3}
 @media (prefers-reduced-motion:no-preference){
   .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
   .reveal.is-visible{opacity:1;transform:translateY(0)}
+}
+
+/* ---------- target sentuh di layar sentuh -------------------------------
+   Tautan teks sebaris tingginya hanya setinggi barisnya — 21–25px. Cukup
+   dengan mouse, tidak cukup dengan jempol. Di bawah 1024px tautan yang
+   berdiri sendiri (daftar di kartu, judul rowcard, nomor telepon dan email)
+   dijadikan blok dengan padding sungguhan, bukan diperluas lewat ::after:
+   area tak terlihat yang saling menimpa membuat tautan tetangga yang
+   tertekan. Kartu jadi sedikit lebih tinggi, dan itu memang harganya. */
+@media (max-width:1024px){
+  /* Tanpa margin negatif: padding di sini memang menambah tinggi, dan itu
+     yang diinginkan. Versi sebelumnya memakai margin-block:-9px untuk menahan
+     tingginya, tapi itu menarik elemen berikutnya sampai jaraknya jadi -1px —
+     tautan bertetangga saling bertindihan, persis yang mau dihindari. */
+  .card .stack>li>a,
+  .card p.small>a:only-child{display:block;padding-block:9px}
+  /* Jarak antar-baris kini datang dari padding tautannya sendiri. */
+  .card ul.stack>li+li{margin-top:0}
+  .rowcard__body h3 a{display:inline-block;padding-block:7px}
+  .finder-bar p.tiny a{display:inline-block;padding-block:7px}
+  /* Titik slider hanya 9px. Area sentuhnya diperluas lewat ::after supaya
+     tampilannya tidak berubah, dan jarak antar-titik dilebarkan lebih dulu
+     agar dua area sentuh yang bersebelahan tidak saling menimpa — kalau
+     menimpa, yang tertekan jadi tidak bisa ditebak. */
+  .hero__nav{gap:22px}
+  .hero__dot{position:relative}
+  .hero__dot::after{content:"";position:absolute;inset:-11px;border-radius:50%}
 }

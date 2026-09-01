@@ -208,6 +208,19 @@ Yang **tidak** diuji di sana: query database sungguhan, rewrite rule, hook
 priority, dan tampilan CSS. Itu semua tetap harus dicoba di WordPress asli —
 sebaiknya di staging dulu, bukan langsung di domain produksi.
 
+### Audit layout
+
+```sh
+BASE=http://127.0.0.1:8181 node scripts/audit-layout.mjs
+```
+
+Membuka sembilan halaman di lima lebar layar (360, 414, 768, 1024, 1440) dengan
+Chromium, lalu memeriksa: halaman bisa digulir menyamping, anak keluar dari
+kotak induknya, elemen setara saling menimpa, jarak antar-elemen di bawah 8px,
+dan target sentuh di bawah 30px. Jaraknya diukur teks ke teks — padding elemen
+ikut dihitung sebagai jarak, karena itu yang dilihat mata. Butuh
+`npm i playwright && npx playwright install chromium`.
+
 Lint saja:
 
 ```sh
