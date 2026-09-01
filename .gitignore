@@ -16,3 +16,6 @@ dist/*
 # php -l and the build both choke on them if they get committed.
 ._*
 .DS_Store
+
+# Zip siap-unggah dibuat ulang kapan saja dari wordpress/README.md — bukan sumber.
+wordpress/*.zip
