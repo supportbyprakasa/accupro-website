@@ -23,8 +23,10 @@ defined( 'ABSPATH' ) || exit;
 <header class="header">
 	<div class="container header__bar">
 		<a class="brand" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: nama perusahaan. */ __( '%s — beranda', 'accupro' ), accupro_opt( 'legal_name', get_bloginfo( 'name' ) ) ) ); ?>">
-			<?php echo accupro_logo_mark(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-			<span class="brand__name">ACCUPRO<span class="brand__sub"><?php esc_html_e( 'Pajak · Legalitas · Bisnis', 'accupro' ); ?></span></span>
+			<?php echo accupro_logo( 'brand__logo' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			<?php if ( ! accupro_opt( 'logo_image', 0 ) && ! get_theme_mod( 'custom_logo' ) ) : ?>
+				<span class="brand__name">ACCUPRO<span class="brand__sub"><?php esc_html_e( 'Pajak · Legalitas · Bisnis', 'accupro' ); ?></span></span>
+			<?php endif; ?>
 		</a>
 
 		<nav class="nav" id="primary-nav" aria-label="<?php esc_attr_e( 'Navigasi utama', 'accupro' ); ?>">

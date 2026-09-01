@@ -116,22 +116,52 @@ function accupro_primary_nav() {
 		return;
 	}
 
-	$fallback = array(
-		home_url( '/' )                    => __( 'Beranda', 'accupro' ),
-		get_post_type_archive_link( 'layanan' ) => __( 'Layanan', 'accupro' ),
-		get_post_type_archive_link( 'alat' )    => __( 'Alat Hitung', 'accupro' ),
-	);
-
-	foreach ( $fallback as $url => $label ) {
+	foreach ( accupro_fallback_nav() as $url => $label ) {
 		if ( ! $url ) {
 			continue;
 		}
+
 		printf(
-			'<a class="nav__link" href="%1$s">%2$s</a>',
+			'<a class="nav__link" href="%1$s"%2$s>%3$s</a>',
 			esc_url( $url ),
+			accupro_nav_is_current( $url ) ? ' aria-current="page"' : '',
 			esc_html( $label )
 		);
 	}
+}
+
+/**
+ * Menu bawaan, dipakai selama admin belum memasang menu sendiri.
+ *
+ * Isinya sama persis dengan menu situs yang sedang berjalan — Home, Tentang
+ * Kami, Layanan, Kontak — supaya pengunjung tidak menemukan navigasi yang
+ * berbeda setelah tema diganti. Alat Hitung ditambahkan karena halaman itu
+ * baru dan belum ada di menu lama.
+ *
+ * @return array<string,string> url => label
+ */
+function accupro_fallback_nav() {
+	$about = get_page_by_path( 'tentang-kami' );
+
+	$items = array( home_url( '/' ) => __( 'Home', 'accupro' ) );
+
+	if ( $about ) {
+		$items[ get_permalink( $about ) ] = __( 'Tentang Kami', 'accupro' );
+	}
+
+	$services = get_post_type_archive_link( 'layanan' );
+	if ( $services ) {
+		$items[ $services ] = __( 'Layanan', 'accupro' );
+	}
+
+	$tools = get_post_type_archive_link( 'alat' );
+	if ( $tools ) {
+		$items[ $tools ] = __( 'Alat Hitung', 'accupro' );
+	}
+
+	$items[ accupro_contact_url() ] = __( 'Kontak', 'accupro' );
+
+	return $items;
 }
 
 /**
@@ -539,4 +569,66 @@ function accupro_banner_id( $post_id ) {
 	$own = (int) get_post_thumbnail_id( $post_id );
 
 	return accupro_is_wide_enough( $own ) ? $own : accupro_default_banner_id();
+}
+
+/**
+ * Logo situs.
+ *
+ * Urutannya: Custom Logo bawaan WordPress, lalu logo dari Accupro > Perusahaan,
+ * baru tanda SVG bawaan tema. Situs live memakai berkas logo asli
+ * (cropped-accupro.png), jadi tanda SVG itu memang cuma cadangan supaya header
+ * tidak pernah kosong — bukan logo yang benar.
+ *
+ * @param string $class Kelas untuk gambar logo.
+ * @return string
+ */
+function accupro_logo( $class = 'brand__logo' ) {
+	$id = (int) accupro_opt( 'logo_image', 0 );
+
+	if ( ! $id && function_exists( 'get_custom_logo' ) ) {
+		$id = (int) get_theme_mod( 'custom_logo' );
+	}
+
+	if ( $id ) {
+		$img = wp_get_attachment_image(
+			$id,
+			'full',
+			false,
+			array(
+				'class' => $class,
+				'alt'   => accupro_opt( 'legal_name', get_bloginfo( 'name' ) ),
+			)
+		);
+
+		if ( $img ) {
+			return $img;
+		}
+	}
+
+	return accupro_logo_mark();
+}
+
+/**
+ * Apakah item navigasi ini menunjuk halaman yang sedang dibuka?
+ *
+ * Dibandingkan lewat path URL, bukan ID, supaya juga benar untuk arsip custom
+ * post type dan halaman depan — keduanya tidak punya ID post yang bisa dipakai
+ * WordPress untuk menandainya sendiri.
+ *
+ * @param string $url URL item menu.
+ * @return bool
+ */
+function accupro_nav_is_current( $url ) {
+	$item = wp_parse_url( $url, PHP_URL_PATH );
+	$here = wp_parse_url( home_url( add_query_arg( array() ) ), PHP_URL_PATH );
+
+	$item = '/' . trim( (string) $item, '/' );
+	$here = '/' . trim( (string) $here, '/' );
+
+	if ( '/' === $item ) {
+		return '/' === $here;
+	}
+
+	// Halaman anak ikut menyalakan induknya: /layanan/<slug>/ menyalakan Layanan.
+	return $item === $here || 0 === strpos( $here, $item . '/' );
 }

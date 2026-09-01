@@ -263,6 +263,40 @@ stub_report( 5 === count( $cats ), 'nama 5 kategori dalam bahasa Indonesia', cou
 $en_cat = array_filter( $cats, static function ( $l ) { return false !== stripos( $l['name'], 'Tax' ) || false !== stripos( $l['name'], 'Trademark' ); } );
 stub_report( ! $en_cat, 'tidak ada nama kategori berbahasa Inggris' );
 
+/* ------------------------------------------------ header: logo & navigasi */
+
+echo "\n== header ==\n";
+
+$home = $html['front-page.php'] ?? '';
+
+// Navigasi harus sama dengan situs live: Home, Tentang Kami, Layanan, Kontak.
+$nav = accupro_fallback_nav();
+foreach ( array( 'Home', 'Tentang Kami', 'Layanan', 'Kontak' ) as $label ) {
+	stub_report( in_array( $label, $nav, true ), 'menu ada: ' . $label );
+}
+
+// Section 1 tidak boleh memakai kolom foto lagi, dan container-nya tidak boleh
+// ditimpa max-width — itu yang dulu membuat teksnya tidak sejajar dengan
+// section di bawahnya.
+$css = file_get_contents( $theme . '/style.css' );
+stub_report( false === strpos( $css, '.pagehero__inner { position: relative; max-width: 100%; }' ), 'container Section 1 tidak ditimpa max-width' );
+stub_report( false !== strpos( $css, '.pagehero--bg > .container' ), 'container Section 1 mengisi lebar penuh' );
+
+// Logo: fungsi ada dan jatuh ke tanda SVG hanya kalau belum ada gambar.
+stub_report( function_exists( 'accupro_logo' ), 'helper logo tersedia' );
+stub_report( false !== strpos( accupro_logo(), '<svg' ), 'logo jatuh ke tanda SVG bila belum diisi' );
+
+// Status aktif ditentukan lewat path, termasuk untuk halaman anak.
+$GLOBALS['stub_current_path'] = '/layanan/';
+stub_report( accupro_nav_is_current( 'https://example.test/layanan/' ), 'menu aktif: halaman itu sendiri' );
+stub_report( accupro_nav_is_current( 'https://example.test/layanan/' ), 'menu aktif: tetap menyala' );
+$GLOBALS['stub_current_path'] = '/layanan/pengurusan-pajak-badan/';
+stub_report( accupro_nav_is_current( 'https://example.test/layanan/' ), 'menu induk menyala di halaman anak' );
+stub_report( ! accupro_nav_is_current( 'https://example.test/kontak/' ), 'menu lain tidak ikut menyala' );
+$GLOBALS['stub_current_path'] = '/';
+stub_report( accupro_nav_is_current( 'https://example.test/' ), 'menu Home menyala di beranda' );
+stub_report( ! accupro_nav_is_current( 'https://example.test/layanan/' ), 'Layanan tidak menyala di beranda' );
+
 /* ---------------------------------------------------------- teks tak lolos */
 
 echo "\n== bahasa ==\n";

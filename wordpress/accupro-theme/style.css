@@ -114,7 +114,14 @@ Tags: business, custom-menu, translation-ready
     linear-gradient(90deg, rgba(18, 23, 66, .92) 0%, rgba(18, 23, 66, .80) 42%, rgba(18, 23, 66, .48) 100%),
     linear-gradient(0deg, rgba(18, 23, 66, .35) 0%, rgba(18, 23, 66, 0) 60%);
 }
-.pagehero__inner { position: relative; max-width: 100%; }
+/* JANGAN menimpa max-width di sini. .container membatasi lebarnya ke
+   var(--container); menyetel max-width:100% membuat Section 1 melebar
+   sepenuh viewport sementara section di bawahnya tetap terbatas — teksnya
+   jadi tidak sejajar dari atas ke bawah. Yang dibutuhkan hanya width:100%,
+   supaya sebagai flex item ia mengisi penuh sebelum dibatasi max-width. */
+.pagehero--bg > .container,
+.hero--bg > .container { width: 100%; }
+.pagehero__inner { position: relative; }
 .pagehero__inner > h1 { color: #fff; margin-top: 10px; }
 .pagehero__inner > .lede { color: #D6D9F0; margin-top: 14px; max-width: 62ch; }
 .pagehero__inner .eyebrow { color: var(--gold, #C09725); }
@@ -157,7 +164,7 @@ Tags: business, custom-menu, translation-ready
     linear-gradient(0deg, rgba(18, 23, 66, .40) 0%, rgba(18, 23, 66, 0) 55%);
 }
 /* Satu kolom sekarang — kolom foto sudah tidak ada. */
-.hero--bg .hero__grid { grid-template-columns: 1fr; position: relative; }
+.hero--bg .hero__grid { grid-template-columns: 1fr; position: relative; width: 100%; }
 .hero--bg .hero__content { max-width: 64ch; }
 .hero--bg .hero__slide h1 { color: #fff; }
 .hero--bg .hero__slide .lede { color: #D6D9F0; }
@@ -181,3 +188,40 @@ Tags: business, custom-menu, translation-ready
 @media (prefers-reduced-motion: reduce) {
   .hero__bgs .hero__frame-slide { transition: none; }
 }
+
+
+/* ==========================================================================
+   Switch bahasa
+   --------------------------------------------------------------------------
+   TranslatePress mencetak <ul><li> dengan gambar bendera. Kotak .langs sudah
+   ada di assets/css/style.css; di sini hanya meratakan keluaran TRP supaya
+   masuk ke dalamnya sebagai satu baris, bukan daftar bertumpuk.
+   ========================================================================== */
+
+.langs ul,
+.langs .trp-language-switcher,
+.langs .trp-language-switcher > div { display: flex; align-items: center; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.langs li { margin: 0; list-style: none; }
+.langs a,
+.langs .trp-ls-shortcode-language a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 9px;
+  font-size: .75rem;
+  font-weight: 600;
+  color: var(--muted);
+  border-radius: 2px;
+  white-space: nowrap;
+}
+.langs img.trp-flag-image { width: 16px; height: auto; display: block; }
+.langs .trp-ls-shortcode-current-language a,
+.langs a[aria-current="true"] { background: var(--navy); color: #fff; }
+/* TRP menyembunyikan daftar sampai di-hover; di header kami mau semuanya
+   terlihat sekaligus, karena hanya tiga bahasa. */
+.langs .trp-ls-shortcode-language { display: flex !important; height: auto !important; overflow: visible !important; }
+
+/* Logo gambar: batasi tingginya agar sejajar dengan tinggi header, dan
+   balikkan warnanya di footer yang berlatar gelap. */
+.brand__logo { height: 38px; width: auto; max-width: 190px; object-fit: contain; display: block; }
+.footer .brand__logo { height: 34px; filter: brightness(0) invert(1); }

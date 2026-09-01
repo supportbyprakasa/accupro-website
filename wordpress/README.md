@@ -93,7 +93,7 @@ dulu, atau di jam sepi dengan backup siap.
 
 | Menu | Isinya |
 | --- | --- |
-| **Accupro → Perusahaan** | Nama, tagline, dua nomor telepon, WhatsApp, dua email, alamat, jam kerja, empat tautan sosial. Dipakai bar utilitas, footer, tombol WhatsApp mengambang, dan shortcode `[accupro_kontak]`. |
+| **Accupro → Perusahaan** | Logo situs, nama, tagline, dua nomor telepon, WhatsApp, dua email, alamat, jam kerja, empat tautan sosial. Dipakai bar utilitas, footer, tombol WhatsApp mengambang, dan shortcode `[accupro_kontak]`. |
 | **Accupro → Section Beranda** | Slide hero (judul, teks, gambar), pilar layanan (ikon, judul, teks, gambar), statistik (angka, keterangan, tampil di hero atau tidak), judul & teks CTA beserta foto pendampingnya, dan gambar bawaan untuk banner halaman. |
 | **Layanan** | 24 layanan. Judul, isi, Featured Image, kategori, dan field "Ringkasan satu kalimat" yang tampil di kartu. |
 | **Kategori Layanan** | Lima bidang. Nama, deskripsi, ikon, gambar kategori. |
@@ -124,6 +124,28 @@ Bisa dipakai di halaman mana pun lewat editor WordPress:
 
 ---
 
+## Navigasi & logo
+
+**Menu.** Atur di *Tampilan → Menu*, lokasi "Menu Utama". Selama belum diatur,
+tema memakai menu bawaan yang isinya sama dengan situs live — Home, Tentang
+Kami, Layanan, Kontak — ditambah Alat Hitung, halaman baru yang belum ada di
+menu lama.
+
+Item menu yang sedang dibuka diberi tanda `aria-current="page"` (garis bawah
+navy). Penandaan itu dibandingkan lewat path URL, bukan ID post, supaya juga
+benar untuk arsip custom post type dan halaman depan — keduanya tidak punya ID
+yang bisa dipakai WordPress untuk menandainya sendiri. Halaman anak menyalakan
+induknya: membuka `/layanan/pengurusan-pajak-badan/` membuat menu **Layanan**
+tetap menyala.
+
+**Logo.** Diatur di *Accupro → Perusahaan → Logo situs*, atau lewat Custom Logo
+bawaan WordPress. Kalau keduanya kosong, tema memakai tanda SVG bawaan dan
+menampilkan teks "ACCUPRO" di sebelahnya — itu cadangan supaya header tidak
+pernah kosong, bukan logo yang benar. Begitu logo gambar diisi, teksnya
+otomatis disembunyikan.
+
+---
+
 ## Bahasa
 
 Tema mengeluarkan **bahasa Indonesia saja**. Versi Inggris dan Mandarin
@@ -135,8 +157,10 @@ Karena itu:
 - Setiap teks tetap di tema dan plugin dibungkus `__()` / `esc_html_e()` supaya
   terbaca TranslatePress.
 - Pemilih bahasa di header memakai shortcode TranslatePress sendiri
-  (`[language-switcher]`). Kalau TranslatePress tidak aktif, pemilih bahasa
-  tidak dicetak sama sekali.
+  (`[language-switcher]`), dibungkus kotak `.langs` milik tema dan diratakan
+  jadi satu baris berisi bendera + kode bahasa. Kalau TranslatePress tidak
+  aktif, pemilih bahasa tidak dicetak sama sekali — tiga tautan yang menuju
+  halaman tidak ada lebih buruk daripada tidak ada tombol.
 - Terjemahan EN/CH yang sudah ada di `data/site.json` (tagline, jam kerja, hero,
   pilar, statistik, CTA, testimoni) **belum** diimpor otomatis ke TranslatePress.
   Kalau ingin, isian itu bisa disalin manual lewat editor TranslatePress, atau

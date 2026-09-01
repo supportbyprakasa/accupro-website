@@ -331,3 +331,8 @@ function wp_get_attachment_image( $id, $size = '', $icon = false, $attr = array(
 function wp_get_attachment_metadata( $id ) { return $id ? array( 'width' => 1600, 'height' => 1200, 'sizes' => array() ) : false; }
 function get_post_thumbnail_id( $id = null ) { return ! empty( $GLOBALS['stub_meta'][ $id ]['_thumb'] ) ? (int) $GLOBALS['stub_meta'][ $id ]['_thumb'] : 0; }
 function get_attached_file( $id ) { return '/tmp/berkas-' . (int) $id . '.jpg'; }
+
+function get_theme_mod( $name, $default = false ) { return $default; }
+function get_custom_logo() { return ''; }
+function wp_parse_url( $url, $component = -1 ) { return parse_url( $url, $component ); }
+function add_query_arg() { return $GLOBALS['stub_current_path'] ?? '/'; }

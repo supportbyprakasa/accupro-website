@@ -117,6 +117,17 @@ function accupro_render_company_page() {
 				</tr>
 			<?php endforeach; ?>
 			</tbody></table>
+			<h2><?php esc_html_e( 'Logo', 'accupro' ); ?></h2>
+			<table class="form-table" role="presentation"><tbody>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Logo situs', 'accupro' ); ?></th>
+					<td>
+						<?php accupro_media_field( 'accupro_settings[logo_image]', accupro_get_option( 'logo_image', 0 ) ); ?>
+						<p class="description"><?php esc_html_e( 'Tampil di header dan footer. Kosongkan untuk memakai logo bawaan tema.', 'accupro' ); ?></p>
+					</td>
+				</tr>
+			</tbody></table>
+
 			<?php submit_button(); ?>
 		</form>
 	</div>
@@ -357,7 +368,7 @@ function accupro_sanitize_settings( $input ) {
 	}
 
 	// ID lampiran; absint() membuang nilai negatif dan teks apa pun.
-	foreach ( array( 'cta_image', 'banner_image' ) as $key ) {
+	foreach ( array( 'cta_image', 'banner_image', 'logo_image' ) as $key ) {
 		if ( array_key_exists( $key, $input ) ) {
 			$out[ $key ] = absint( $input[ $key ] );
 		}

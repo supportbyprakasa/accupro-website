@@ -23,8 +23,10 @@ $accupro_wa       = function_exists( 'accupro_whatsapp_url' ) ? accupro_whatsapp
 		<div class="footer__grid">
 			<div>
 				<a class="brand" href="<?php echo esc_url( home_url( '/' ) ); ?>" style="margin-bottom:14px">
-					<?php echo accupro_logo_mark(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-					<span class="brand__name" style="color:#fff">ACCUPRO</span>
+					<?php echo accupro_logo( 'brand__logo brand__logo--light' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php if ( ! accupro_opt( 'logo_image', 0 ) && ! get_theme_mod( 'custom_logo' ) ) : ?>
+						<span class="brand__name" style="color:#fff">ACCUPRO</span>
+					<?php endif; ?>
 				</a>
 				<?php if ( accupro_opt( 'tagline' ) ) : ?>
 					<p><?php echo esc_html( accupro_opt( 'tagline' ) ); ?></p>
