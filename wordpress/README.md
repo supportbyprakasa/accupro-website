@@ -99,7 +99,7 @@ dulu, atau di jam sepi dengan backup siap.
 | **Kategori Layanan** | Lima bidang. Nama, deskripsi, ikon, gambar kategori. |
 | **Testimoni** | Judul = nama pemberi testimoni, isi = kutipannya, plus field Perusahaan. |
 | **Tim** | Nama, foto, jabatan. |
-| **Alat Hitung** | Kode kalkulator, jenis, label hasil, layanan pendamping, dan angka bisnis (JSON) untuk simulator. |
+| **Alat Hitung** | Kode kalkulator, jenis, label hasil, layanan pendamping, dan angka bisnis (JSON) untuk simulator. Nama dan keterangannya diisi dalam bahasa Indonesia saat seeding — lihat `accupro_seed_tool_labels()`. |
 | **Tampilan → Menu** | Menu Utama dan kolom Perusahaan di footer. Kalau belum diatur, tema memakai daftar bawaan. |
 
 Baris kosong pada tabel berulang (slide, pilar, statistik) otomatis dilewati —
@@ -194,6 +194,16 @@ find wordpress -name '*.php' -not -name '._*' -exec php -l {} \;
 
 ## Beda dengan versi statis
 
+- **Section 1 berlatar foto.** Di versi statis, foto Section 1 duduk di kolom
+  sebelah teks. Di tema ini fotonya jadi latar section penuh dengan gradien
+  gelap di atasnya. Aturannya ada di `style.css` tema, bukan di
+  `assets/css/style.css` — berkas itu sengaja dijaga identik byte-per-byte
+  dengan `dist/assets`. Gambar latar dirender sebagai `<img>` ukuran `full`,
+  bukan `background-image`, supaya `srcset` tetap berlaku dan browser mengambil
+  resolusi yang sesuai layarnya. Gambar dengan lebar di bawah 1200px otomatis
+  ditolak sebagai latar dan diganti gambar bawaan
+  (`ACCUPRO_MIN_BANNER_WIDTH`) — sebuah gambar kartu kecil kalau dipaksa jadi
+  latar selebar layar akan pecah.
 - **Foto.** Versi statis memakai foto stok dari CDN sebagai isian sementara.
   Di sini sumbernya Media Library. Foto pendamping CTA dan banner halaman —
   yang di versi statis ikut tertanam di kode — sekarang jadi field tersendiri di

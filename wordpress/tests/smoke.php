@@ -229,6 +229,40 @@ stub_report( false !== strpos( $services_page, 'id="service-search"' ), 'katalog
 $page = $html['page.php'] ?? '';
 stub_report( false === strpos( $page, '[accupro_kontak]' ), 'halaman: shortcode kontak diproses' );
 
+/* --------------------------------------------------- Section 1 berlatar */
+
+echo "\n== section 1 ==\n";
+
+// Setiap halaman harus punya Section 1 berlatar foto, bukan foto di kolom
+// sebelah teks seperti versi statis.
+foreach ( array( 'front-page.php', 'archive-layanan.php', 'taxonomy-kategori_layanan.php',
+                 'single-layanan.php', 'archive-alat.php', 'single-alat.php',
+                 'page.php', 'single.php', 'index.php' ) as $file ) {
+	$out = $html[ $file ] ?? '';
+	$bg  = ( false !== strpos( $out, 'pagehero--bg' ) ) || ( false !== strpos( $out, 'hero--bg' ) );
+	stub_report( $bg, 'section 1 berlatar: ' . $file );
+}
+
+// Kolom foto lama tidak boleh tersisa di mana pun.
+$leftover_frame = array();
+foreach ( $html as $file => $out ) {
+	if ( false !== strpos( $out, 'pagehero__frame' ) || false !== strpos( $out, 'hero__media' ) ) {
+		$leftover_frame[] = $file;
+	}
+}
+stub_report( ! $leftover_frame, 'tidak ada sisa kolom foto lama', implode( ', ', $leftover_frame ) );
+
+// Nama alat dan kategori harus bahasa Indonesia — itu bahasa dasar situs.
+$labels = accupro_seed_tool_labels();
+stub_report( 9 === count( $labels ), 'nama 9 alat tersedia dalam bahasa Indonesia', count( $labels ) . '/9' );
+$en_tool = array_filter( $labels, static function ( $l ) { return false !== stripos( $l['name'], 'Calculator' ) || false !== stripos( $l['name'], 'Checker' ); } );
+stub_report( ! $en_tool, 'tidak ada nama alat berbahasa Inggris' );
+
+$cats = accupro_seed_category_labels();
+stub_report( 5 === count( $cats ), 'nama 5 kategori dalam bahasa Indonesia', count( $cats ) . '/5' );
+$en_cat = array_filter( $cats, static function ( $l ) { return false !== stripos( $l['name'], 'Tax' ) || false !== stripos( $l['name'], 'Trademark' ); } );
+stub_report( ! $en_cat, 'tidak ada nama kategori berbahasa Inggris' );
+
 /* ---------------------------------------------------------- teks tak lolos */
 
 echo "\n== bahasa ==\n";

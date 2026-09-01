@@ -52,6 +52,9 @@ function accupro_theme_setup() {
 	// Ukuran kartu layanan/kategori, sesuai rasio 4:3 yang dipakai desain.
 	add_image_size( 'accupro-card', 800, 600, true );
 	add_image_size( 'accupro-hero', 1200, 1200, true );
+	// Latar Section 1: lebar, tidak tinggi. Tanpa ukuran ini srcset melompat
+	// dari 1024px langsung ke berkas asli, yang bisa beberapa megabita.
+	add_image_size( 'accupro-wide', 1920, 820, true );
 }
 add_action( 'after_setup_theme', 'accupro_theme_setup' );
 

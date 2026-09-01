@@ -327,3 +327,7 @@ function get_the_post_thumbnail( $id = null, $size = '', $attr = array() ) {
 function wp_get_attachment_image( $id, $size = '', $icon = false, $attr = array() ) {
 	return $id ? '<img src="https://example.test/lampiran-' . (int) $id . '.jpg" alt="" width="800" height="600">' : '';
 }
+
+function wp_get_attachment_metadata( $id ) { return $id ? array( 'width' => 1600, 'height' => 1200, 'sizes' => array() ) : false; }
+function get_post_thumbnail_id( $id = null ) { return ! empty( $GLOBALS['stub_meta'][ $id ]['_thumb'] ) ? (int) $GLOBALS['stub_meta'][ $id ]['_thumb'] : 0; }
+function get_attached_file( $id ) { return '/tmp/berkas-' . (int) $id . '.jpg'; }

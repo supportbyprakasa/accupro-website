@@ -37,7 +37,8 @@ $accupro_total = $accupro_total ? (int) $accupro_total->publish : 0;
 				esc_html( number_format_i18n( $accupro_total ) )
 			),
 			'extra'   => '',
-			'media'   => accupro_default_banner( __( 'Foto tim Accupro', 'accupro' ) ),
+			'image'   => accupro_default_banner_id(),
+			'image_label' => __( 'Foto tim Accupro', 'accupro' ),
 		)
 	);
 	?>

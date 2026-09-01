@@ -137,3 +137,61 @@ function accupro_attachment_media( $attachment_id, $ratio = '1 / 1', $args = arr
 
 	return '<div class="' . esc_attr( $classes ) . '"' . $style . '>' . $img . '</div>';
 }
+
+/**
+ * Gambar latar sebuah section.
+ *
+ * Dipakai Section 1 di setiap halaman. Berbeda dari accupro_media(): ukurannya
+ * 'full', jadi srcset memuat kandidat terbesar yang ada dan browser bisa
+ * memilih yang sesuai layar — sebuah latar selebar viewport tidak boleh
+ * mengambil versi 800px yang dipakai kartu.
+ *
+ * Dirender sebagai <img>, bukan background-image CSS, supaya srcset dan
+ * fetchpriority tetap berlaku; posisinya diatur CSS lewat object-fit.
+ *
+ * @param int   $attachment_id ID lampiran; 0 berarti tidak ada latar.
+ * @param array $args          eager (bool), label (string).
+ * @return string
+ */
+function accupro_section_bg( $attachment_id, $args = array() ) {
+	$args = wp_parse_args(
+		$args,
+		array(
+			'eager' => true,
+			'label' => '',
+		)
+	);
+
+	$attachment_id = (int) $attachment_id;
+
+	if ( ! $attachment_id ) {
+		return '';
+	}
+
+	$img = wp_get_attachment_image(
+		$attachment_id,
+		'full',
+		false,
+		array(
+			'class'         => 'secbg__img',
+			'alt'           => $args['label'],
+			'loading'       => $args['eager'] ? 'eager' : 'lazy',
+			'decoding'      => 'async',
+			'fetchpriority' => $args['eager'] ? 'high' : 'auto',
+		)
+	);
+
+	return $img ? '<div class="secbg" aria-hidden="true">' . $img . '</div>' : '';
+}
+
+/**
+ * ID gambar sebuah kategori layanan, dengan gambar bawaan sebagai cadangan.
+ *
+ * @param WP_Term $term Term kategori layanan.
+ * @return int
+ */
+function accupro_term_image_id( $term ) {
+	$own = (int) get_term_meta( $term->term_id, 'accupro_image_id', true );
+
+	return accupro_is_wide_enough( $own ) ? $own : accupro_default_banner_id();
+}

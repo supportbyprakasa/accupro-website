@@ -158,15 +158,18 @@ function accupro_seed_categories( $data ) {
 			continue;
 		}
 
+		$labels = accupro_seed_category_labels();
+		$label  = $labels[ $cat['slug'] ] ?? null;
+
 		$term = term_exists( $cat['slug'], 'kategori_layanan' );
 
 		if ( ! $term ) {
 			$term = wp_insert_term(
-				isset( $cat['name'] ) ? $cat['name'] : $cat['slug'],
+				$label ? $label['name'] : ( $cat['name'] ?? $cat['slug'] ),
 				'kategori_layanan',
 				array(
 					'slug'        => $cat['slug'],
-					'description' => isset( $cat['blurb'] ) ? $cat['blurb'] : '',
+					'description' => $label ? $label['blurb'] : ( $cat['blurb'] ?? '' ),
 				)
 			);
 		}
@@ -464,13 +467,16 @@ function accupro_seed_tools( $data ) {
 			continue;
 		}
 
+		$labels = accupro_seed_tool_labels();
+		$label  = $labels[ $tool['slug'] ] ?? null;
+
 		$post_id = wp_insert_post(
 			array(
 				'post_type'    => 'alat',
 				'post_status'  => 'publish',
-				'post_title'   => $tool['name'],
+				'post_title'   => $label ? $label['name'] : $tool['name'],
 				'post_name'    => $tool['slug'],
-				'post_excerpt' => isset( $tool['note'] ) ? $tool['note'] : '',
+				'post_excerpt' => $label ? $label['note'] : ( isset( $tool['note'] ) ? $tool['note'] : '' ),
 				'menu_order'   => $index,
 			)
 		);
@@ -605,4 +611,92 @@ function accupro_seed_pages() {
 			)
 		);
 	}
+}
+
+/**
+ * Nama dan keterangan alat hitung dalam bahasa Indonesia.
+ *
+ * data/site.json memakai bahasa Inggris karena versi statis dibangun tiga
+ * bahasa sekaligus dan alat hitung ini konten baru yang tidak ada padanannya
+ * di situs lama. Di WordPress, bahasa dasarnya Indonesia — TranslatePress
+ * menerjemahkan DARI bahasa dasar, jadi judul berbahasa Inggris akan tampil apa
+ * adanya ke pengunjung Indonesia sekaligus membuat versi Inggrisnya tidak
+ * menerjemahkan apa pun.
+ *
+ * @return array<string,array{name:string,note:string}>
+ */
+function accupro_seed_tool_labels() {
+	return array(
+		'pph-badan'           => array(
+			'name' => __( 'Kalkulator PPh Badan', 'accupro' ),
+			'note' => __( 'Tarif 22%, 19% untuk perusahaan terbuka, 0,5% final untuk UMKM, termasuk fasilitas Pasal 31E.', 'accupro' ),
+		),
+		'pph21-ter'           => array(
+			'name' => __( 'Kalkulator PPh 21 TER', 'accupro' ),
+			'note' => __( 'Tarif Efektif Rata-rata kategori A/B/C sesuai PMK 168/2023.', 'accupro' ),
+		),
+		'pph21-masa'          => array(
+			'name' => __( 'Kalkulator PPh 21 Masa/Final', 'accupro' ),
+			'note' => __( 'Perhitungan masa pajak final, dengan ketentuan PTKP lintas tahun.', 'accupro' ),
+		),
+		'pph23'               => array(
+			'name' => __( 'Kalkulator PPh 23', 'accupro' ),
+			'note' => __( 'Sembilan jenis penghasilan, tarif 15% dan 2%, serta penyesuaian bagi yang tidak ber-NPWP.', 'accupro' ),
+		),
+		'pph4-2'              => array(
+			'name' => __( 'Kalkulator PPh Pasal 4(2)', 'accupro' ),
+			'note' => __( 'Tarif final untuk sewa, pengalihan tanah dan bangunan, serta jasa konstruksi.', 'accupro' ),
+		),
+		'company-setup-cost'  => array(
+			'name' => __( 'Simulasi Biaya Pendirian Perusahaan', 'accupro' ),
+			'note' => __( 'Perkiraan biaya dan lama proses menurut bentuk badan usaha, modal disetor, dan domisili.', 'accupro' ),
+		),
+		'kitas-requirements'  => array(
+			'name' => __( 'Cek Syarat & Lama Proses KITAS', 'accupro' ),
+			'note' => __( 'Pilih jenis KITAS, dapatkan daftar dokumen dan perkiraan waktu per tahapan.', 'accupro' ),
+		),
+		'trademark-cost'      => array(
+			'name' => __( 'Simulasi Biaya Pendaftaran Merek', 'accupro' ),
+			'note' => __( 'Per kelas barang atau jasa, membedakan pemohon lokal dan asing.', 'accupro' ),
+		),
+		'monthly-obligations' => array(
+			'name' => __( 'Cek Kewajiban Pajak Bulanan', 'accupro' ),
+			'note' => __( 'Menurut jenis wajib pajak dan status PKP — apa saja yang harus dilaporkan tiap bulan.', 'accupro' ),
+		),
+	);
+}
+
+/**
+ * Nama dan keterangan kategori layanan dalam bahasa Indonesia.
+ *
+ * Alasannya sama dengan accupro_seed_tool_labels(): kelima kategori ini
+ * pengelompokan baru yang tidak ada di situs lama, jadi di data/site.json
+ * namanya bahasa Inggris. Nama kategori tampil sebagai judul di katalog dan di
+ * breadcrumb, sehingga harus bahasa Indonesia — itu bahasa dasar situs ini.
+ *
+ * @return array<string,array{name:string,blurb:string}>
+ */
+function accupro_seed_category_labels() {
+	return array(
+		'tax-reporting'     => array(
+			'name'  => __( 'Pajak & Pelaporan', 'accupro' ),
+			'blurb' => __( 'Kewajiban pajak bulanan dan tahunan untuk badan maupun orang pribadi, termasuk menjawab surat pemeriksaan.', 'accupro' ),
+		),
+		'tax-registration'  => array(
+			'name'  => __( 'Registrasi & Akun Pajak', 'accupro' ),
+			'blurb' => __( 'Mengurus pendaftaran dan menjaganya tetap aktif — NPWP, EFIN, dan akun CORETAX.', 'accupro' ),
+		),
+		'company-legality'  => array(
+			'name'  => __( 'Legalitas Perusahaan', 'accupro' ),
+			'blurb' => __( 'Mendirikan, mengubah, dan menyediakan domisili badan usaha di Indonesia.', 'accupro' ),
+		),
+		'stay-permits-visa' => array(
+			'name'  => __( 'Izin Tinggal & Visa', 'accupro' ),
+			'blurb' => __( 'KITAS kerja, investor, dan penyatuan keluarga, serta visa bisnis untuk warga negara asing.', 'accupro' ),
+		),
+		'trademark-ip'      => array(
+			'name'  => __( 'Merek & HKI', 'accupro' ),
+			'blurb' => __( 'Melindungi merek Anda di Indonesia, baik untuk pemohon lokal maupun asing.', 'accupro' ),
+		),
+	);
 }

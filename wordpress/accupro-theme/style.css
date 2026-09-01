@@ -67,3 +67,117 @@ Tags: business, custom-menu, translation-ready
 }
 .pagination .page-numbers.current,
 .pagination .page-numbers:hover { border-color: var(--navy); background: var(--navy-050); color: var(--navy); }
+
+/* ==========================================================================
+   Section 1 berlatar foto
+   --------------------------------------------------------------------------
+   Menyimpang dari assets/css/style.css secara sengaja: di versi statis, foto
+   Section 1 duduk di kolom sebelah teks. Di sini fotonya jadi latar section
+   dengan teks di atasnya. Aturannya ditaruh di file ini, bukan di
+   assets/css/style.css, supaya berkas itu tetap identik byte-per-byte dengan
+   dist/assets — kalau nanti versi statis ikut diubah, pindahkan ke sana.
+
+   Fotonya <img>, bukan background-image, supaya srcset tetap berlaku dan
+   browser bisa mengambil ukuran yang sesuai layarnya.
+   ========================================================================== */
+
+.secbg { position: absolute; inset: 0; overflow: hidden; }
+.secbg__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  max-width: none;
+}
+
+/* --- banner sub-halaman --------------------------------------------------- */
+.pagehero--bg {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  min-height: clamp(280px, 30vw, 400px);
+  padding-block: clamp(28px, 4vw, 44px);
+  background: var(--navy, #2A3490);
+  color: #fff;
+}
+.pagehero--bg .secbg { z-index: -2; }
+/* Gradien gelap: tanpa ini judul putih bisa jatuh di atas bagian foto yang
+   terang dan jadi tidak terbaca. Lebih pekat di kiri, tempat teksnya berada. */
+.pagehero--bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(18, 23, 66, .92) 0%, rgba(18, 23, 66, .80) 42%, rgba(18, 23, 66, .48) 100%),
+    linear-gradient(0deg, rgba(18, 23, 66, .35) 0%, rgba(18, 23, 66, 0) 60%);
+}
+.pagehero__inner { position: relative; max-width: 100%; }
+.pagehero__inner > h1 { color: #fff; margin-top: 10px; }
+.pagehero__inner > .lede { color: #D6D9F0; margin-top: 14px; max-width: 62ch; }
+.pagehero__inner .eyebrow { color: var(--gold, #C09725); }
+.pagehero__inner .icon-lead { color: #fff; }
+.pagehero__inner .crumbs { padding-top: 0; padding-bottom: 14px; }
+.pagehero__inner .crumbs ol { color: #A8AEDB; }
+.pagehero__inner .crumbs a { color: #C3C7E6; }
+.pagehero__inner .crumbs a:hover { color: #fff; }
+.pagehero__inner .crumbs span[aria-current] { color: #fff; }
+
+/* --- hero beranda --------------------------------------------------------- */
+.hero--bg {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  min-height: clamp(520px, 62vh, 680px);
+  padding-block: clamp(36px, 5vw, 64px);
+  background: var(--navy, #2A3490);
+  color: #fff;
+}
+.hero__bgs { position: absolute; inset: 0; z-index: -2; }
+/* Slide latar ditumpuk di sel yang sama dan disilangkan lewat opacity, bukan
+   ditampilkan/disembunyikan — kalau di-hidden, tinggi section ikut melompat
+   tiap kali slide berganti. */
+.hero__bgs .hero__frame-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity .6s ease;
+}
+.hero__bgs .hero__frame-slide.is-active { opacity: 1; }
+.hero--bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(18, 23, 66, .93) 0%, rgba(18, 23, 66, .82) 48%, rgba(18, 23, 66, .50) 100%),
+    linear-gradient(0deg, rgba(18, 23, 66, .40) 0%, rgba(18, 23, 66, 0) 55%);
+}
+/* Satu kolom sekarang — kolom foto sudah tidak ada. */
+.hero--bg .hero__grid { grid-template-columns: 1fr; position: relative; }
+.hero--bg .hero__content { max-width: 64ch; }
+.hero--bg .hero__slide h1 { color: #fff; }
+.hero--bg .hero__slide .lede { color: #D6D9F0; }
+.hero--bg .hero__stats { border-top-color: rgba(255, 255, 255, .22); }
+.hero--bg .hero__stats .stat__v { color: #fff; }
+.hero--bg .hero__stats .tiny { color: #C3C7E6; }
+.hero--bg .pill { background: rgba(255, 255, 255, .12); border-color: rgba(255, 255, 255, .28); color: #F0E2B4; }
+.hero--bg .hero__dot { background: rgba(255, 255, 255, .38); border-color: rgba(255, 255, 255, .38); }
+.hero--bg .hero__dot.is-active { background: #fff; border-color: #fff; }
+.hero--bg .hero__arrow { color: #fff; background: rgba(255, 255, 255, .12); border-color: rgba(255, 255, 255, .32); }
+.hero--bg .hero__arrow:hover { background: rgba(255, 255, 255, .22); border-color: #fff; }
+
+/* Layar sempit: gradien dibuat rata supaya teks tetap kontras walau fotonya
+   sudah terpotong hampir seluruhnya. */
+@media (max-width: 700px) {
+  .pagehero--bg::after,
+  .hero--bg::after { background: rgba(18, 23, 66, .86); }
+  .hero--bg { min-height: clamp(460px, 76vh, 620px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__bgs .hero__frame-slide { transition: none; }
+}

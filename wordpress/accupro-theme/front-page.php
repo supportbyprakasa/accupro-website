@@ -41,7 +41,23 @@ $accupro_wa      = function_exists( 'accupro_whatsapp_url' ) ? accupro_whatsapp_
 <main id="main">
 
 	<?php if ( $accupro_slides ) : ?>
-		<section class="hero" aria-label="<?php esc_attr_e( 'Sorotan beranda', 'accupro' ); ?>">
+		<section class="hero hero--bg" aria-label="<?php esc_attr_e( 'Sorotan beranda', 'accupro' ); ?>">
+			<?php // Satu lapisan latar per slide; main.js menyalakannya lewat kelas .is-active yang sama dengan teksnya. ?>
+			<div class="hero__bgs" aria-hidden="true">
+				<?php foreach ( $accupro_slides as $accupro_i => $accupro_slide ) : ?>
+					<div class="hero__frame-slide <?php echo 0 === $accupro_i ? 'is-active' : ''; ?>">
+						<?php
+						echo accupro_section_bg( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							isset( $accupro_slide['image'] ) ? $accupro_slide['image'] : 0,
+							array(
+								'eager' => 0 === $accupro_i,
+								'label' => $accupro_slide['headline'],
+							)
+						);
+						?>
+					</div>
+				<?php endforeach; ?>
+			</div>
 			<div class="container hero__grid">
 				<div class="hero__content">
 					<div class="hero__slides">
@@ -93,24 +109,6 @@ $accupro_wa      = function_exists( 'accupro_whatsapp_url' ) ? accupro_whatsapp_
 					<?php endif; ?>
 				</div>
 
-				<div class="hero__media">
-					<div class="hero__frame">
-						<?php foreach ( $accupro_slides as $accupro_i => $accupro_slide ) : ?>
-							<div class="hero__frame-slide <?php echo 0 === $accupro_i ? 'is-active' : ''; ?>" aria-hidden="<?php echo 0 === $accupro_i ? 'false' : 'true'; ?>">
-								<?php
-								echo accupro_attachment_media( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-									isset( $accupro_slide['image'] ) ? $accupro_slide['image'] : 0,
-									'1 / 1',
-									array(
-										'eager' => 0 === $accupro_i,
-										'label' => $accupro_slide['headline'],
-									)
-								);
-								?>
-							</div>
-						<?php endforeach; ?>
-					</div>
-				</div>
 			</div>
 		</section>
 	<?php endif; ?>
