@@ -208,6 +208,16 @@ Yang **tidak** diuji di sana: query database sungguhan, rewrite rule, hook
 priority, dan tampilan CSS. Itu semua tetap harus dicoba di WordPress asli —
 sebaiknya di staging dulu, bukan langsung di domain produksi.
 
+### Uji alat hitung
+
+```sh
+BASE=http://127.0.0.1:8181 node scripts/test-tools.mjs
+```
+
+Mengisi formulir 9 alat hitung di Chromium sungguhan lalu memeriksa dua hal
+yang tidak terlihat dari kode: angkanya benar (termasuk PPh 4(2) 2,65% dan
+1,75%), dan tidak ada teks Inggris yang lolos ke panel hasil.
+
 ### Audit layout
 
 ```sh
@@ -226,6 +236,52 @@ Lint saja:
 ```sh
 find wordpress -name '*.php' -not -name '._*' -exec php -l {} \;
 ```
+
+---
+
+## Naik ke produksi
+
+Urutan yang disarankan, beserta cara membatalkannya.
+
+**1. Backup penuh.** hPanel Hostinger → Files + Database. Catat waktunya.
+Tanpa ini, langkah 4 tidak punya jalan pulang.
+
+**2. Staging dulu.** Hostinger punya fitur staging bawaan. Klon situs live,
+kerjakan langkah 3–5 di sana, periksa daftar di bawah, baru push ke live.
+Kalau memutuskan langsung ke live, kerjakan di jam sepi.
+
+**3. Pasang plugin, jangan aktifkan tema dulu.**
+*Plugin → Tambah Baru → Unggah* → `accupro-core.zip` → Aktifkan.
+Pada situs yang sudah punya isi, plugin akan **mengadopsi** 24 layanan yang ada
+— tidak membuat duplikat. Periksa di *Layanan*: jumlahnya harus tetap 24, bukan
+48. Kalau jadi 48, hentikan dan pulihkan backup.
+
+**4. Aktifkan tema.** *Tampilan → Tema → Unggah* → `accupro-theme.zip` →
+Aktifkan. **Ini titik yang terlihat pengunjung**: seluruh layout Elementor
+berhenti dipakai saat itu juga.
+*Membatalkan:* aktifkan kembali tema `zebizz`. Konten tidak tersentuh karena
+semuanya milik plugin.
+
+**5. Simpan permalink sekali.** *Pengaturan → Permalink → Simpan Perubahan.*
+
+**6. Lengkapi gambar.** Dasbor akan menampilkan daftar periksa berisi apa saja
+yang belum diisi — logo, gambar slide hero, banner halaman, gambar CTA. Semua
+berkasnya sudah ada di Media Library situs; plugin hanya tidak bisa menebak
+yang mana.
+
+**7. Periksa sebelum dianggap selesai.**
+
+- `/layanan/` menampilkan 24 layanan dalam 5 kategori
+- URL lama masih hidup: buka `/layanan/pengurusan-pajak-badan/`
+- Pemilih bahasa di header menampilkan ID · EN · 中文, dan `/en/` terbuka
+- Buka satu alat hitung, hitung sekali, pastikan hasilnya berbahasa Indonesia
+- Tombol WhatsApp muncul sekali saja di pojok kanan bawah, tidak bertumpuk
+- Buka satu halaman di HP
+
+**Yang perlu diperhatikan sesudahnya.** TranslatePress menyimpan terjemahan
+per string. Teks yang berubah karena tema baru — judul section, label tombol —
+akan tampil dalam bahasa Indonesia pada versi EN/CH sampai diterjemahkan lewat
+editor TranslatePress. Itu pekerjaan terpisah, bukan kerusakan.
 
 ---
 

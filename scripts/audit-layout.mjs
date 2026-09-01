@@ -1,18 +1,6 @@
-/* Audit layout Accupro.
- *
- * Memeriksa lima hal di sembilan halaman × lima lebar layar:
- *   overflow  halaman bisa digulir menyamping
- *   escape    anak keluar dari kotak induknya
- *   collide   dua elemen setara saling menimpa
- *   tight     jarak antar-elemen di bawah 8px (diukur teks ke teks)
- *   tap       target sentuh di bawah 30px di layar ≤768px
- *
- * Jalankan dengan WordPress lokal hidup:
- *   npm i playwright && npx playwright install chromium
- *   BASE=http://127.0.0.1:8181 node scripts/audit-layout.mjs
- *
- * Keluar dengan status 1 kalau ada temuan, jadi bisa dipakai di CI.
- */
+/* Audit layout Accupro: overflow horizontal, elemen bertabrakan/berhimpit,
+   elemen keluar dari containernya, dan target sentuh yang terlalu kecil.
+   Dijalankan di lima lebar layar. */
 const { chromium } = require('playwright');
 
 const BASE = process.env.BASE || 'http://127.0.0.1:8181';

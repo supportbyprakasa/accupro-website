@@ -31,6 +31,7 @@ require_once ACCUPRO_CORE_PATH . 'inc/taxonomies.php';
 require_once ACCUPRO_CORE_PATH . 'inc/metaboxes.php';
 require_once ACCUPRO_CORE_PATH . 'inc/settings.php';
 require_once ACCUPRO_CORE_PATH . 'inc/admin-media.php';
+require_once ACCUPRO_CORE_PATH . 'inc/setup-notice.php';
 require_once ACCUPRO_CORE_PATH . 'inc/seed.php';
 require_once ACCUPRO_CORE_PATH . 'inc/shortcodes.php';
 

@@ -22,6 +22,12 @@
      yang dipakai, sehingga versi statis berjalan persis seperti sebelumnya. */
   var I18N = (typeof window !== 'undefined' && window.TOOL_I18N) || {};
   function t(key, fallback) { return I18N[key] || fallback; }
+  /* Menerjemahkan teks apa adanya: kalimat Inggris di bawah dipakai sebagai
+     kunci, jadi tidak perlu menyentuh 23 tempat pemanggilan satu per satu.
+     Kalau tidak ada padanannya, teks aslinya yang dipakai — itulah sebabnya
+     versi statis tidak berubah sama sekali. */
+  var STR = I18N.strings || {};
+  function s(text) { return (typeof text === 'string' && STR[text]) || text; }
 
   /* ---- number formatting -------------------------------------------- */
   var idr = new Intl.NumberFormat('id-ID', { maximumFractionDigits: 0 });
@@ -33,8 +39,11 @@
      so a plain rate like 0.10 still prints as "10%", not "10.000%". */
   function fmtPct(n) {
     var pct = Math.round(n * 100000) / 1000;
-    var s = pct.toFixed(3).replace(/0+$/, '').replace(/\.$/, '');
-    return s + '%';
+    var text = pct.toFixed(3).replace(/0+$/, '').replace(/\.$/, '');
+    // Indonesia memakai koma sebagai pemisah desimal: 2,65% bukan 2.65%.
+    // Locale-nya dikirim halaman; tanpa itu tetap format Inggris.
+    if ((I18N.locale || 'en').indexOf('id') === 0) { text = text.replace('.', ','); }
+    return text + '%';
   }
   function parseNum(v) {
     if (typeof v !== 'string') return Number(v) || 0;
@@ -65,7 +74,7 @@
       return {
         headline: fmtRp(msmeTax),
         rows: [
-          ['Tax base', fmtRp(turnover) + ' (gross turnover)'],
+          ['Tax base', fmtRp(turnover) + ' ' + s('(gross turnover)')],
           ['Applicable rate', '0.5% — final tax, PP 55/2022'],
           ['Facility applied', 'MSME final tax regime']
         ],
@@ -79,7 +88,7 @@
       return {
         headline: fmtRp(tax),
         rows: [
-          ['Tax base', fmtRp(taxableIncome) + ' (taxable income)'],
+          ['Tax base', fmtRp(taxableIncome) + ' ' + s('(taxable income)')],
           ['Applicable rate', fmtPct(baseRate)],
           ['Facility applied', 'None — turnover above Rp 50 billion']
         ]
@@ -92,10 +101,10 @@
     return {
       headline: fmtRp(totalTax),
       rows: [
-        ['Tax base', fmtRp(taxableIncome) + ' (taxable income)'],
+        ['Tax base', fmtRp(taxableIncome) + ' ' + s('(taxable income)')],
         ['Facility portion (50% off)', fmtRp(eligiblePortion)],
         ['Full-rate portion', fmtRp(restPortion)],
-        ['Applicable rate', fmtPct(baseRate) + ' standard, ' + fmtPct(baseRate * 0.5) + ' on the facility portion'],
+        ['Applicable rate', s('%1 standard, %2 on the facility portion').replace('%1', fmtPct(baseRate)).replace('%2', fmtPct(baseRate * 0.5))],
         ['Facility applied', 'Article 31E']
       ]
     };
@@ -196,7 +205,7 @@
         ['Income type', def.label],
         ['Gross amount', fmtRp(amount)],
         ['Base rate', fmtPct(def.rate)],
-        ['NPWP status', hasNpwp ? 'Registered' : 'Not registered — rate doubled'],
+        ['NPWP status', hasNpwp ? s('Registered') : s('Not registered — rate doubled')],
         ['Applied rate', fmtPct(rate)]
       ]
     };
@@ -263,8 +272,8 @@
     var docs = KITAS_DOCS[type];
     var timeline = cfg.timelineWeeks[type] || cfg.timelineWeeks.default;
     return {
-      headline: timeline + ' weeks',
-      rows: docs.map(function (d, i) { return ['Document ' + (i + 1), d]; }),
+      headline: s('%d weeks').replace('%d', timeline),
+      rows: docs.map(function (d, i) { return [s('Document %d').replace('%d', i + 1), s(d)]; }),
       note: 'Estimated timeline from application to a printed KITAS card, assuming documents are complete on first submission.'
     };
   }
@@ -303,8 +312,11 @@
     }
     if (isPkp) items.push('PPN — monthly VAT return, due the end of the following month');
     return {
-      headline: items.length + ' obligation' + (items.length === 1 ? '' : 's') + ' this month',
-      rows: items.map(function (t, i) { return ['Obligation ' + (i + 1), t]; }),
+      // Judul dan label baris disusun dari potongan, jadi tidak bisa langsung
+      // jadi kunci terjemahan. Polanya dipisah supaya tetap bisa diterjemahkan:
+      // %d diganti angkanya setelah teksnya dicari padanannya.
+      headline: s(items.length === 1 ? '%d obligation this month' : '%d obligations this month').replace('%d', items.length),
+      rows: items.map(function (t, i) { return [s('Obligation %d').replace('%d', i + 1), t]; }),
       note: 'This assumes standard registration status — ask us if any of these have been formally waived or deferred for your entity.'
     };
   }
@@ -374,15 +386,15 @@
       return;
     }
     lastResult = result;
-    resultHeadline.textContent = result.headline;
+    resultHeadline.textContent = s( result.headline );
     resultTable.innerHTML = '<tbody>' + result.rows.map(function (r) {
-      return '<tr><th scope="row">' + r[0] + '</th><td>' + r[1] + '</td></tr>';
+      return '<tr><th scope="row">' + s( r[0] ) + '</th><td>' + s( r[1] ) + '</td></tr>';
     }).join('') + '</tbody>';
-    resultNote.textContent = result.note || '';
+    resultNote.textContent = s( result.note || '' );
 
     var entries = loadHistory(slug);
     entries.unshift({
-      when: new Date().toLocaleString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }),
+      when: new Date().toLocaleString(I18N.locale || 'en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }),
       summary: result.rows[0] ? result.rows[0][1] : '',
       headline: result.headline
     });
