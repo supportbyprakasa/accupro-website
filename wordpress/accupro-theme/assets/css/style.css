@@ -162,7 +162,7 @@ h4{font-size:1.0625rem;font-weight:700;letter-spacing:-.01em;line-height:1.3}
 .header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.98);border-bottom:1px solid var(--line)}
 .header__bar{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:var(--header-h)}
 .brand{display:flex;align-items:center;gap:10px;flex:none}
-.brand__mark{width:34px;height:32px;flex:none}
+.brand__mark{width:44px;height:41px;flex:none}
 .brand__name{font-family:var(--display);font-weight:800;font-size:1.0625rem;letter-spacing:.03em;color:var(--navy)}
 .brand__sub{display:block;font-family:var(--sans);font-weight:400;font-size:.625rem;letter-spacing:.06em;color:var(--faint);text-transform:uppercase}
 .nav{display:flex;align-items:center;gap:4px}
@@ -172,7 +172,7 @@ h4{font-size:1.0625rem;font-weight:700;letter-spacing:-.01em;line-height:1.3}
 .header__end{display:flex;align-items:center;gap:12px;flex:none}
 .langs{display:flex;gap:2px;padding:3px;background:var(--surface-2);border-radius:var(--r)}
 .nav>.langs{display:none}
-.langs a{padding:5px 9px;font-size:.75rem;font-weight:600;color:var(--muted);border-radius:2px;white-space:nowrap}
+.langs a{padding:5px 9px;font-size:.75rem;font-weight:600;color:var(--muted);border-radius:var(--r);white-space:nowrap}
 .langs a[aria-current="true"]{background:var(--navy);color:#fff}
 .burger{display:none;width:44px;height:44px;align-items:center;justify-content:center;border:1px solid var(--line-strong);border-radius:var(--r)}
 
@@ -250,7 +250,7 @@ h4{font-size:1.0625rem;font-weight:700;letter-spacing:-.01em;line-height:1.3}
 
 /* ---------- misc components ---------- */
 .pill{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;font-size:.75rem;font-weight:600;color:var(--gold-700);background:var(--gold-050);border:1px solid #E8DFBE;border-radius:100px}
-.tag{display:inline-flex;align-items:center;padding:4px 9px;font-family:var(--display);font-size:.6875rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--navy);border-radius:2px}
+.tag{display:inline-flex;align-items:center;padding:4px 9px;font-family:var(--display);font-size:.6875rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--navy);border-radius:var(--r)}
 .chip{display:inline-flex;align-items:center;gap:6px;min-height:42px;padding:0 15px;font-size:.875rem;font-weight:600;color:var(--body);background:var(--paper);border:1px solid var(--line-strong);border-radius:100px}
 .chip:hover{border-color:var(--navy);color:var(--navy)}
 .chip[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
@@ -265,7 +265,7 @@ h4{font-size:1.0625rem;font-weight:700;letter-spacing:-.01em;line-height:1.3}
 .fact__k{display:block;font-size:.6875rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin:10px 0 4px}
 .fact__v{font-family:var(--display);font-size:.9375rem;font-weight:700;color:var(--ink);line-height:1.3}
 .stat__v{font-family:var(--display);font-size:clamp(1.75rem,1.4rem + 1.4vw,2.5rem);font-weight:800;color:var(--navy);line-height:1;letter-spacing:-.03em}
-.ph-tag{display:inline-block;padding:2px 7px;font-size:.75rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--gold-700);background:var(--gold-050);border:1px dashed #DFD3A6;border-radius:2px}
+.ph-tag{display:inline-block;padding:2px 7px;font-size:.75rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--gold-700);background:var(--gold-050);border:1px dashed #DFD3A6;border-radius:var(--r)}
 .checklist li{display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line);font-size:.9375rem}
 .checklist svg{flex:none;margin-top:3px;color:var(--navy)}
 .tick-list li{display:flex;gap:10px;align-items:flex-start;padding:6px 0;font-size:1rem}
@@ -296,7 +296,7 @@ h4{font-size:1.0625rem;font-weight:700;letter-spacing:-.01em;line-height:1.3}
 .consent{display:flex;gap:11px;align-items:flex-start;font-size:.875rem;color:var(--muted)}
 .consent{min-height:44px;align-items:center}
 .consent input{width:22px;height:22px;flex:none;accent-color:var(--navy)}
-:where(a,button,input,select,textarea,summary):focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:2px}
+:where(a,button,input,select,textarea,summary):focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:var(--r)}
 
 /* footer + floating whatsapp */
 .footer{background:var(--navy-900);color:#B7BCE0;padding-block:56px 28px;font-size:.9375rem}

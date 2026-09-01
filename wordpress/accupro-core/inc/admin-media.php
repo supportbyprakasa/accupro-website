@@ -20,7 +20,11 @@ defined( 'ABSPATH' ) || exit;
  */
 function accupro_media_field( $name, $value ) {
 	$value = (int) $value;
-	$thumb = $value ? wp_get_attachment_image( $value, 'thumbnail', false, array( 'style' => 'display:block;max-width:80px;height:auto' ) ) : '';
+	// 4px matches the front-end's --r token. wp-admin doesn't load the site's
+	// stylesheet, so the small-control radius has to be repeated as a literal
+	// here rather than referenced — otherwise this is the one square-cornered
+	// thumbnail on an otherwise consistently-rounded site.
+	$thumb = $value ? wp_get_attachment_image( $value, 'thumbnail', false, array( 'style' => 'display:block;max-width:80px;height:auto;border-radius:4px' ) ) : '';
 	?>
 	<div class="accupro-media">
 		<div class="accupro-media__preview"><?php echo $thumb; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>

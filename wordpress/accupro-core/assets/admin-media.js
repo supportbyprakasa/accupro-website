@@ -14,7 +14,7 @@
 			url = (sizes.thumbnail && sizes.thumbnail.url) || attachment.url || '';
 		}
 
-		$preview.html(url ? $('<img>', { src: url, alt: '', css: { display: 'block', maxWidth: '80px', height: 'auto' } }) : '');
+		$preview.html(url ? $('<img>', { src: url, alt: '', css: { display: 'block', maxWidth: '80px', height: 'auto', borderRadius: '4px' } }) : '');
 	}
 
 	$(document).on('click', '.accupro-media__pick', function (e) {

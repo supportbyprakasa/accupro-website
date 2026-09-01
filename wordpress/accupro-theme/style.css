@@ -63,5 +63,5 @@ Tags: business, custom-menu, translation-ready
 
 /* Logo gambar dari Media Library. Versi statis memakai tanda SVG berukuran
    tetap, jadi ukuran untuk <img> ini memang hanya ada di sisi WordPress. */
-.brand__logo { height: 38px; width: auto; max-width: 190px; object-fit: contain; display: block; }
-.footer .brand__logo { height: 34px; filter: brightness(0) invert(1); }
+.brand__logo { height: 44px; width: auto; max-width: 220px; object-fit: contain; display: block; }
+.footer .brand__logo { height: 38px; filter: brightness(0) invert(1); }
