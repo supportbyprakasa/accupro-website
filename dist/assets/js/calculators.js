@@ -19,7 +19,16 @@
   /* ---- number formatting -------------------------------------------- */
   var idr = new Intl.NumberFormat('id-ID', { maximumFractionDigits: 0 });
   function fmtRp(n) { return 'Rp ' + idr.format(Math.round(n || 0)); }
-  function fmtPct(n) { return (Math.round(n * 1000) / 10) + '%'; }
+  /* Rounding to 1 decimal (the old `/10` version) silently corrupts rates
+     that actually have 2 decimals — 0.0265 became "2.7%", 0.0175 became
+     "1.8%". Round to 3 decimal places instead (enough for every rate table
+     in this file, none of which go past 0.01%), then trim trailing zeros
+     so a plain rate like 0.10 still prints as "10%", not "10.000%". */
+  function fmtPct(n) {
+    var pct = Math.round(n * 100000) / 1000;
+    var s = pct.toFixed(3).replace(/0+$/, '').replace(/\.$/, '');
+    return s + '%';
+  }
   function parseNum(v) {
     if (typeof v !== 'string') return Number(v) || 0;
     var cleaned = v.replace(/[^\d]/g, '');
