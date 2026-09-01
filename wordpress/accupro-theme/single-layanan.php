@@ -45,8 +45,7 @@ while ( have_posts() ) :
 				'heading' => get_the_title(),
 				'lede'    => accupro_summary( get_post() ),
 				'extra'   => '<div class="cluster" style="margin-top:18px"><a class="btn btn--primary" href="' . esc_url( accupro_contact_url() ) . '">' . esc_html__( 'Tanya layanan ini', 'accupro' ) . '</a></div>',
-				'image'   => accupro_banner_id( get_the_ID() ),
-				'image_label' => get_the_title(),
+				'media'   => accupro_banner_media( get_the_ID(), get_the_title() ),
 			)
 		);
 		?>

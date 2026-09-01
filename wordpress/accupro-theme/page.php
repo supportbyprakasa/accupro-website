@@ -32,8 +32,7 @@ while ( have_posts() ) :
 				// Hanya ringkasan yang ditulis sendiri; ringkasan otomatis cuma
 				// mengulang kalimat pertama isi halaman tepat di atasnya.
 				'lede'    => get_post()->post_excerpt,
-				'image'   => accupro_banner_id( get_the_ID() ),
-				'image_label' => get_the_title(),
+				'media'   => accupro_banner_media( get_the_ID(), get_the_title() ),
 			)
 		);
 		?>

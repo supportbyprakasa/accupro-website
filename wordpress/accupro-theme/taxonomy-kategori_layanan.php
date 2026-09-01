@@ -33,8 +33,7 @@ $accupro_count = count( $accupro_items );
 			'kicker'  => '<span class="icon-lead">' . accupro_icon( $accupro_icon ? $accupro_icon : 'chart', 26 ) . '</span>',
 			'heading' => $accupro_term->name,
 			'lede'    => $accupro_term->description,
-			'image'   => accupro_term_image_id( $accupro_term ),
-			'image_label' => $accupro_term->name,
+			'media'   => accupro_term_media( $accupro_term, '4 / 3' ),
 		)
 	);
 	?>

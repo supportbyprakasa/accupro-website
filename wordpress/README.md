@@ -218,16 +218,14 @@ find wordpress -name '*.php' -not -name '._*' -exec php -l {} \;
 
 ## Beda dengan versi statis
 
-- **Section 1 berlatar foto.** Di versi statis, foto Section 1 duduk di kolom
-  sebelah teks. Di tema ini fotonya jadi latar section penuh dengan gradien
-  gelap di atasnya. Aturannya ada di `style.css` tema, bukan di
-  `assets/css/style.css` — berkas itu sengaja dijaga identik byte-per-byte
-  dengan `dist/assets`. Gambar latar dirender sebagai `<img>` ukuran `full`,
-  bukan `background-image`, supaya `srcset` tetap berlaku dan browser mengambil
-  resolusi yang sesuai layarnya. Gambar dengan lebar di bawah 1200px otomatis
-  ditolak sebagai latar dan diganti gambar bawaan
-  (`ACCUPRO_MIN_BANNER_WIDTH`) — sebuah gambar kartu kecil kalau dipaksa jadi
-  latar selebar layar akan pecah.
+- **Layout mengikuti `dist/`.** Struktur Section 1 di tema ini sama persis
+  dengan keluaran generator statis: breadcrumb dalam container sendiri, lalu
+  `.pagehero > .container.pagehero__grid` berisi `.pagehero__content` dan
+  `.pagehero__frame`. Beranda memakai `.hero > .container.hero__grid` dengan
+  `.hero__content` dan `.hero__media`. Seluruh gayanya sudah ada di
+  `assets/css/style.css`; `style.css` tema **tidak boleh** berisi aturan untuk
+  `.pagehero` atau `.hero` — uji asap memeriksanya. Sekali markup menyimpang
+  dari `dist/`, CSS bersama itu berhenti cocok dan tata letaknya rusak.
 - **Foto.** Versi statis memakai foto stok dari CDN sebagai isian sementara.
   Di sini sumbernya Media Library. Foto pendamping CTA dan banner halaman —
   yang di versi statis ikut tertanam di kode — sekarang jadi field tersendiri di

@@ -249,47 +249,46 @@ function accupro_breadcrumbs( $trail ) {
 }
 
 /**
- * Section 1 setiap halaman: judul di atas foto yang jadi latar.
+ * Section 1 setiap halaman.
  *
- * Sebelumnya teks dan foto berdampingan dalam dua kolom. Sekarang fotonya jadi
- * latar section, dengan gradien gelap di atasnya supaya teks tetap terbaca —
- * gradien itu bukan hiasan; tanpa itu judul putih bisa jatuh di atas bagian
- * foto yang terang lalu hilang.
- *
- * Breadcrumb ikut masuk ke dalam section, bukan di atasnya, supaya tidak ada
- * jalur tipis berlatar putih yang memisahkan header dari banner.
- *
- * Kalau belum ada gambar, section tetap dirender dengan warna navy — tinggi
- * dan tata letaknya sama persis, jadi halaman tidak melompat begitu gambarnya
- * diisi.
+ * Strukturnya sengaja sama persis dengan keluaran generator statis di dist/ —
+ * breadcrumb dalam container sendiri, lalu .pagehero berisi .pagehero__grid
+ * dua kolom: teks di kiri, foto berbingkai di kanan. Itu layout yang sudah
+ * disusun dan disetujui, dan seluruh gayanya sudah ada di
+ * assets/css/style.css. Jangan menambah aturan tandingan di style.css tema:
+ * begitu markup-nya menyimpang, CSS bersama itu berhenti cocok dan tata
+ * letaknya berantakan.
  *
  * @param array $args crumbs, kicker (HTML), heading, lede, extra (HTML),
- *                    image (ID lampiran), image_label.
+ *                    media (HTML gambar siap pakai).
  */
 function accupro_page_banner( $args ) {
 	$args = wp_parse_args(
 		$args,
 		array(
-			'crumbs'      => array(),
-			'kicker'      => '',
-			'heading'     => '',
-			'lede'        => '',
-			'extra'       => '',
-			'image'       => 0,
-			'image_label' => '',
+			'crumbs'  => array(),
+			'kicker'  => '',
+			'heading' => '',
+			'lede'    => '',
+			'extra'   => '',
+			'media'   => '',
 		)
 	);
 	?>
-	<section class="pagehero pagehero--bg">
-		<?php echo accupro_section_bg( $args['image'], array( 'label' => $args['image_label'] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-		<div class="container pagehero__inner">
-			<?php accupro_breadcrumbs( $args['crumbs'] ); ?>
-			<?php echo $args['kicker']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-			<h1><?php echo esc_html( $args['heading'] ); ?></h1>
-			<?php if ( $args['lede'] ) : ?>
-				<p class="lede"><?php echo esc_html( $args['lede'] ); ?></p>
-			<?php endif; ?>
-			<?php echo $args['extra']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+	<div class="container"><?php accupro_breadcrumbs( $args['crumbs'] ); ?></div>
+	<section class="pagehero">
+		<div class="container pagehero__grid">
+			<div class="pagehero__content">
+				<?php echo $args['kicker']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<h1><?php echo esc_html( $args['heading'] ); ?></h1>
+				<?php if ( $args['lede'] ) : ?>
+					<p class="lede"><?php echo esc_html( $args['lede'] ); ?></p>
+				<?php endif; ?>
+				<?php echo $args['extra']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			</div>
+			<div class="pagehero__frame">
+				<?php echo $args['media']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			</div>
 		</div>
 	</section>
 	<?php
@@ -531,44 +530,48 @@ function accupro_default_banner_id() {
 }
 
 /**
- * Lebar minimum sebuah gambar agar layak jadi latar selebar halaman.
+ * Gambar Section 1 sebuah post, siap ditempel ke .pagehero__frame.
  *
- * Gambar kartu boleh kecil — ia tampil beberapa ratus piksel saja. Latar
- * Section 1 membentang selebar viewport, jadi gambar kecil akan meregang dan
- * pecah. Ambang ini yang memisahkan keduanya.
+ * Gambar utama post dipakai lebih dulu; kalau belum ada, gambar bawaan.
+ * Ukuran yang diminta 'full' supaya srcset memuat kandidat terbesar — bingkai
+ * ini lebar, bukan sebesar kartu.
+ *
+ * @param int    $post_id Post ID.
+ * @param string $label   Teks alternatif.
+ * @return string
  */
-const ACCUPRO_MIN_BANNER_WIDTH = 1200;
+function accupro_banner_media( $post_id, $label = '' ) {
+	$id = (int) get_post_thumbnail_id( $post_id );
 
-/**
- * Apakah lampiran ini cukup besar untuk jadi latar section?
- *
- * @param int $attachment_id ID lampiran.
- * @return bool
- */
-function accupro_is_wide_enough( $attachment_id ) {
-	if ( ! $attachment_id ) {
-		return false;
+	if ( ! $id ) {
+		$id = accupro_default_banner_id();
 	}
 
-	$meta = wp_get_attachment_metadata( $attachment_id );
-
-	return ! empty( $meta['width'] ) && (int) $meta['width'] >= ACCUPRO_MIN_BANNER_WIDTH;
+	return accupro_attachment_media(
+		$id,
+		'4 / 3',
+		array(
+			'size'  => 'full',
+			'label' => $label,
+		)
+	);
 }
 
 /**
- * ID gambar Section 1 sebuah post.
+ * Gambar Section 1 bawaan, untuk arsip yang tidak terikat satu post.
  *
- * Gambar utamanya dipakai hanya kalau resolusinya memang memadai; kalau tidak,
- * jatuh ke gambar bawaan. Tanpa pengecekan ini, satu gambar kartu kecil yang
- * kebetulan terpasang akan tampil meregang selebar layar.
- *
- * @param int $post_id Post ID.
- * @return int
+ * @param string $label Teks alternatif.
+ * @return string
  */
-function accupro_banner_id( $post_id ) {
-	$own = (int) get_post_thumbnail_id( $post_id );
-
-	return accupro_is_wide_enough( $own ) ? $own : accupro_default_banner_id();
+function accupro_default_banner( $label = '' ) {
+	return accupro_attachment_media(
+		accupro_default_banner_id(),
+		'4 / 3',
+		array(
+			'size'  => 'full',
+			'label' => $label,
+		)
+	);
 }
 
 /**

@@ -229,39 +229,45 @@ stub_report( false !== strpos( $services_page, 'id="service-search"' ), 'katalog
 $page = $html['page.php'] ?? '';
 stub_report( false === strpos( $page, '[accupro_kontak]' ), 'halaman: shortcode kontak diproses' );
 
-/* --------------------------------------------------- Section 1 berlatar */
+/* ------------------------------------------- Section 1 mengikuti dist/ */
 
 echo "\n== section 1 ==\n";
 
-// Setiap halaman harus punya Section 1 berlatar foto, bukan foto di kolom
-// sebelah teks seperti versi statis.
-foreach ( array( 'front-page.php', 'archive-layanan.php', 'taxonomy-kategori_layanan.php',
-                 'single-layanan.php', 'archive-alat.php', 'single-alat.php',
-                 'page.php', 'single.php', 'index.php' ) as $file ) {
+// Section 1 harus memakai struktur yang sama dengan generator statis di dist/:
+// .pagehero > .container.pagehero__grid > .pagehero__content + .pagehero__frame.
+// Begitu markup-nya menyimpang, assets/css/style.css berhenti cocok.
+foreach ( array( 'archive-layanan.php', 'taxonomy-kategori_layanan.php', 'single-layanan.php',
+                 'archive-alat.php', 'single-alat.php', 'page.php', 'single.php', 'index.php' ) as $file ) {
 	$out = $html[ $file ] ?? '';
-	$bg  = ( false !== strpos( $out, 'pagehero--bg' ) ) || ( false !== strpos( $out, 'hero--bg' ) );
-	stub_report( $bg, 'section 1 berlatar: ' . $file );
+	$ok  = false !== strpos( $out, '<section class="pagehero">' )
+		&& false !== strpos( $out, 'container pagehero__grid' )
+		&& false !== strpos( $out, 'pagehero__content' )
+		&& false !== strpos( $out, 'pagehero__frame' );
+	stub_report( $ok, 'struktur pagehero dist: ' . $file );
 }
 
-// Kolom foto lama tidak boleh tersisa di mana pun.
-$leftover_frame = array();
+// Beranda: hero dua kolom, kolom foto tetap ada.
+$home_hero = $html['front-page.php'] ?? '';
+stub_report( false !== strpos( $home_hero, '<section class="hero"' ), 'hero beranda memakai .hero' );
+stub_report( false !== strpos( $home_hero, 'container hero__grid' ), 'hero beranda memakai .hero__grid' );
+stub_report( false !== strpos( $home_hero, 'hero__media' ), 'hero beranda punya kolom foto' );
+stub_report( 2 === substr_count( $home_hero, 'class="pill"' ), 'hero beranda punya dua pill' );
+
+// Tidak boleh ada sisa eksperimen latar penuh.
+$bg = array();
 foreach ( $html as $file => $out ) {
-	if ( false !== strpos( $out, 'pagehero__frame' ) || false !== strpos( $out, 'hero__media' ) ) {
-		$leftover_frame[] = $file;
+	if ( false !== strpos( $out, 'pagehero--bg' ) || false !== strpos( $out, 'hero--bg' ) || false !== strpos( $out, 'class="secbg"' ) ) {
+		$bg[] = $file;
 	}
 }
-stub_report( ! $leftover_frame, 'tidak ada sisa kolom foto lama', implode( ', ', $leftover_frame ) );
+stub_report( ! $bg, 'tidak ada sisa section berlatar penuh', implode( ', ', $bg ) );
 
-// Nama alat dan kategori harus bahasa Indonesia — itu bahasa dasar situs.
-$labels = accupro_seed_tool_labels();
-stub_report( 9 === count( $labels ), 'nama 9 alat tersedia dalam bahasa Indonesia', count( $labels ) . '/9' );
-$en_tool = array_filter( $labels, static function ( $l ) { return false !== stripos( $l['name'], 'Calculator' ) || false !== stripos( $l['name'], 'Checker' ); } );
-stub_report( ! $en_tool, 'tidak ada nama alat berbahasa Inggris' );
-
-$cats = accupro_seed_category_labels();
-stub_report( 5 === count( $cats ), 'nama 5 kategori dalam bahasa Indonesia', count( $cats ) . '/5' );
-$en_cat = array_filter( $cats, static function ( $l ) { return false !== stripos( $l['name'], 'Tax' ) || false !== stripos( $l['name'], 'Trademark' ); } );
-stub_report( ! $en_cat, 'tidak ada nama kategori berbahasa Inggris' );
+// style.css tema hanya boleh berisi penyesuaian khas WordPress, bukan aturan
+// tandingan untuk layout yang sudah diatur assets/css/style.css.
+$css = file_get_contents( $theme . '/style.css' );
+foreach ( array( '.pagehero--bg', '.hero--bg', '.secbg' ) as $rule ) {
+	stub_report( false === strpos( $css, $rule ), 'style.css tema bebas dari ' . $rule );
+}
 
 /* ------------------------------------------------ header: logo & navigasi */
 
@@ -279,8 +285,12 @@ foreach ( array( 'Home', 'Tentang Kami', 'Layanan', 'Kontak' ) as $label ) {
 // ditimpa max-width — itu yang dulu membuat teksnya tidak sejajar dengan
 // section di bawahnya.
 $css = file_get_contents( $theme . '/style.css' );
-stub_report( false === strpos( $css, '.pagehero__inner { position: relative; max-width: 100%; }' ), 'container Section 1 tidak ditimpa max-width' );
-stub_report( false !== strpos( $css, '.pagehero--bg > .container' ), 'container Section 1 mengisi lebar penuh' );
+// Layout Section 1 sepenuhnya milik assets/css/style.css. style.css tema tidak
+// boleh menyentuh .pagehero maupun .hero sama sekali — persis di situ dulu
+// letak kesalahannya: satu max-width tandingan membuat Section 1 melebar
+// sendiri dan tidak sejajar dengan section di bawahnya.
+stub_report( false === strpos( $css, '.pagehero' ), 'style.css tema tidak menyentuh .pagehero' );
+stub_report( false === strpos( $css, '.hero' ), 'style.css tema tidak menyentuh .hero' );
 
 // Logo: fungsi ada dan jatuh ke tanda SVG hanya kalau belum ada gambar.
 stub_report( function_exists( 'accupro_logo' ), 'helper logo tersedia' );

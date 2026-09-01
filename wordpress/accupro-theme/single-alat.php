@@ -43,8 +43,7 @@ while ( have_posts() ) :
 				'kicker'  => '<span class="tag">' . ( $accupro_own ? esc_html__( 'Simulator Accupro', 'accupro' ) : esc_html__( 'Kalkulator pajak', 'accupro' ) ) . '</span>',
 				'heading' => get_the_title(),
 				'lede'    => get_the_excerpt(),
-				'image'   => accupro_banner_id( get_the_ID() ),
-				'image_label' => get_the_title(),
+				'media'   => accupro_banner_media( get_the_ID(), get_the_title() ),
 			)
 		);
 		?>
