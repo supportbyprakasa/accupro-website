@@ -133,8 +133,22 @@ h4{font-size:1.0625rem;font-weight:700;letter-spacing:-.01em;line-height:1.3}
   background:var(--navy);color:#fff;padding:12px 18px;z-index:200}
 .skip:focus{position:fixed;left:8px;top:8px;width:auto;height:auto;clip-path:none;color:#fff;border-radius:var(--r)}
 
+/* ---------- utility bar (real content — see src/layout.mjs) ---------- */
+.utility-bar{background:var(--navy-900,#161c4f);color:#A8AEDB;font-size:.8125rem}
+.utility-bar__row{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:38px}
+.utility-bar__row a{color:#A8AEDB;display:inline-flex;align-items:center;gap:6px}
+.utility-bar__row a:hover{color:#fff}
+.utility-bar__hours{display:flex;align-items:center;gap:6px}
+.utility-bar__socials{display:flex;align-items:center;gap:10px}
+.utility-bar__socials a{color:#A8AEDB}
+.utility-bar__socials a:hover{color:var(--gold,#C09725)}
+@media (max-width:640px){.utility-bar__hours{display:none}}
+
 /* ---------- header ---------- */
-.header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+/* No backdrop-filter here: it would create a new containing block for the
+   fixed-position mobile nav nested inside, capping it to the header's own
+   box instead of the full viewport. */
+.header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.98);border-bottom:1px solid var(--line)}
 .header__bar{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:var(--header-h)}
 .brand{display:flex;align-items:center;gap:10px;flex:none}
 .brand__mark{width:34px;height:32px;flex:none}

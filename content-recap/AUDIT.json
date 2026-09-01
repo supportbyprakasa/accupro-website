@@ -1,0 +1,190 @@
+{
+  "generated_at": "2026-08-31T02:01:24.927488+00:00",
+  "totals": {
+    "pages": 171,
+    "successful": 156,
+    "http_errors": 15,
+    "network_errors": 0,
+    "empty_pages": 0,
+    "words": 71560,
+    "characters": 456331,
+    "by_language": {
+      "id": 57,
+      "en": 57,
+      "ch": 57
+    }
+  },
+  "problems": [
+    {
+      "url": "https://accuprointernational.co.id/ch/team/habibah/",
+      "status": 500,
+      "error": "HTTP 500",
+      "word_count": 77,
+      "recap_file": "pages/ch/team-habibah-d0803819.md"
+    },
+    {
+      "url": "https://accuprointernational.co.id/ch/team/kurniawan/",
+      "status": 500,
+      "error": "HTTP 500",
+      "word_count": 82,
+      "recap_file": "pages/ch/team-kurniawan-275f8ee1.md"
+    },
+    {
+      "url": "https://accuprointernational.co.id/ch/team/maria/",
+      "status": 500,
+      "error": "HTTP 500",
+      "word_count": 81,
+      "recap_file": "pages/ch/team-maria-28fdbf83.md"
+    },
+    {
+      "url": "https://accuprointernational.co.id/ch/team/nares/",
+      "status": 500,
+      "error": "HTTP 500",
+      "word_count": 77,
+      "recap_file": "pages/ch/team-nares-c551eb6e.md"
+    },
+    {
+      "url": "https://accuprointernational.co.id/ch/联系我们/",
+      "status": 404,
+      "error": "HTTP 404",
+      "word_count": 142,
+      "recap_file": "pages/ch/page-23f79602.md"
+    },
+    {
+      "url": "https://accuprointernational.co.id/en/team/habibah/",
+      "status": 500,
+      "error": "HTTP 500",
+      "word_count": 94,
+      "recap_file": "pages/en/team-habibah-9660f90e.md"
+    },
+    {
+      "url": "https://accuprointernational.co.id/en/team/kurniawan/",
+      "status": 500,
+      "error": "HTTP 500",
+      "word_count": 99,
+      "recap_file": "pages/en/team-kurniawan-06647e9f.md"
+    },
+    {
+      "url": "https://accuprointernational.co.id/en/team/maria/",
+      "status": 500,
+      "error": "HTTP 500",
+      "word_count": 98,
+      "recap_file": "pages/en/team-maria-9f11f6d1.md"
+    },
+    {
+      "url": "https://accuprointernational.co.id/en/team/nares/",
+      "status": 500,
+      "error": "HTTP 500",
+      "word_count": 94,
+      "recap_file": "pages/en/team-nares-28cf2ed7.md"
+    },
+    {
+      "url": "https://accuprointernational.co.id/en/联系我们/",
+      "status": 404,
+      "error": "HTTP 404",
+      "word_count": 177,
+      "recap_file": "pages/en/page-41ff90f1.md"
+    },
+    {
+      "url": "https://accuprointernational.co.id/team/habibah/",
+      "status": 500,
+      "error": "HTTP 500",
+      "word_count": 95,
+      "recap_file": "pages/id/team-habibah-d823239b.md"
+    },
+    {
+      "url": "https://accuprointernational.co.id/team/kurniawan/",
+      "status": 500,
+      "error": "HTTP 500",
+      "word_count": 100,
+      "recap_file": "pages/id/team-kurniawan-39d6b0e3.md"
+    },
+    {
+      "url": "https://accuprointernational.co.id/team/maria/",
+      "status": 500,
+      "error": "HTTP 500",
+      "word_count": 99,
+      "recap_file": "pages/id/team-maria-572621cb.md"
+    },
+    {
+      "url": "https://accuprointernational.co.id/team/nares/",
+      "status": 500,
+      "error": "HTTP 500",
+      "word_count": 95,
+      "recap_file": "pages/id/team-nares-a20ac30b.md"
+    },
+    {
+      "url": "https://accuprointernational.co.id/联系我们/",
+      "status": 404,
+      "error": "HTTP 404",
+      "word_count": 176,
+      "recap_file": "pages/id/page-5df1effa.md"
+    }
+  ],
+  "duplicate_text_groups": [
+    [
+      "https://accuprointernational.co.id/en/layanan/pembuatan-akun-coretax-pma/",
+      "https://accuprointernational.co.id/en/layanan/pembuatan-akun-coretax-pmdn/"
+    ],
+    [
+      "https://accuprointernational.co.id/en/layanan/pembuatan-merek-pma-wna/",
+      "https://accuprointernational.co.id/en/layanan/pembuatan-merek-pmdn-wni/"
+    ]
+  ],
+  "excluded_non_html": [
+    {
+      "url": "https://accuprointernational.co.id/ch/lorem-ipsum-dolor-sit-amet-consectetur-cing-elit-sed-do-eiusmod-tempor-2/inner_b3/",
+      "final_url": "https://accuprointernational.co.id/wp-content/uploads/2021/03/inner_b3.jpg",
+      "status": 200,
+      "content_type": "image/jpeg"
+    },
+    {
+      "url": "https://accuprointernational.co.id/ch/we-denounce-with-of-righteous-one-indignation-and-dislike-men-2/inner_b2/",
+      "final_url": "https://accuprointernational.co.id/wp-content/uploads/2021/03/inner_b2.jpg",
+      "status": 200,
+      "content_type": "image/jpeg"
+    },
+    {
+      "url": "https://accuprointernational.co.id/ch/with-our-vastly-improved-notifications-system-users-your-mind-2/inner_b1/",
+      "final_url": "https://accuprointernational.co.id/wp-content/uploads/2021/03/inner_b1.jpg",
+      "status": 200,
+      "content_type": "image/jpeg"
+    },
+    {
+      "url": "https://accuprointernational.co.id/en/lorem-ipsum-dolor-sit-amet-consectetur-cing-elit-sed-do-eiusmod-tempor-2/inner_b3/",
+      "final_url": "https://accuprointernational.co.id/wp-content/uploads/2021/03/inner_b3.jpg",
+      "status": 200,
+      "content_type": "image/jpeg"
+    },
+    {
+      "url": "https://accuprointernational.co.id/en/we-denounce-with-of-righteous-one-indignation-and-dislike-men-2/inner_b2/",
+      "final_url": "https://accuprointernational.co.id/wp-content/uploads/2021/03/inner_b2.jpg",
+      "status": 200,
+      "content_type": "image/jpeg"
+    },
+    {
+      "url": "https://accuprointernational.co.id/en/with-our-vastly-improved-notifications-system-users-your-mind-2/inner_b1/",
+      "final_url": "https://accuprointernational.co.id/wp-content/uploads/2021/03/inner_b1.jpg",
+      "status": 200,
+      "content_type": "image/jpeg"
+    },
+    {
+      "url": "https://accuprointernational.co.id/lorem-ipsum-dolor-sit-amet-consectetur-cing-elit-sed-do-eiusmod-tempor-2/inner_b3/",
+      "final_url": "https://accuprointernational.co.id/wp-content/uploads/2021/03/inner_b3.jpg",
+      "status": 200,
+      "content_type": "image/jpeg"
+    },
+    {
+      "url": "https://accuprointernational.co.id/we-denounce-with-of-righteous-one-indignation-and-dislike-men-2/inner_b2/",
+      "final_url": "https://accuprointernational.co.id/wp-content/uploads/2021/03/inner_b2.jpg",
+      "status": 200,
+      "content_type": "image/jpeg"
+    },
+    {
+      "url": "https://accuprointernational.co.id/with-our-vastly-improved-notifications-system-users-your-mind-2/inner_b1/",
+      "final_url": "https://accuprointernational.co.id/wp-content/uploads/2021/03/inner_b1.jpg",
+      "status": 200,
+      "content_type": "image/jpeg"
+    }
+  ]
+}

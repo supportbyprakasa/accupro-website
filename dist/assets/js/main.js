@@ -40,7 +40,7 @@
     burger.addEventListener('click', function () {
       var open = nav.classList.toggle('nav--open');
       burger.setAttribute('aria-expanded', String(open));
-      burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      burger.setAttribute('aria-label', open ? burger.dataset.closeLabel : burger.dataset.menuLabel);
       document.body.style.overflow = open ? 'hidden' : '';
     });
     nav.addEventListener('click', function (e) {
