@@ -94,7 +94,7 @@ dulu, atau di jam sepi dengan backup siap.
 | Menu | Isinya |
 | --- | --- |
 | **Accupro → Perusahaan** | Nama, tagline, dua nomor telepon, WhatsApp, dua email, alamat, jam kerja, empat tautan sosial. Dipakai bar utilitas, footer, tombol WhatsApp mengambang, dan shortcode `[accupro_kontak]`. |
-| **Accupro → Section Beranda** | Slide hero (judul, teks, gambar), pilar layanan (ikon, judul, teks, gambar), statistik (angka, keterangan, tampil di hero atau tidak), judul & teks CTA. |
+| **Accupro → Section Beranda** | Slide hero (judul, teks, gambar), pilar layanan (ikon, judul, teks, gambar), statistik (angka, keterangan, tampil di hero atau tidak), judul & teks CTA beserta foto pendampingnya, dan gambar bawaan untuk banner halaman. |
 | **Layanan** | 24 layanan. Judul, isi, Featured Image, kategori, dan field "Ringkasan satu kalimat" yang tampil di kartu. |
 | **Kategori Layanan** | Lima bidang. Nama, deskripsi, ikon, gambar kategori. |
 | **Testimoni** | Judul = nama pemberi testimoni, isi = kutipannya, plus field Perusahaan. |
@@ -195,7 +195,9 @@ find wordpress -name '*.php' -not -name '._*' -exec php -l {} \;
 ## Beda dengan versi statis
 
 - **Foto.** Versi statis memakai foto stok dari CDN sebagai isian sementara.
-  Di sini sumbernya Media Library. Selama Featured Image belum diisi, yang
+  Di sini sumbernya Media Library. Foto pendamping CTA dan banner halaman —
+  yang di versi statis ikut tertanam di kode — sekarang jadi field tersendiri di
+  *Accupro → Section Beranda*. Selama Featured Image belum diisi, yang
   tampil adalah placeholder bergaris yang tetap menjaga tinggi baris, jadi tata
   letak tidak melompat.
 - **Lenis (smooth scroll)** tidak dimuat. `main.js` sudah mengeceknya dan

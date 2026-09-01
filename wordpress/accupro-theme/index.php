@@ -39,7 +39,7 @@ if ( is_search() ) {
 			),
 			'heading' => $accupro_heading,
 			'lede'    => wp_strip_all_tags( get_the_archive_description() ),
-			'media'   => accupro_attachment_media( 0, '4 / 3', array( 'label' => $accupro_heading ) ),
+			'media'   => accupro_default_banner( $accupro_heading ),
 		)
 	);
 	?>

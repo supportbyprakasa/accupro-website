@@ -222,6 +222,24 @@ function accupro_render_home_page() {
 					<th scope="row"><label for="accupro_cta_text"><?php esc_html_e( 'Penjelasan', 'accupro' ); ?></label></th>
 					<td><textarea class="large-text" rows="3" id="accupro_cta_text" name="accupro_settings[cta_text]"><?php echo esc_textarea( accupro_get_option( 'cta_text', '' ) ); ?></textarea></td>
 				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Gambar pendamping', 'accupro' ); ?></th>
+					<td>
+						<?php accupro_media_field( 'accupro_settings[cta_image]', accupro_get_option( 'cta_image', 0 ) ); ?>
+						<p class="description"><?php esc_html_e( 'Foto di sebelah ajakan konsultasi, muncul di hampir semua halaman.', 'accupro' ); ?></p>
+					</td>
+				</tr>
+			</tbody></table>
+
+			<h2><?php esc_html_e( 'Gambar bawaan halaman', 'accupro' ); ?></h2>
+			<table class="form-table" role="presentation"><tbody>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Banner halaman', 'accupro' ); ?></th>
+					<td>
+						<?php accupro_media_field( 'accupro_settings[banner_image]', accupro_get_option( 'banner_image', 0 ) ); ?>
+						<p class="description"><?php esc_html_e( 'Dipakai di bagian atas halaman katalog layanan, alat hitung, dan arsip — yaitu halaman yang tidak punya gambar sendiri.', 'accupro' ); ?></p>
+					</td>
+				</tr>
 			</tbody></table>
 
 			<?php submit_button(); ?>
@@ -335,6 +353,13 @@ function accupro_sanitize_settings( $input ) {
 			$out[ $key ] = 'textarea' === $type
 				? sanitize_textarea_field( $input[ $key ] )
 				: sanitize_text_field( $input[ $key ] );
+		}
+	}
+
+	// ID lampiran; absint() membuang nilai negatif dan teks apa pun.
+	foreach ( array( 'cta_image', 'banner_image' ) as $key ) {
+		if ( array_key_exists( $key, $input ) ) {
+			$out[ $key ] = absint( $input[ $key ] );
 		}
 	}
 

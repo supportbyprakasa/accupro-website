@@ -298,7 +298,7 @@ function accupro_cta_band() {
 					<?php endif; ?>
 				</div>
 			</div>
-			<?php echo accupro_attachment_media( 0, '4 / 3', array( 'label' => __( 'Foto konsultasi dengan klien', 'accupro' ) ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			<?php echo accupro_attachment_media( accupro_opt( 'cta_image', 0 ), '4 / 3', array( 'label' => __( 'Foto konsultasi dengan klien', 'accupro' ) ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		</div>
 	</section>
 	<?php
@@ -481,4 +481,21 @@ if ( ! function_exists( 'accupro_tel' ) ) {
 	function accupro_tel( $phone ) {
 		return preg_replace( '/[^\d+]/', '', (string) $phone );
 	}
+}
+
+/**
+ * Gambar bawaan untuk banner halaman yang tidak punya gambar sendiri.
+ *
+ * Diatur di Accupro > Section Beranda > Gambar bawaan halaman. Kalau kosong,
+ * yang tampil placeholder — bukan kotak kosong, jadi tinggi banner tetap sama.
+ *
+ * @param string $label Teks alternatif.
+ * @return string
+ */
+function accupro_default_banner( $label ) {
+	return accupro_attachment_media(
+		accupro_opt( 'banner_image', 0 ),
+		'4 / 3',
+		array( 'label' => $label )
+	);
 }

@@ -275,11 +275,14 @@ function accupro_sc_tim() {
 	foreach ( $items as $item ) {
 		$role = get_post_meta( $item->ID, 'accupro_jabatan', true );
 		?>
-		<article class="card card--pad">
-			<h3><?php echo esc_html( get_the_title( $item ) ); ?></h3>
-			<?php if ( $role ) : ?>
-				<p class="tiny" style="margin-top:4px"><?php echo esc_html( $role ); ?></p>
-			<?php endif; ?>
+		<article class="card">
+			<?php echo accupro_sc_media( $item->ID, '3 / 4', 'card__media' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			<div class="card__body">
+				<h3><?php echo esc_html( get_the_title( $item ) ); ?></h3>
+				<?php if ( $role ) : ?>
+					<p class="tiny" style="margin-top:4px"><?php echo esc_html( $role ); ?></p>
+				<?php endif; ?>
+			</div>
 		</article>
 		<?php
 	}

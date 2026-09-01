@@ -28,7 +28,7 @@ get_header();
 			'kicker'  => '<span class="eyebrow">' . esc_html__( 'Gratis, tanpa daftar', 'accupro' ) . '</span>',
 			'heading' => post_type_archive_title( '', false ),
 			'lede'    => __( 'Hitung perkiraan pajak dan biaya pengurusan langsung di browser Anda. Tidak ada angka yang dikirim ke server kami.', 'accupro' ),
-			'media'   => accupro_attachment_media( 0, '4 / 3', array( 'label' => __( 'Ilustrasi alat hitung', 'accupro' ) ) ),
+			'media'   => accupro_default_banner( __( 'Ilustrasi alat hitung', 'accupro' ) ),
 		)
 	);
 	?>
