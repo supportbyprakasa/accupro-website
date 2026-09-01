@@ -10,3 +10,9 @@ shots/
 # (See README §4.)
 dist/*
 !dist/assets/
+
+# Sidecar files macOS writes on non-HFS volumes (this repo lives on an exFAT
+# external drive). They shadow every real file as `._name` and are not text —
+# php -l and the build both choke on them if they get committed.
+._*
+.DS_Store

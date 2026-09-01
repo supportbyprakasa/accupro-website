@@ -1,0 +1,324 @@
+{
+  "_note": "Prose that exists on the live site in all three languages (hero, pillars, stats labels, cta, sectionHeading, testimonial quotes, company.tagline/hours, service names, nav/footer chrome) is copied VERBATIM per language from content-recap/ — see the {id,en,ch} objects and the top-level i18n block. Everything invented for this rebuild (categories, tools, FAQ copy, credentials, articles, the 'Content coming soon' service pages) has no source text to translate, so it stays in English and is reused unchanged across all three language builds.",
+  "company": {
+    "legalName": "PT. Accurate Pro International",
+    "shortName": "Accupro",
+    "tagline": {
+      "id": "Mitra terpercaya dalam solusi Pajak, Hukum, Legalitas dan Layanan Bisnis anda, berkomitmen pada Integritas, Profesionalisme, dan Inovasi untuk mendukung pertumbuhan dan keberlanjutan bisnis anda di tingkat lokal maupun global.",
+      "en": "A trusted partner in your Tax, Legal, Legality and Business Services solutions, committed to Integrity, Professionalism and Innovation to support the growth and sustainability of your business locally and globally.",
+      "ch": "税务、法律、合法性和商业服务解决方案中值得信赖的合作伙伴，致力于诚信、专业和创新，以支持您的业务在本地和全球层面的增长和可持续性。"
+    },
+    "phones": [
+      "021-2309-6155",
+      "021-3886-4200"
+    ],
+    "whatsapp": "0811-1999-9553",
+    "whatsappIntl": "6281119999553",
+    "emails": [
+      "accupro99@gmail.com",
+      "accurateprointernational@gmail.com"
+    ],
+    "addressLine": "Jl. Bandengan Utara No. 80",
+    "addressLine2": "Ruko Bandengan Indah No.10 Blok B-36, Penjaringan",
+    "city": "Jakarta Utara, Jakarta 14440",
+    "hours": {
+      "id": "Senin - Jumat : 8:00 AM - 5:00 PM",
+      "en": "Monday - Friday : 8:00 AM - 5:00 PM",
+      "ch": "周一至周五：08:00 - 17:00"
+    },
+    "social": {
+      "instagram": "https://instagram.com/accupro.co.id",
+      "facebook": "https://facebook.com/profile.php?id=61552054107995",
+      "linkedin": "https://linkedin.com/in/accu-pro-international",
+      "tiktok": "https://tiktok.com/@accupro.co.id"
+    }
+  },
+  "hero": {
+    "id": {
+      "slides": [
+        { "headline": "Pakar Pajak Andal, Solusi Tepat", "subtext": "Tim ahli PT. Accurate Pro International menyediakan konsultasi, perencanaan, dan pengurusan pajak untuk kesuksesan bisnis Anda." },
+        { "headline": "Pajak Mudah, Bisnis Lancar", "subtext": "PT. Accurate Pro International membantu Anda mengelola pajak dengan efisien dan akurat, meminimalisir risiko, dan memaksimalkan keuntungan bisnis." },
+        { "headline": "Optimalkan Pajak, Maksimalkan Keuntungan", "subtext": "PT. Accurate Pro International memberikan strategi perencanaan pajak yang terukur untuk mengurangi beban pajak dan meningkatkan profitabilitas bisnis Anda." }
+      ],
+      "primary": "Pakar Pajak Andal, Solusi Tepat"
+    },
+    "en": {
+      "slides": [
+        { "headline": "Reliable Tax Expert, the Right Solution", "subtext": "Our expert team at PT. Accurate Pro International provides tax consultation, planning and processing for your business's success." },
+        { "headline": "Easy Tax, Smooth Business", "subtext": "PT. Accurate Pro International helps you manage tax efficiently and accurately, minimising risk and maximising business profit." },
+        { "headline": "Optimize Tax, Maximize Profit", "subtext": "PT. Accurate Pro International provides a measured tax planning strategy to reduce your tax burden and increase your business profitability." }
+      ],
+      "primary": "Reliable Tax Expert, the Right Solution"
+    },
+    "ch": {
+      "slides": [
+        { "headline": "可靠的税务专家，正确的解决方案", "subtext": "Accupro International 的专家团队为您的业务成功提供咨询、规划和税务管理。" },
+        { "headline": "税赋轻松 营商顺畅", "subtext": "Accupro International 帮助您高效、准确地管理税务，最大限度地降低风险并最大限度地提高商业利润。" },
+        { "headline": "优化税收，最大化利润", "subtext": "Accupro International 提供可衡量的税务规划策略，以减轻您的税务负担并提高您的业务盈利能力。" }
+      ],
+      "primary": "可靠的税务专家，正确的解决方案"
+    }
+  },
+  "pillars": [
+    {
+      "id": "taxes",
+      "icon": "chart",
+      "title": { "id": "Perpajakan", "en": "Taxes", "ch": "税收" },
+      "text": {
+        "id": "Kami mendukung Anda dalam mengelola kewajiban perpajakan, baik sebagai perusahaan maupun individu. Layanan kami mencakup konsultasi pajak hingga perhitungan pajak secara akurat dan tepat waktu.",
+        "en": "We support you in managing your tax obligations, both as a company and an individual. Our services range from tax consultation to accurate and timely tax calculations.",
+        "ch": "我们支持您管理税务义务，无论是作为公司还是个人。我们的服务涵盖税务咨询以及准确、及时的税务计算。"
+      },
+      "shot": "Photo: desk with tax returns, calculator and laptop",
+      "ratio": "4 / 3",
+      "px": "min 1200px",
+      "photo": "tax-docs"
+    },
+    {
+      "id": "legality",
+      "icon": "building",
+      "title": { "id": "Legalitas", "en": "Legality", "ch": "合法性" },
+      "text": {
+        "id": "Kami menyediakan layanan konsultasi dan solusi untuk pengurusan perizinan usaha. Apapun skala bisnis Anda kecil, menengah, atau besar kami siap membantu memastikan legalitas usaha Anda terpenuhi.",
+        "en": "We provide consulting services and solutions for business licensing. However small, medium or large the scale of your business, we are ready to help ensure the legality of your business is fulfilled.",
+        "ch": "我们提供咨询服务和解决方案，帮助办理企业许可手续。无论您的业务规模是小型、中型还是大型，我们都愿意协助您确保满足所有法律要求。"
+      },
+      "shot": "Photo: signing of a notarial deed",
+      "ratio": "4 / 3",
+      "px": "min 1200px",
+      "photo": "signing"
+    },
+    {
+      "id": "bookkeeping",
+      "icon": "book",
+      "title": { "id": "Pembukuan", "en": "Book Keeping", "ch": "簿记" },
+      "text": {
+        "id": "Kami memberikan konsultasi pembukuan dan pajak bagi perusahaan atau individu. Baik mencakup pencatatan, penyimpanan dan penyajian kembali transaksi keuangan.",
+        "en": "We provide bookkeeping and tax consultation for companies or individuals. Both include recording, storing and restating financial transactions.",
+        "ch": "我们为企业或个人提供簿记和税务咨询服务，包括财务交易的记录、存储和再呈现。"
+      },
+      "shot": "Photo: ledger and financial statements on a work desk",
+      "ratio": "4 / 3",
+      "px": "min 1200px",
+      "photo": "filed-docs"
+    }
+  ],
+  "stats": [
+    { "id": "business-solutions", "value": "95%", "label": { "id": "Solusi Bisnis", "en": "Business Solutions", "ch": "商业解决方案" }, "flag": true },
+    { "id": "growing-business", "value": "80%", "label": { "id": "Bisnis Berkembang", "en": "Growing Business", "ch": "不断增长的业务" }, "flag": true },
+    { "id": "services-offered", "value": "24", "label": { "id": "Layanan tersedia", "en": "Services offered", "ch": "提供的服务" }, "flag": false },
+    { "id": "languages", "value": "3", "label": { "id": "Bahasa: ID / EN / 中文", "en": "Languages: ID / EN / 中文", "ch": "语言：ID / EN / 中文" }, "flag": false }
+  ],
+  "cta": {
+    "id": { "heading": "Konsultasikan Bisnis Kamu Secara Gratis Sekarang!", "text": "Kami mengundang Anda untuk memanfaatkan sesi konsultasi gratis yang dirancang khusus untuk membantu Anda mengidentifikasi dan mengatasi berbagai tantangan yang dihadapi dalam bisnis Anda." },
+    "en": { "heading": "Consult Your Business for Free Now!", "text": "We invite you to take advantage of a free consultation session specifically designed to help you identify and address the challenges faced in your business." },
+    "ch": { "heading": "立即免费咨询您的业务！", "text": "我们邀请您参加免费咨询会议，该会议专门旨在帮助您识别和解决您的业务面临的挑战。" }
+  },
+  "sectionHeading": { "id": "Yang Bisa Kamu Dapatkan", "en": "What You Can Get", "ch": "你能得到什么" },
+  "testimonials": [
+    {
+      "name": "Ibu Cindy",
+      "company": "PT. ANUGERAH ABADI MEDIKA",
+      "quote": {
+        "id": "Sejauh ini pelayanan memuaskan, cepat tanggap dan respon baik. Sangat helpful terutama dalam sistem Pajak.",
+        "en": "So far, the service has been satisfying, responsive, and has a good response. Very helpful, especially with the tax system.",
+        "ch": "到目前为止，服务令人满意，反应迅速，回复良好。特别是在税务系统方面非常有帮助。"
+      }
+    },
+    {
+      "name": "Ibu Irene",
+      "company": "PT. KARYA ALLPAS SUKSES",
+      "quote": {
+        "id": "Ya so far, kami cukup puas dengan pelayanan dari Accu Pro yang fast response. Semoga ke depannya bisa lebih baik lagi dan memperluas layanannya.",
+        "en": "So far, we are quite satisfied with Accu Pro's fast response service. Hopefully, it will continue to improve and expand its services in the future.",
+        "ch": "到目前为止，我们对 Accu Pro 的快速响应服务感到满意。希望未来能够做得更好，并拓展服务范围。"
+      }
+    },
+    {
+      "name": "Mr. Zhang",
+      "company": "PT. KEMURNIAN TINGGI GAS",
+      "quote": {
+        "id": "Pelayanan bagus. Dan respon nya cepat dan membantu banget kalo ada hal yang tidak di ketahui di jelaskan secara detail. Makasih accu pro.",
+        "en": "Great service! The response is fast and very helpful. If there's anything unclear, they explain it in detail. Thank you, Accu Pro!",
+        "ch": "服务很好，响应快速，遇到不懂的地方都会详细讲解。谢谢 Accu Pro！"
+      }
+    },
+    {
+      "name": "Claudia",
+      "company": "[COMPANY NAME]",
+      "quote": {
+        "id": "Saya happy banget pakai jasa ACCU PRO. Teman-teman nya sangat fast response dan juga memberikan solusi yang baik. Semoga kita bisa terus bekerja sama dengan baik yah. Thank you, ACCU PRO.",
+        "en": "I'm really happy using ACCU PRO's services! The team is very fast in responding and provides great solutions. I hope we can continue to work well together. Thank you, ACCU PRO!",
+        "ch": "我非常开心使用ACCU PRO的服务。团队反应迅速，并且提供了很好的解决方案。希望我们能继续良好合作。谢谢你，ACCU PRO！"
+      }
+    }
+  ],
+  "team": [
+    { "name": "Kurniawan, S.H., M.Kn., CTL", "role": "Direktur", "shot": "Portrait photo — same backdrop for all four", "photo": "portrait" },
+    { "name": "Maria Batvin, S.M., CHRO", "role": "Marketing", "shot": "Portrait photo — same backdrop for all four", "photo": "portrait" },
+    { "name": "Habibah", "role": "Staff Pajak", "shot": "Portrait photo — same backdrop for all four", "photo": "portrait" },
+    { "name": "Nares", "role": "Staff Pajak", "shot": "Portrait photo — same backdrop for all four", "photo": "portrait" }
+  ],
+  "categories": [
+    {
+      "slug": "tax-reporting",
+      "icon": "chart",
+      "name": "Tax & Reporting",
+      "blurb": "Monthly and annual tax obligations for companies and individuals, including audit correspondence.",
+      "shot": "Photo: tax returns, calculator and laptop on a work desk",
+      "ratio": "4 / 3",
+      "photo": "tax-docs"
+    },
+    {
+      "slug": "tax-registration",
+      "icon": "file",
+      "name": "Registration & Tax Accounts",
+      "blurb": "Getting registered and staying registered — NPWP, EFIN, and CORETAX accounts.",
+      "shot": "Photo: CORETAX interface being operated on screen",
+      "ratio": "4 / 3",
+      "photo": "screen"
+    },
+    {
+      "slug": "company-legality",
+      "icon": "building",
+      "name": "Company Legality",
+      "blurb": "Setting up, amending and housing a legal entity in Indonesia.",
+      "shot": "Photo: signing of a notarial deed",
+      "ratio": "4 / 3",
+      "photo": "signing"
+    },
+    {
+      "slug": "stay-permits-visa",
+      "icon": "plane",
+      "name": "Stay Permits & Visa",
+      "blurb": "Work, investor and family stay permits plus business visas for foreign nationals.",
+      "shot": "Photo: passport, KITAS card and immigration paperwork",
+      "ratio": "4 / 3",
+      "photo": "passport"
+    },
+    {
+      "slug": "trademark-ip",
+      "icon": "badge",
+      "name": "Trademark & IP",
+      "blurb": "Protecting your brand in Indonesia, for local and foreign applicants alike.",
+      "shot": "Photo: trademark certificate and product branding",
+      "ratio": "4 / 3",
+      "photo": "branding"
+    }
+  ],
+  "services": [
+    { "slug": "corporate-tax-processing", "name": "Pengurusan Pajak Badan", "shot": "Photo: monthly tax filing documents", "cat": "tax-reporting", "photo": "tax-docs" },
+    { "slug": "individual-tax-processing", "name": "Pengurusan Pajak Orang Pribadi", "shot": "Photo: individual taxpayer paperwork", "cat": "tax-reporting", "photo": "tax-docs" },
+    { "slug": "corporate-annual-tax-return", "name": "Pengurusan SPT Tahunan Badan", "shot": "Photo: annual corporate return and financial statements", "cat": "tax-reporting", "photo": "tax-docs" },
+    { "slug": "individual-annual-tax-return", "name": "Pengurusan SPT Tahunan Orang Pribadi", "shot": "Photo: individual annual return being filed online", "cat": "tax-reporting", "photo": "screen" },
+    { "slug": "corporate-annual-tax-return-nil", "name": "Pengurusan SPT Tahunan Badan (Nihil)", "shot": "Photo: nil return document", "cat": "tax-reporting", "photo": "tax-docs" },
+    { "slug": "sp2dk-response", "name": "Pembalasan jawaban surat SP2DK", "shot": "Photo: SP2DK letter on a desk", "cat": "tax-reporting", "photo": "tax-docs" },
+    { "slug": "pkp-confirmation", "name": "Pengukuhan Pengusaha Kena Pajak (PKP)", "shot": "Photo: PKP confirmation certificate", "cat": "tax-reporting", "photo": "certificate" },
+    { "slug": "corporate-npwp", "name": "Pembuatan NPWP Badan", "shot": "Photo: corporate NPWP card", "cat": "tax-registration", "photo": "stamp" },
+    { "slug": "individual-npwp", "name": "Pembuatan NPWP Orang Pribadi", "shot": "Photo: individual NPWP card", "cat": "tax-registration", "photo": "stamp" },
+    { "slug": "npwp-data-update", "name": "Perubahan Data NPWP", "shot": "Photo: tax office service counter", "cat": "tax-registration", "photo": "reception" },
+    { "slug": "efin-registration", "name": "Pembuatan EFIN", "shot": "Photo: EFIN activation letter", "cat": "tax-registration", "photo": "stamp" },
+    { "slug": "coretax-pma-account", "name": "Pembuatan akun CORETAX PMA", "shot": "Photo: CORETAX login screen", "cat": "tax-registration", "photo": "screen" },
+    { "slug": "coretax-pmdn-account", "name": "Pembuatan akun CORETAX PMDN", "shot": "Photo: CORETAX dashboard", "cat": "tax-registration", "photo": "screen" },
+    { "slug": "coretax-personal-activation", "name": "Pengaktifan akun CORETAX Pribadi", "shot": "Photo: personal CORETAX activation on a phone", "cat": "tax-registration", "photo": "screen" },
+    { "slug": "company-establishment", "name": "Pendirian PT/CV/YAYASAN", "shot": "Photo: deed of establishment and company stamp", "cat": "company-legality", "photo": "stamp" },
+    { "slug": "company-legality", "name": "Pembuatan Legalitas Perusahaan", "shot": "Photo: NIB and business licence documents", "cat": "company-legality", "photo": "signing" },
+    { "slug": "deed-amendment", "name": "Perubahan AKTA", "shot": "Photo: amended deed being signed", "cat": "company-legality", "photo": "signing" },
+    { "slug": "virtual-office", "name": "Sewa Virtual Office", "shot": "Photo: office building reception", "cat": "company-legality", "photo": "reception" },
+    { "slug": "work-kitas", "name": "Pembuatan KITAS Kerja", "shot": "Photo: KITAS card and passport", "cat": "stay-permits-visa", "photo": "passport" },
+    { "slug": "investor-kitas", "name": "Pembuatan KITAS Investor", "shot": "Photo: shareholder documents and passport", "cat": "stay-permits-visa", "photo": "passport" },
+    { "slug": "family-kitas", "name": "Pembuatan KITAS Penyatuan Keluarga", "shot": "Photo: expatriate family paperwork", "cat": "stay-permits-visa", "photo": "passport" },
+    { "slug": "business-visa", "name": "Pembuatan VISA Bisnis", "shot": "Photo: passport with visa sticker", "cat": "stay-permits-visa", "photo": "passport" },
+    { "slug": "trademark-pma", "name": "Pembuatan Merek PMA/WNA", "shot": "Photo: trademark certificate", "cat": "trademark-ip", "photo": "certificate" },
+    { "slug": "trademark-pmdn", "name": "Pembuatan Merek PMDN/WNI", "shot": "Photo: brand assets and certificate", "cat": "trademark-ip", "photo": "branding" }
+  ],
+  "tools": [
+    {
+      "slug": "pph-badan",
+      "name": "Corporate Income Tax (PPh Badan) Calculator",
+      "note": "Rates 22%, 19% for listed companies, 0.5% final for MSMEs, plus the Article 31E facility.",
+      "kind": "tax"
+    },
+    {
+      "slug": "pph21-ter",
+      "name": "PPh 21 TER Calculator",
+      "note": "Average Effective Rate categories A/B/C under PMK 168/2023.",
+      "kind": "tax"
+    },
+    {
+      "slug": "pph21-masa",
+      "name": "PPh 21 Final Period Calculator",
+      "note": "Final tax period, with PTKP provisions across multiple years.",
+      "kind": "tax"
+    },
+    {
+      "slug": "pph23",
+      "name": "PPh 23 Calculator",
+      "note": "Nine income types, 15% and 2% rates, non-NPWP adjustment.",
+      "kind": "tax"
+    },
+    {
+      "slug": "pph4-2",
+      "name": "PPh Article 4(2) Calculator",
+      "note": "Final rates for rent, land and building transfers, and construction services.",
+      "kind": "tax"
+    },
+    {
+      "slug": "company-setup-cost",
+      "name": "Company Setup Cost Simulator",
+      "note": "Estimated cost and timeline by entity type, paid-up capital and domicile.",
+      "kind": "own",
+      "_config_note": "PLACEHOLDER figures — replace with real prices before this tool goes live. Nothing else needs to change; build.mjs reads this object as-is.",
+      "config": {
+        "notaryFee": { "pt": 8000000, "pma": 15000000, "cv": 5000000, "yayasan": 6000000 },
+        "ossFee": 2000000,
+        "virtualOffice": { "jakarta": 6000000, "other": 3500000 },
+        "timelineDays": { "pt": 14, "pma": 21, "cv": 10, "yayasan": 14, "default": 14 }
+      }
+    },
+    {
+      "slug": "kitas-requirements",
+      "name": "KITAS Requirements & Timeline Checker",
+      "note": "Pick a KITAS type, get the document checklist and a stage-by-stage estimate.",
+      "kind": "own",
+      "_config_note": "PLACEHOLDER figures — replace with real timelines before this tool goes live.",
+      "config": {
+        "timelineWeeks": { "work": 5, "investor": 4, "family": 3, "default": 4 }
+      }
+    },
+    {
+      "slug": "trademark-cost",
+      "name": "Trademark Filing Cost Simulator",
+      "note": "Per class of goods or services, distinguishing local and foreign applicants.",
+      "kind": "own",
+      "_config_note": "PLACEHOLDER figures — the DJKI official fee is a real government rate and should be checked/updated; the service fee is Accupro's own and is entirely a placeholder.",
+      "config": {
+        "officialFeePerClass": { "local-umkm": 1000000, "local": 1800000, "foreign": 3000000 },
+        "serviceFee": 2500000
+      }
+    },
+    {
+      "slug": "monthly-obligations",
+      "name": "Monthly Tax Obligation Checker",
+      "note": "By entity type and PKP status — what must be reported each month.",
+      "kind": "own"
+    }
+  ],
+  "i18n": {
+    "id": {
+      "home": "Home", "about": "Tentang Kami", "services": "Layanan", "contact": "Kontak",
+      "headerCta": "Hubungi Kami", "skip": "Lewati ke konten", "menu": "Buka menu", "close": "Tutup menu",
+      "freeConsultationEyebrow": "Konsultasi gratis"
+    },
+    "en": {
+      "home": "Home", "about": "About Us", "services": "Service", "contact": "Contact",
+      "headerCta": "Contact Us", "skip": "Skip to content", "menu": "Open menu", "close": "Close menu",
+      "freeConsultationEyebrow": "Free consultation"
+    },
+    "ch": {
+      "home": "家", "about": "关于我们", "services": "服务", "contact": "接触",
+      "headerCta": "联系我们", "skip": "跳至内容", "menu": "打开菜单", "close": "关闭菜单",
+      "freeConsultationEyebrow": "免费咨询"
+    }
+  }
+}
