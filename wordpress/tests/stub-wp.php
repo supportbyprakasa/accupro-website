@@ -91,6 +91,7 @@ function number_format_i18n( $n ) { return number_format( (float) $n, 0, ',', '.
 function sanitize_text_field( $v ) { return trim( strip_tags( (string) $v ) ); }
 function sanitize_textarea_field( $v ) { return trim( strip_tags( (string) $v ) ); }
 function sanitize_key( $v ) { return preg_replace( '/[^a-z0-9_\-]/', '', strtolower( (string) $v ) ); }
+function absint( $v ) { return abs( (int) $v ); }
 function sanitize_html_class( $v ) { return preg_replace( '/[^A-Za-z0-9_\-]/', '', (string) $v ); }
 function sanitize_title( $v ) { return trim( preg_replace( '/-+/', '-', preg_replace( '/[^a-z0-9]+/', '-', strtolower( (string) $v ) ) ), '-' ); }
 function wp_unslash( $v ) { return is_array( $v ) ? array_map( 'wp_unslash', $v ) : stripslashes( (string) $v ); }
@@ -136,6 +137,7 @@ function plugin_basename( $file ) { return basename( dirname( $file ) ) . '/' . 
 
 function get_option( $key, $default = false ) { return $GLOBALS['stub_options'][ $key ] ?? $default; }
 function update_option( $key, $value ) { $GLOBALS['stub_options'][ $key ] = $value; return true; }
+function delete_option( $key ) { unset( $GLOBALS['stub_options'][ $key ] ); return true; }
 function register_setting() {}
 function settings_fields() { echo '<input type="hidden" name="option_page" value="stub">'; }
 function submit_button( $text = 'Simpan' ) { echo '<p><button type="submit">' . esc_html( $text ) . '</button></p>'; }

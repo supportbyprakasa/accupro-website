@@ -179,3 +179,21 @@ function accupro_service_options() {
 
 	return $options;
 }
+
+/**
+ * Judul untuk dibandingkan, tanpa peduli spasi.
+ *
+ * Ditemukan lewat perbandingan langsung dengan situs live: judul tim di sana
+ * tertulis "Kurniawan, S.H.,M.Kn.,CTL" — tanpa spasi setelah sebagian koma —
+ * sementara data/site.json menuliskannya "Kurniawan, S.H., M.Kn., CTL" dengan
+ * spasi. Pencarian judul persis (exact match) gagal pada perbedaan sekecil
+ * itu, dan seeder yang mengira entrinya belum ada akan MEMBUAT DUPLIKAT di
+ * samping yang asli — persis bug yang sudah diperbaiki untuk 24 layanan,
+ * tapi masih ada di jalur pencarian tim dan testimoni sampai perbaikan ini.
+ *
+ * @param string $title Judul apa adanya.
+ * @return string
+ */
+function accupro_normalize_title( $title ) {
+	return strtolower( preg_replace( '/\s+/', '', (string) $title ) );
+}

@@ -374,7 +374,30 @@ function accupro_sanitize_settings( $input ) {
 		}
 	}
 
+	if ( ! empty( $out['logo_image'] ) ) {
+		accupro_maybe_set_site_icon( $out['logo_image'] );
+	}
+
 	return $out;
+}
+
+/**
+ * Pakai logo yang baru dipilih sebagai ikon situs (favicon di tab browser),
+ * kalau situs ini belum punya ikon sendiri.
+ *
+ * Situs yang sudah live biasanya sudah mengatur ini sendiri lewat
+ * Appearance > Customize — pilihan itu tidak boleh ditimpa diam-diam. Ini
+ * hanya mengisi kekosongan pada instalasi baru, supaya tab browser tidak
+ * kosong padahal logo sudah ada.
+ *
+ * @param int $attachment_id ID lampiran logo.
+ */
+function accupro_maybe_set_site_icon( $attachment_id ) {
+	if ( get_option( 'site_icon' ) ) {
+		return;
+	}
+
+	update_option( 'site_icon', (int) $attachment_id );
 }
 
 /**

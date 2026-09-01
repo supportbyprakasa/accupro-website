@@ -51,8 +51,9 @@ ada karena tersimpan di plugin, bukan di tema.
 ## Memasang di situs yang sudah berjalan
 
 Situs live memakai tema `zebizz` dengan Elementor Pro, dan plugin
-`accupro-blocks` yang mendaftarkan post type `layanan`. Tiga hal yang sudah
-ditangani plugin ini:
+`accupro-blocks` yang mendaftarkan post type `layanan`. Empat hal yang sudah
+ditangani plugin ini, semuanya ditemukan dengan membandingkan langsung ke data
+live lewat REST API-nya, bukan dengan menebak:
 
 **1. Post type tidak didaftarkan dua kali.** `accupro_register_post_types()`
 melewati tipe yang sudah ada. Post lama tetap utuh dan langsung dipakai tema
@@ -67,8 +68,21 @@ membuat 24 layanan baru di sebelah yang lama — 48 layanan, separuhnya duplikat
 dan setiap URL yang sudah punya peringkat pencarian dapat kembaran.
 
 **3. Konten lama diadopsi, tidak ditimpa.** Layanan dicari lewat slug, lalu
-lewat judul persis; tim dan testimoni dicari lewat judul. Yang ditemukan
-dilewati — hanya field kosong yang diisi.
+lewat judul; tim dan testimoni dicari lewat judul. Pencarian judul tidak peduli
+spasi (`accupro_normalize_title()`) — dicocokkan langsung dengan judul asli di
+situs live, ternyata dua nama tim tertulis tanpa spasi setelah sebagian koma
+("Kurniawan, S.H.,M.Kn.,CTL"), sementara catatan kami menuliskannya dengan
+spasi. Pencarian judul persis akan gagal pada perbedaan sekecil itu dan
+menganggap entrinya belum ada — seeder lalu membuat duplikat di sebelah yang
+asli, persis seperti kasus 24 layanan di atas. `data/site.json` sudah
+diperbaiki ke ejaan asli, dan pencarian tim/testimoni sekarang tahan terhadap
+perbedaan spasi meski suatu saat sumber datanya meleset lagi.
+
+**4. Favicon otomatis, tanpa menimpa yang sudah ada.** Situs live punya
+favicon asli dari logo yang sama. Sekarang, begitu logo dipilih di
+*Accupro → Perusahaan*, gambar itu otomatis dipakai sebagai Site Icon
+WordPress — tapi hanya kalau situsnya belum punya ikon sendiri. Di situs
+produksi yang sudah punya favicon, pengaturan itu tidak disentuh.
 
 Diuji dengan mensimulasikan kondisi live di WordPress lokal (24 layanan berslug
 Indonesia tanpa kategori, 4 tim, 4 testimoni), lalu menjalankan seeder dua kali:

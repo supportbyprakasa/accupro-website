@@ -307,6 +307,23 @@ $GLOBALS['stub_current_path'] = '/';
 stub_report( accupro_nav_is_current( 'https://example.test/' ), 'menu Home menyala di beranda' );
 stub_report( ! accupro_nav_is_current( 'https://example.test/layanan/' ), 'Layanan tidak menyala di beranda' );
 
+/* --------------------------------------------- favicon selaras dengan live */
+
+echo "\n== favicon ==\n";
+
+// Situs live punya favicon asli (Site Icon WordPress dari logo yang sama).
+// Instalasi baru tidak boleh berakhir dengan tab browser kosong padahal
+// logo sudah dipilih — tapi situs yang SUDAH punya ikon sendiri (produksi)
+// tidak boleh ditimpa diam-diam.
+delete_option( 'site_icon' );
+accupro_sanitize_settings( array( 'logo_image' => 171 ) );
+stub_report( 171 === (int) get_option( 'site_icon' ), 'favicon terisi otomatis dari logo pada instalasi baru' );
+
+accupro_sanitize_settings( array( 'logo_image' => 999 ) );
+stub_report( 171 === (int) get_option( 'site_icon' ), 'favicon yang sudah ada tidak ditimpa oleh logo baru' );
+
+delete_option( 'site_icon' );
+
 /* ---------------------------------------------------------- teks tak lolos */
 
 echo "\n== bahasa ==\n";

@@ -244,18 +244,7 @@ function accupro_find_service( $slug, $name ) {
 		return $found;
 	}
 
-	$by_title = get_posts(
-		array(
-			'post_type'        => 'layanan',
-			'posts_per_page'   => 1,
-			'post_status'      => 'any',
-			'title'            => $name,
-			'no_found_rows'    => true,
-			'suppress_filters' => false,
-		)
-	);
-
-	return $by_title ? $by_title[0] : null;
+	return accupro_find_by_title( 'layanan', $name );
 }
 
 /**
@@ -344,18 +333,28 @@ function accupro_adopt_service( $post, $service ) {
  * @return WP_Post|null
  */
 function accupro_find_by_title( $type, $title ) {
-	$found = get_posts(
-		array(
-			'post_type'        => $type,
-			'posts_per_page'   => 1,
-			'post_status'      => 'any',
-			'title'            => $title,
-			'no_found_rows'    => true,
-			'suppress_filters' => false,
-		)
-	);
+	$target = accupro_normalize_title( $title );
 
-	return $found ? $found[0] : null;
+	if ( '' === $target ) {
+		return null;
+	}
+
+	// Bukan pencocokan SQL persis: judul di post type ini selalu sedikit
+	// (puluhan, bukan ribuan), jadi memuat semuanya dan membandingkan tanpa
+	// spasi jauh lebih murah daripada risiko gagal cocok gara-gara satu spasi
+	// yang hilang — lihat catatan pada accupro_normalize_title().
+	foreach ( get_posts( array(
+		'post_type'      => $type,
+		'posts_per_page' => -1,
+		'post_status'    => 'any',
+		'no_found_rows'  => true,
+	) ) as $post ) {
+		if ( accupro_normalize_title( $post->post_title ) === $target ) {
+			return $post;
+		}
+	}
+
+	return null;
 }
 
 /**
