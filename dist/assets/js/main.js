@@ -63,36 +63,56 @@
     var dots = Array.prototype.slice.call(hero.querySelectorAll('.hero__dot'));
     var arrows = Array.prototype.slice.call(hero.querySelectorAll('.hero__arrow'));
     var activeIndex = 0;
-    /* Only the .is-active slide is position:relative (in flow); the other two
-       are position:absolute (out of flow) — so .hero__slides' height always
-       tracks whichever slide is actually showing, no JS measurement needed.
-       Same trick for .hero__frame-slide, so the photo crossfades in sync with
-       the headline instead of sitting there static. */
+    var timer = null;
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     function showSlide(index) {
       activeIndex = (index + slides.length) % slides.length;
       slides.forEach(function (slide, i) {
-        slide.classList.toggle('is-active', i === activeIndex);
+        var active = i === activeIndex;
+        slide.classList.toggle('is-active', active);
+        slide.setAttribute('aria-hidden', String(!active));
       });
       frameSlides.forEach(function (slide, i) {
-        slide.classList.toggle('is-active', i === activeIndex);
+        var active = i === activeIndex;
+        slide.classList.toggle('is-active', active);
+        slide.setAttribute('aria-hidden', String(!active));
       });
       dots.forEach(function (dot, i) {
-        dot.classList.toggle('is-active', i === activeIndex);
+        var active = i === activeIndex;
+        dot.classList.toggle('is-active', active);
+        if (active) dot.setAttribute('aria-current', 'true');
+        else dot.removeAttribute('aria-current');
       });
+    }
+    function stopAutoplay() {
+      if (timer) window.clearInterval(timer);
+      timer = null;
+    }
+    function startAutoplay() {
+      stopAutoplay();
+      if (reduceMotion.matches) return;
+      timer = window.setInterval(function () { showSlide(activeIndex + 1); }, 6000);
     }
     dots.forEach(function (dot) {
       dot.addEventListener('click', function () {
         showSlide(Number(dot.dataset.slideIndex));
+        startAutoplay();
       });
     });
     arrows.forEach(function (arrow) {
       arrow.addEventListener('click', function () {
         showSlide(activeIndex + (arrow.dataset.slide === 'next' ? 1 : -1));
+        startAutoplay();
       });
     });
-    setInterval(function () {
-      showSlide(activeIndex + 1);
-    }, 6000);
+    hero.addEventListener('mouseenter', stopAutoplay);
+    hero.addEventListener('mouseleave', startAutoplay);
+    hero.addEventListener('focusin', stopAutoplay);
+    hero.addEventListener('focusout', function (e) {
+      if (!hero.contains(e.relatedTarget)) startAutoplay();
+    });
+    reduceMotion.addEventListener('change', startAutoplay);
+    startAutoplay();
   }
 
   /* ---- accordions ------------------------------------------------------ */

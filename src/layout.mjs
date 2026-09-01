@@ -30,6 +30,11 @@ export const navItems = T => [
    duplicated per language. */
 export const toDistRoot = (d, lang) => up(d) + (lang === 'id' ? '' : '../');
 
+/* Shared assets live outside the language trees. A small build-time version
+   prevents a production deploy from serving stale CSS/JS after an update. */
+const ASSET_VERSION = process.env.ASSET_VERSION || '20260901-2';
+const assetHref = (d, lang, rel) => `${toDistRoot(d, lang)}${rel}${rel.includes('?') ? '&' : '?'}v=${ASSET_VERSION}`;
+
 export const langHref = (d, lang, target, relPath) => {
   const into = target === 'id' ? '' : `${target}/`;
   return toDistRoot(d, lang) + into + relPath || '.';
@@ -166,10 +171,10 @@ ${toolConfig ? `<script>window.TOOL_CONFIG = ${JSON.stringify(toolConfig)};</scr
    the real domain as duplicate content. Set PREVIEW=1 for a staging build. */
 export const NOINDEX = process.env.PREVIEW === '1';
 
-/* Matches the SITE_URL build environment variable already declared in
-   netlify.toml, so link previews resolve to the deployed preview URL without
-   a second place to configure it. */
-const SITE_URL = (process.env.SITE_URL || 'https://accupro-preview.netlify.app').replace(/\/$/, '');
+/* Keep canonical and social-preview URLs aligned with sitemap.xml. Preview
+   builds override SITE_URL with their actual host; production defaults to the
+   public Accupro domain. */
+const SITE_URL = (process.env.SITE_URL || 'https://accuprointernational.co.id').replace(/\/$/, '');
 
 /* `path` is the page's own dist-relative URL (e.g. 'services/tax-reporting/
    corporate-tax-processing.html') — used for the canonical link and og:url.
@@ -178,8 +183,9 @@ const SITE_URL = (process.env.SITE_URL || 'https://accupro-preview.netlify.app')
    preview shows the page's real hero photo instead of a generic placeholder
    or nothing at all. */
 export const head = ({ title, desc, d = 0, path = '', ogCat = 'team-work', ogSeed = '', lang = 'en', T }) => {
-  const langPrefix = lang === 'id' ? '' : `${lang}/`;
-  const url = `${SITE_URL}/${langPrefix}${path.replace(/index\.html$/, '')}`;
+  const pagePath = path.replace(/index\.html$/, '');
+  const localizedUrl = code => `${SITE_URL}/${code === 'id' ? '' : `${code}/`}${pagePath}`;
+  const url = localizedUrl(lang);
   const image = photoUrl(ogCat, ogSeed || path || title, { ratio: '1200 / 630', w: 1200 });
   return `<!doctype html>
 <html lang="${lang === 'ch' ? 'zh-CN' : lang}">
@@ -189,8 +195,11 @@ export const head = ({ title, desc, d = 0, path = '', ogCat = 'team-work', ogSee
 <title>${title}</title>
 <meta name="description" content="${attr(desc)}">${NOINDEX ? '\n<meta name="robots" content="noindex, nofollow">' : ''}
 <link rel="canonical" href="${url}">
+${LANGS.map(code => `<link rel="alternate" hreflang="${code === 'ch' ? 'zh-CN' : code}" href="${localizedUrl(code)}">`).join('\n')}
+<link rel="alternate" hreflang="x-default" href="${localizedUrl('id')}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Accupro">
+<meta property="og:locale" content="${lang === 'ch' ? 'zh_CN' : lang === 'id' ? 'id_ID' : 'en_US'}">
 <meta property="og:title" content="${attr(title)}">
 <meta property="og:description" content="${attr(desc)}">
 <meta property="og:url" content="${url}">
@@ -203,7 +212,7 @@ export const head = ({ title, desc, d = 0, path = '', ogCat = 'team-work', ogSee
 <meta name="twitter:image" content="${image}">
 <link rel="icon" href="${toDistRoot(d, lang)}assets/img/logo-accupro.png">
 <link rel="stylesheet" href="https://unpkg.com/lenis@1.3.26/dist/lenis.css">
-<link rel="stylesheet" href="${toDistRoot(d, lang)}assets/css/style.css">
+<link rel="stylesheet" href="${assetHref(d, lang, 'assets/css/style.css')}">
 </head>
 <body>
 <a class="skip" href="#main">${T.skip}</a>`;
@@ -315,7 +324,7 @@ export const footer = (d, C, lang = 'en', extraJS = []) => `
 </footer>
 <a class="wa-float" href="https://wa.me/${C.whatsappIntl}" target="_blank" rel="noopener">${ic('whatsapp', 20)} Chat with us</a>
 <script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js" defer></script>
-<script src="${toDistRoot(d, lang)}assets/js/main.js" defer></script>
-${extraJS.map(src => `<script src="${toDistRoot(d, lang)}${src}" defer></script>`).join('\n')}
+<script src="${assetHref(d, lang, 'assets/js/main.js')}" defer></script>
+${extraJS.map(src => `<script src="${assetHref(d, lang, src)}" defer></script>`).join('\n')}
 </body>
 </html>`;

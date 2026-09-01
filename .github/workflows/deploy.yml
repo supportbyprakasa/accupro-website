@@ -29,9 +29,9 @@ jobs:
         id: pages
         uses: actions/configure-pages@v5
 
-      # PREVIEW=1 puts `noindex, nofollow` on all 36 pages and makes robots.txt
-      # Disallow: /. This is a verbatim rebuild of a live client site, so an
-      # indexable copy would compete with the real domain as duplicate content.
+      # PREVIEW=1 puts `noindex, nofollow` on every generated page and makes robots.txt
+      # Disallow: /. The preview shares source-backed copy with the public site,
+      # so it must not compete with the production domain in search results.
       - name: Build (preview, noindex)
         env:
           PREVIEW: '1'

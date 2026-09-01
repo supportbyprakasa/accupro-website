@@ -1,31 +1,28 @@
 # Accupro International — static website
 
-A complete static rebuild of `accuprointernational.co.id`, generated from one data file
-and a set of templates. No framework, no build dependencies beyond Node.
+A multilingual static rebuild of `accuprointernational.co.id`, generated from one data
+file and a set of templates. No framework and no build dependency beyond Node.
 
-**36 HTML pages · plain CSS · 4 KB of vanilla JS · responsive at 390 / 768 / 1440 px**
-**270 image slots, every one filled with a category-matched stock fallback**
+**135 HTML pages · ID / EN / 中文 · plain CSS and vanilla JS · responsive at 390 / 768 / 1440 px**
+**45 page routes per language · one shared asset tree · functional calculators and language switcher**
 
 ---
 
 ## 1. Where the content came from
 
-Every sentence of prose in this site is copied **verbatim** from
-`https://accuprointernational.co.id/en/`. Nothing was invented, paraphrased, or
-translated by hand.
+The source crawl is checked into `content-recap/`. Copy that exists on the live site in
+all three languages is stored verbatim in `data/site.json`: homepage slides, pillars,
+statistics labels, CTA copy, testimonials, company tagline and hours, core navigation
+labels, and all 24 service titles.
 
-Everything that does **not** exist on the current site is marked with a
-`[SQUARE BRACKET]` placeholder, rendered as a small amber tag on the page. Search for
-`ph-tag` in the HTML, or `PH(` in `build.mjs`, to find them all.
+The rebuild also contains new sections that have no equivalent source copy: category
+descriptions, tools, FAQ text, credentials, article cards, and supporting interface copy.
+Those sections are authored for this rebuild and intentionally remain English in all
+three outputs. They are not presented as translations from `content-recap/`.
 
-That distinction matters, because of what the audit found: **24 of the site's service
-pages contain zero words.** They serve only a title, `By super admin`, `Maret 5, 2025`,
-and the WordPress theme's demo string *"Build strong & impressive websites using our
-premade templates"*. So the 24 service detail pages here are fully built and styled but
-deliberately unwritten — they are the writing brief, not finished copy.
-
-Rough volume still to write: **24,000–31,000 words**, before English → Indonesian →
-Mandarin translation.
+The 24 service detail routes are intentionally concise because the live source provides
+titles but no usable detail copy. Each route clearly says that details are coming soon
+and sends visitors to WhatsApp or the contact form; no `[PH]` tags are exposed to users.
 
 ---
 
@@ -37,7 +34,14 @@ Any static server. From this folder:
 npx serve dist          # or: python3 -m http.server -d dist 8000
 ```
 
-Opening `dist/index.html` directly from the filesystem also works — all paths are relative.
+Language roots are:
+
+- Indonesian: `/`
+- English: `/en/`
+- Chinese: `/ch/`
+
+Opening `dist/index.html` directly from the filesystem also works because internal paths
+are relative.
 
 ## 3. Rebuilding
 
@@ -49,24 +53,34 @@ node verify.mjs         # link integrity + renders all pages at 3 widths
 `verify.mjs` needs Playwright and Chromium. It fails loudly on horizontal overflow,
 broken internal links, tap targets under 40 px, and JS errors — run it before every deploy.
 
+`node build.mjs` creates an indexable production build by default. Set `PREVIEW=1` for a
+staging build with `noindex, nofollow` and `robots.txt: Disallow: /`. Set `SITE_URL` when
+the deploy host differs from `https://accuprointernational.co.id`.
+
 ---
 
 ## 4. Structure
 
 ```
-data/site.json         ← all content and the service catalogue. Edit this, not the HTML.
+content-recap/         ← audited source crawl for ID / EN / CH
+data/site.json         ← localized source copy, authored copy and catalogues
 src/icons.mjs          ← inline SVG icon set (no icon font, no sprite request)
-src/layout.mjs         ← <head>, header, footer, CTA band, breadcrumbs, image slots
+src/layout.mjs         ← language-aware head/header/footer/CTA, breadcrumbs, image slots
 src/photos.mjs         ← stock fallback photo sets, one per category (see §5)
-build.mjs              ← page templates + the generator
+build.mjs              ← page templates + three-language generator
 verify.mjs             ← automated checks
 dist/                  ← generated output; safe to delete and rebuild
-  index.html  about.html  services.html  tools.html  articles.html  contact.html  404.html
-  sitemap.xml  robots.txt
-  services/<category>/index.html          ×5   category pages
-  services/<category>/<service>.html      ×24  service detail pages
+  index.html … 404.html                    Indonesian, 45 pages
+  en/index.html … en/404.html             English, 45 pages
+  ch/index.html … ch/404.html             Chinese, 45 pages
+  services/<category>/index.html          ×5 per language
+  services/<category>/<service>.html      ×24 per language
+  tools/<calculator>.html                 ×9 per language
+  sitemap.xml                              132 indexable URLs (404 excluded)
+  robots.txt
   assets/css/style.css
   assets/js/main.js
+  assets/js/calculators.js
   assets/img/logo-accupro.png
 ```
 
@@ -83,8 +97,9 @@ worth remembering (or worth moving to `src/` next time this is opened up).
 
 ## 5. Replacing the image placeholders
 
-There are 270 image slots across the 36 pages. Each one states the shot it needs, the
-aspect ratio, and a minimum pixel width — so the set doubles as a photo brief for a shoot.
+Each page template has image slots that state the shot it needs, the aspect ratio, and a
+minimum pixel width, so the set doubles as a photo brief for a shoot. The same visual
+assets and stock-photo resolver are shared by all three language trees.
 
 **Every slot already renders a photo.** Until the real shoot happens, each one falls back
 to a licensed stock photo from the Pexels CDN, chosen to match what that slot is asking
@@ -125,7 +140,7 @@ slot('Photo: the required paperwork laid out on a desk',
 ```
 
 ```json
-{ "slug": "work-kitas", "name": "Work KITAS Processing",
+{ "slug": "work-kitas", "name": "Pembuatan KITAS Kerja",
   "cat": "stay-permits-visa", "photo": "passport", "shot": "Photo: …" }
 ```
 
@@ -185,25 +200,43 @@ right but worth checking. See §5.
 
 | Item | Status |
 |---|---|
-| Calculator logic | Shells only, as agreed. Nine tools are laid out and styled; no arithmetic. Wire it up in `assets/js/main.js`, and keep history in `localStorage` so it survives a reload. |
+| Calculator logic | Built. All nine calculator/simulator pages use `dist/assets/js/calculators.js`; calculation history is stored locally in the browser. |
 | Form submission | Front-end validation only. `contact.html`'s form has no `action`. Point it at your handler, WP `admin-post.php`, or an email service. See `data-demo-form` in `main.js`. |
-| Indonesian & Mandarin | The language switcher is in place but inert — it links to `#`. Content came from `/en/`, so only English is built. Generating `/id/` and `/zh/` is a loop in `build.mjs` once the copy exists. |
 | Privacy Policy & Terms | Footer links point to `#`. Both pages need writing — the contact form collects personal data and the current site has no policy at all. |
 | Google Maps embed | A slot is reserved on `about.html` and `contact.html`. Drop the iframe in. |
-| Real photography | 90+ slots, each with a written brief. |
+| Real photography | Stock fallbacks are active; replace them with approved Accupro photography before treating the imagery as final. |
 
 ---
 
-## 8. What was fixed relative to the current site
+## 8. Three-language architecture
 
-- **24 service pages** now have a real structure: summary, fact strip (turnaround,
-  documents, who it is for, output), what it is, who needs it, document checklist,
-  stage-by-stage process, cost components, legal basis, FAQ.
+`build.mjs` loops over `id`, `en` and `ch`. Indonesian is generated at the site root;
+English and Chinese mirror the same tree under `/en/` and `/ch/`. The language switcher
+uses the current page's relative path, so switching language on a category, service or
+calculator route stays on the matching route instead of returning to the homepage.
+
+The build localizes the source-backed copy listed in §1. Rebuild-authored copy is shared
+in English by design because `content-recap/` contains no authoritative ID/CH equivalent.
+Updating `content-recap/` does not update the website automatically: the approved source
+copy must be copied into the localized fields in `data/site.json`, then rebuilt.
+
+`<html lang>`, canonical URLs, shared asset paths, breadcrumbs, header/footer chrome,
+utility-bar hours, CTA copy, sitemap paths and `robots.txt` are generated with language
+context. The current output contains 135 HTML pages and 132 sitemap URLs.
+
+---
+
+## 9. What was fixed relative to the current site
+
+- **24 service routes** are reachable and use the verbatim source titles; pages without
+  authoritative detail copy route visitors clearly to a human instead of showing fake facts.
 - **Five category pages** — a tier the current site does not have at all.
 - **Navigation** goes from 4 items to 6, and the 24 services become reachable.
 - **Search and category filter** on `services.html` (client-side, no dependency).
+- **Nine working calculators and simulators** with reusable results and local history.
+- **Three synchronized language trees** with page-to-page switching on matching routes.
 - **A 404 page.** Unknown URLs on the current site return HTTP 500.
-- **`sitemap.xml`** lists all 35 real URLs — and no placeholder blog posts.
+- **`sitemap.xml`** lists 132 production URLs — 44 per language, excluding 404 pages.
 - **Team page** — four profiles that currently 500.
 - **Testimonials** given a real home; four exist and are reproduced verbatim.
 - **Consistent contact details.** The current site shows three different phone numbers
@@ -213,7 +246,7 @@ right but worth checking. See §5.
 
 ---
 
-## 9. Converting to a WordPress theme
+## 10. Converting to a WordPress theme
 
 The templates map almost one to one:
 
@@ -225,14 +258,14 @@ The templates map almost one to one:
 | category template | `taxonomy-layanan_kategori.php` |
 | `services.html` | `archive-layanan.php` |
 | `data/site.json` `services[]` | the existing `layanan` custom post type |
-| `[BRACKET]` placeholders | ACF fields (turnaround, cost range, checklist, FAQ) |
+| authored service/category fields | ACF fields (turnaround, cost range, checklist, FAQ) |
 
 The 24 service URLs already exist in WordPress, so keep the current permalinks and
 redirect only where the slug changes.
 
 ---
 
-## 10. Brand
+## 11. Brand
 
 Sampled from the supplied logo:
 

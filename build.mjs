@@ -107,7 +107,7 @@ header('home', 0, C, lang, T, 'index.html') + `
           <span class="pill">${ic('globe', 14)} Serving PMA &amp; expatriates</span>
         </div>
         <div class="hero__slides">
-          ${HERO.slides.map((slide, idx) => `<div class="hero__slide ${idx === 0 ? 'is-active' : ''}" aria-label="Slide ${idx + 1}">
+          ${HERO.slides.map((slide, idx) => `<div class="hero__slide ${idx === 0 ? 'is-active' : ''}" aria-label="Slide ${idx + 1}" aria-hidden="${idx === 0 ? 'false' : 'true'}">
             <h1>${slide.headline}</h1>
             <p class="lede">${slide.subtext}</p>
           </div>`).join('\n          ')}
@@ -122,14 +122,14 @@ header('home', 0, C, lang, T, 'index.html') + `
         </ul>
         <div class="hero__nav" aria-label="Choose slider position">
           <button class="hero__arrow" type="button" data-slide="prev" aria-label="Previous slide">${ic('chevron', 16)}</button>
-          ${HERO.slides.map((_, i) => `<button class="hero__dot ${i === 0 ? 'is-active' : ''}" type="button" data-slide-index="${i}" aria-label="Go to slide ${i + 1}"></button>`).join('\n          ')}
+          ${HERO.slides.map((_, i) => `<button class="hero__dot ${i === 0 ? 'is-active' : ''}" type="button" data-slide-index="${i}" aria-label="Go to slide ${i + 1}"${i === 0 ? ' aria-current="true"' : ''}></button>`).join('\n          ')}
           <button class="hero__arrow hero__arrow--next" type="button" data-slide="next" aria-label="Next slide">${ic('chevron', 16)}</button>
         </div>
       </div>
 
       <div class="hero__media">
         <div class="hero__frame">
-          ${HERO.slides.map((_, idx) => `<div class="hero__frame-slide ${idx === 0 ? 'is-active' : ''}">${slot('Photo: the Accupro team in a client meeting at the office — real faces, real workspace', { ratio: '1 / 1', px: 'min 1000px', icon: 'users', cat: 'team-work', seed: `hero-slide-${idx}`, eager: idx === 0 })}</div>`).join('\n          ')}
+          ${HERO.slides.map((_, idx) => `<div class="hero__frame-slide ${idx === 0 ? 'is-active' : ''}" aria-hidden="${idx === 0 ? 'false' : 'true'}">${slot('Photo: the Accupro team in a client meeting at the office — real faces, real workspace', { ratio: '1 / 1', px: 'min 1000px', icon: 'users', cat: 'team-work', seed: `hero-slide-${idx}`, eager: idx === 0 })}</div>`).join('\n          ')}
         </div>
       </div>
     </div>
