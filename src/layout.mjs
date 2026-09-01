@@ -3,14 +3,40 @@ import { resolvePhoto, photoUrl } from './photos.mjs';
 
 export const up = d => '../'.repeat(d);
 
-export const NAVITEMS = [
-  { href: 'index.html',    label: 'Home',     key: 'home' },
-  { href: 'services.html', label: 'Services', key: 'services' },
+export const LANGS = ['id', 'en', 'ch'];
+
+/* Only 'home' / 'services' / 'about' / 'contact' have a real, per-language
+   label on the live site (see data/site.json's i18n block, sourced from
+   content-recap). 'tools' and 'articles' are new navigation this rebuild
+   adds — there is nothing to translate, so they stay in English in every
+   language build. */
+export const navItems = T => [
+  { href: 'index.html',    label: T.home,     key: 'home' },
+  { href: 'services.html', label: T.services, key: 'services' },
   { href: 'tools.html',    label: 'Tools',    key: 'tools' },
-  { href: 'about.html',    label: 'About Us', key: 'about' },
+  { href: 'about.html',    label: T.about,    key: 'about' },
   { href: 'articles.html', label: 'Articles', key: 'articles' },
-  { href: 'contact.html',  label: 'Contact',  key: 'contact' }
+  { href: 'contact.html',  label: T.contact,  key: 'contact' }
 ];
+
+/* Every language build mirrors the same relative tree under dist/ — id at
+   the root, en/ch each one level further down (dist/en/, dist/ch/) — so the
+   sibling page in another language sits at the same relPath under that
+   language's own root. langHref computes the link from the current page
+   (depth `d` within its own language root) to that sibling: climb out of
+   the current language root (one extra '../' unless we're already at the
+   true root, i.e. lang 'id'), then step into the target language's root
+   (skip that step for 'id'), then append the shared relPath. */
+/* dist/assets/ is shared by all three language trees rather than duplicated
+   under en/ and ch/ — so a page also needs one extra '../' to reach it
+   whenever it sits inside a language subfolder. Same escape distance as
+   langHref needs to reach another language's root. */
+export const toDistRoot = (d, lang) => up(d) + (lang === 'id' ? '' : '../');
+
+export const langHref = (d, lang, target, relPath) => {
+  const into = target === 'id' ? '' : `${target}/`;
+  return toDistRoot(d, lang) + into + relPath || '.';
+};
 
 const attr = s => String(s).replace(/"/g, '&quot;');
 
@@ -58,25 +84,58 @@ ${trail.map((t, i) => i === trail.length - 1
   : `  <li><a href="${up(d)}${t.href}">${t.label}</a><span aria-hidden="true">/</span></li>`).join('\n')}
 </ol></nav>`;
 
+/* A single, fixed-height (400px) banner used as the first section on every
+   page except the home page (which gets the slider instead). Replaces
+   whatever richer, page-specific "hero" content used to open each page —
+   that content (photo, facts, stats, forms) moves into its own section
+   right below, nothing is dropped, just re-ordered. */
+export const pageBanner = (d, { eyebrow = '', title, lede = '', trail, photoCat = '', photoSeed = '' }) => `
+<section class="page-banner">
+  ${photoCat ? `<div class="page-banner__bg"><img src="${photoUrl(photoCat, photoSeed, { ratio: '21 / 9', w: 1600 })}" alt="" loading="eager"></div>` : ''}
+  <div class="container page-banner__content">
+    ${trail ? crumbs(d, trail) : ''}
+    ${eyebrow ? `<span class="tag">${eyebrow}</span>` : ''}
+    <h1>${title}</h1>
+    ${lede ? `<p class="lede">${lede}</p>` : ''}
+  </div>
+</section>`;
+
 /* Preview builds carry a robots meta tag on every page. This site is a verbatim
    rebuild of a live client site, so an indexable staging copy would compete with
    the real domain as duplicate content. Set PREVIEW=1 for a staging build. */
 export const NOINDEX = process.env.PREVIEW === '1';
 
-export const head = ({ title, desc, d = 0 }) => `<!doctype html>
-<html lang="en">
+export const head = ({ title, desc, d = 0, lang = 'en', T }) => `<!doctype html>
+<html lang="${lang === 'ch' ? 'zh-CN' : lang}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>
 <meta name="description" content="${desc}">${NOINDEX ? '\n<meta name="robots" content="noindex, nofollow">' : ''}
-<link rel="icon" href="${up(d)}assets/img/logo-accupro.png">
-<link rel="stylesheet" href="${up(d)}assets/css/style.css">
+<link rel="icon" href="${toDistRoot(d, lang)}assets/img/logo-accupro.png">
+<link rel="stylesheet" href="${toDistRoot(d, lang)}assets/css/style.css">
 </head>
 <body>
-<a class="skip" href="#main">Skip to content</a>`;
+<a class="skip" href="#main">${T.skip}</a>`;
 
-export const header = (active, d = 0, C) => `
+/* Section 1 on every single recapped page (see the .md files under
+   content-recap/pages/) is this utility bar — email, office hours, social
+   links — always in that order, on every language. It's real, page-wide
+   content, so it belongs above the header on every page here too, not just
+   in the footer. */
+export const utilityBar = (C, lang) => `
+<div class="utility-bar"><div class="container utility-bar__row">
+  <a href="mailto:${C.emails[0]}">${ic('mail', 14)} ${C.emails[0]}</a>
+  <span class="utility-bar__hours">${ic('clock', 14)} ${C.hours[lang]}</span>
+  <span class="utility-bar__socials">
+    <a href="${C.social.instagram}" target="_blank" rel="noopener" aria-label="Instagram">${ic('ig', 15)}</a>
+    <a href="${C.social.facebook}" target="_blank" rel="noopener" aria-label="Facebook">${ic('fb', 15)}</a>
+    <a href="${C.social.linkedin}" target="_blank" rel="noopener" aria-label="LinkedIn">${ic('li', 15)}</a>
+  </span>
+</div></div>`;
+
+export const header = (active, d = 0, C, lang = 'en', T, relPath = '') => `
+${utilityBar(C, lang)}
 <header class="header">
   <div class="container header__bar">
     <a class="brand" href="${up(d)}index.html" aria-label="${C.legalName} — home">
@@ -84,26 +143,26 @@ export const header = (active, d = 0, C) => `
       <span class="brand__name">ACCUPRO<span class="brand__sub">Tax · Legal · Business</span></span>
     </a>
     <nav class="nav" id="primary-nav" aria-label="Primary">
-      ${NAVITEMS.map(n => `<a class="nav__link" href="${up(d)}${n.href}"${n.key === active ? ' aria-current="page"' : ''}>${n.label}</a>`).join('\n      ')}
+      ${navItems(T).map(n => `<a class="nav__link" href="${up(d)}${n.href}"${n.key === active ? ' aria-current="page"' : ''}>${n.label}</a>`).join('\n      ')}
       <div class="langs" aria-label="Language">
-        <a href="#" hreflang="id">ID</a><a href="#" hreflang="en" aria-current="true">EN</a><a href="#" hreflang="zh">中文</a>
+        ${LANGS.map(code => `<a href="${langHref(d, lang, code, relPath)}" hreflang="${code === 'ch' ? 'zh' : code}"${code === lang ? ' aria-current="true"' : ''}>${code === 'ch' ? '中文' : code.toUpperCase()}</a>`).join('')}
       </div>
     </nav>
     <div class="header__end">
       <div class="langs" aria-label="Language">
-        <a href="#" hreflang="id">ID</a><a href="#" hreflang="en" aria-current="true">EN</a><a href="#" hreflang="zh">中文</a>
+        ${LANGS.map(code => `<a href="${langHref(d, lang, code, relPath)}" hreflang="${code === 'ch' ? 'zh' : code}"${code === lang ? ' aria-current="true"' : ''}>${code === 'ch' ? '中文' : code.toUpperCase()}</a>`).join('')}
       </div>
-      <a class="btn btn--primary btn--sm" href="${up(d)}contact.html">Free consultation</a>
-      <button class="burger" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">${ic('menu', 22)}</button>
+      <a class="btn btn--primary btn--sm" href="${up(d)}contact.html">${T.headerCta}</a>
+      <button class="burger" aria-expanded="false" aria-controls="primary-nav" aria-label="${T.menu}" data-menu-label="${T.menu}" data-close-label="${T.close}">${ic('menu', 22)}</button>
     </div>
   </div>
 </header>`;
 
-export const ctaBand = (d, C, CTA) => `
+export const ctaBand = (d, C, CTA, T) => `
 <section class="section section--navy">
   <div class="container split split--wide">
     <div class="stack" style="--s:18px">
-      <span class="eyebrow eyebrow--gold">Free consultation</span>
+      <span class="eyebrow eyebrow--gold">${T.freeConsultationEyebrow}</span>
       <h2>${CTA.heading}</h2>
       <p class="lede" style="color:#C3C7E6">${CTA.text}</p>
       <div class="cluster">
@@ -115,13 +174,18 @@ export const ctaBand = (d, C, CTA) => `
   </div>
 </section>`;
 
-export const footer = (d, C) => `
+/* The footer's own column structure (Services / Company / Get in touch) is
+   new navigation this rebuild adds, with no equivalent on the live site in
+   any language — so like 'tools'/'articles' in the header, it stays in
+   English everywhere. Only the two fields that ARE real per-language copy
+   (the tagline, and the office hours) are localized here. */
+export const footer = (d, C, lang = 'en') => `
 <footer class="footer">
   <div class="container">
     <div class="footer__grid">
       <div>
         <a class="brand" href="${up(d)}index.html" style="margin-bottom:14px">${logoMark()}<span class="brand__name" style="color:#fff">ACCUPRO</span></a>
-        <p>${C.tagline}</p>
+        <p>${C.tagline[lang]}</p>
         <div class="footer__socials">
           <a href="${C.social.instagram}" target="_blank" rel="noopener" aria-label="Instagram">${ic('ig', 19)}</a>
           <a href="${C.social.facebook}" target="_blank" rel="noopener" aria-label="Facebook">${ic('fb', 19)}</a>
@@ -150,7 +214,7 @@ export const footer = (d, C) => `
         <li><a href="tel:${C.phones[0].replace(/-/g,'')}">${C.phones[0]}</a></li>
         <li><a href="https://wa.me/${C.whatsappIntl}" target="_blank" rel="noopener">WhatsApp ${C.whatsapp}</a></li>
         <li><a href="mailto:${C.emails[0]}">${C.emails[0]}</a></li>
-        <li>${C.hours}</li>
+        <li>${C.hours[lang]}</li>
       </ul></div>
     </div>
     <div class="footer__base">
@@ -160,6 +224,6 @@ export const footer = (d, C) => `
   </div>
 </footer>
 <a class="wa-float" href="https://wa.me/${C.whatsappIntl}" target="_blank" rel="noopener">${ic('whatsapp', 20)} Chat with us</a>
-<script src="${up(d)}assets/js/main.js" defer></script>
+<script src="${toDistRoot(d, lang)}assets/js/main.js" defer></script>
 </body>
 </html>`;

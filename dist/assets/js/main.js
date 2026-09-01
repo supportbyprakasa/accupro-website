@@ -9,7 +9,7 @@
     burger.addEventListener('click', function () {
       var open = nav.classList.toggle('nav--open');
       burger.setAttribute('aria-expanded', String(open));
-      burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      burger.setAttribute('aria-label', open ? burger.dataset.closeLabel : burger.dataset.menuLabel);
       document.body.style.overflow = open ? 'hidden' : '';
     });
     nav.addEventListener('click', function (e) {
@@ -23,6 +23,54 @@
       if (e.matches && nav.classList.contains('nav--open')) burger.click();
     });
   }
+
+  /* ---- home hero slider ------------------------------------------------- */
+  document.querySelectorAll('[data-hero-slider]').forEach(function (root) {
+    var slides = Array.prototype.slice.call(root.querySelectorAll('.hero-slide'));
+    var bgSlides = Array.prototype.slice.call(root.querySelectorAll('.hero-bg-slide'));
+    var dots = Array.prototype.slice.call(root.querySelectorAll('[data-hero-dot]'));
+    if (slides.length < 2) return;
+    var i = 0, timer = null;
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function show(n) {
+      i = (n + slides.length) % slides.length;
+      slides.forEach(function (s, idx) {
+        var on = idx === i;
+        s.classList.toggle('is-active', on);
+        s.setAttribute('aria-hidden', String(!on));
+        var focusable = s.querySelectorAll('a, button');
+        focusable.forEach(function (el) { el.tabIndex = on ? 0 : -1; });
+      });
+      bgSlides.forEach(function (s, idx) {
+        var on = idx === i;
+        s.classList.toggle('is-active', on);
+        s.setAttribute('aria-hidden', String(!on));
+      });
+      dots.forEach(function (d, idx) {
+        d.classList.toggle('is-active', idx === i);
+        d.setAttribute('aria-selected', String(idx === i));
+      });
+    }
+    function next() { show(i + 1); }
+    function prev() { show(i - 1); }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+    function start() { if (!reduceMotion) { stop(); timer = setInterval(next, 6000); } }
+
+    var prevBtn = root.querySelector('[data-hero-prev]');
+    var nextBtn = root.querySelector('[data-hero-next]');
+    if (prevBtn) prevBtn.addEventListener('click', function () { prev(); start(); });
+    if (nextBtn) nextBtn.addEventListener('click', function () { next(); start(); });
+    dots.forEach(function (d) {
+      d.addEventListener('click', function () { show(Number(d.dataset.heroDot)); start(); });
+    });
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', start);
+    root.addEventListener('focusin', stop);
+    root.addEventListener('focusout', start);
+
+    start();
+  });
 
   /* ---- accordions ------------------------------------------------------ */
   document.querySelectorAll('.acc__btn').forEach(function (btn) {

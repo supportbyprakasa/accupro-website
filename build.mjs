@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import { ic } from './src/icons.mjs';
-import { head, header, footer, ctaBand, slot, crumbs, avatar, up, NOINDEX } from './src/layout.mjs';
+import { photoUrl } from './src/photos.mjs';
+import { head, header, footer, ctaBand, slot, pageBanner, avatar, up, NOINDEX, LANGS } from './src/layout.mjs';
 
 const S = JSON.parse(fs.readFileSync('data/site.json', 'utf8'));
 const C = S.company, CAT = S.categories, SVC = S.services;
@@ -10,38 +11,77 @@ const byCat = c => SVC.filter(s => s.cat === c);
 const cat = slug => CAT.find(c => c.slug === slug);
 const wrapTables = h => h.replace(/<table class="dtable"([\s\S]*?)<\/table>/g,
   (m) => `<div class="tablewrap">${m}</div>`);
-const write = (rel, html) => {
-  html = wrapTables(html);
-  const f = path.join(OUT, rel);
-  fs.mkdirSync(path.dirname(f), { recursive: true });
-  fs.writeFileSync(f, html);
-  return rel;
-};
 const PH = t => `<span class="ph-tag">${t}</span>`;
 const pages = [];
 
+/* dist/*.html etc. is generated fresh on every build (only dist/assets/ is
+   hand-maintained and survives — see .gitignore and README §4), so start
+   from a clean slate rather than leaving stale pages from a previous shape
+   of the site (or a previous language) lying around. */
+for (const entry of fs.readdirSync(OUT, { withFileTypes: true })) {
+  if (entry.name === 'assets' || entry.name.startsWith('._')) continue;
+  fs.rmSync(path.join(OUT, entry.name), { recursive: true, force: true });
+}
+
+LANGS.forEach(lang => {
+const T = S.i18n[lang];
+const HERO = S.hero[lang];
+const CTA = S.cta[lang];
+const SECTION_HEADING = S.sectionHeading[lang];
+const PILLARS = S.pillars.map(p => ({ ...p, title: p.title[lang], text: p.text[lang] }));
+const STATS = S.stats.map(s => ({ ...s, label: s.label[lang] }));
+const TESTIMONIALS = S.testimonials.map(t => ({ ...t, quote: t.quote[lang] }));
+const write = (rel, html) => {
+  html = wrapTables(html);
+  const outRel = lang === 'id' ? rel : `${lang}/${rel}`;
+  const f = path.join(OUT, outRel);
+  fs.mkdirSync(path.dirname(f), { recursive: true });
+  fs.writeFileSync(f, html);
+  return outRel;
+};
+
 /* ============================== HOME ============================== */
 pages.push(write('index.html',
-head({ title: `${C.legalName} — Tax, Legal & Business Services in Jakarta`, desc: C.tagline.slice(0, 155), d: 0 }) +
-header('home', 0, C) + `
+head({ title: `${C.legalName} — Tax, Legal & Business Services in Jakarta`, desc: C.tagline[lang].slice(0, 155), d: 0, lang, T }) +
+header('home', 0, C, lang, T, 'index.html') + `
 <main id="main">
 
-  <!-- hero -->
-  <section class="section">
+  <!-- hero: a real slider, 3 slides — headline/lede/CTA cycle; stats and the
+       WhatsApp button stay static since they're not part of the source's
+       sliding content. -->
+  <section class="section hero-section" data-hero-slider role="region" aria-roledescription="carousel" aria-label="${T.home}">
+    <div class="hero-section__bg">
+      ${HERO.slides.map((_, i) => `<div class="hero-bg-slide${i === 0 ? ' is-active' : ''}" aria-hidden="${i !== 0}">
+        <img src="${photoUrl('team-work', `hero-bg-${i}`, { ratio: '16 / 9', w: 1920 })}" alt="" ${i === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}>
+      </div>`).join('')}
+    </div>
     <div class="container split split--wide">
       <div class="stack" style="--s:20px">
         <div class="cluster">
           <span class="pill">${ic('badge', 14)} Certified consultant (CTL)</span>
           <span class="pill">${ic('globe', 14)} Serving PMA &amp; expatriates</span>
         </div>
-        <h1>${S.hero.primary}</h1>
-        <p class="lede">${C.tagline}</p>
+        <div class="hero-slider">
+          <div class="hero-slider__track">
+            ${HERO.slides.map((s, i) => `<div class="hero-slide${i === 0 ? ' is-active' : ''}" aria-hidden="${i !== 0}">
+              <h1>${s.headline}</h1>
+              <p class="lede">${s.text}</p>
+              <a class="btn btn--primary" href="about.html" tabindex="${i === 0 ? '0' : '-1'}">${T.readMore} ${ic('arrow', 17)}</a>
+            </div>`).join('')}
+          </div>
+          <div class="hero-slider__controls">
+            <button type="button" class="hero-slider__arrow hero-slider__arrow--prev" data-hero-prev aria-label="Previous slide">${ic('arrow', 18)}</button>
+            <div class="hero-slider__dots" role="tablist" aria-label="Slides">
+              ${HERO.slides.map((_, i) => `<button type="button" class="hero-slider__dot${i === 0 ? ' is-active' : ''}" role="tab" data-hero-dot="${i}" aria-label="Slide ${i + 1}" aria-selected="${i === 0}"></button>`).join('')}
+            </div>
+            <button type="button" class="hero-slider__arrow hero-slider__arrow--next" data-hero-next aria-label="Next slide">${ic('arrow', 18)}</button>
+          </div>
+        </div>
         <div class="cluster">
-          <a class="btn btn--primary" href="contact.html">${S.cta.heading.replace('!','')} ${ic('arrow', 17)}</a>
           <a class="btn btn--gold" href="https://wa.me/${C.whatsappIntl}" target="_blank" rel="noopener">${ic('whatsapp', 18)} WhatsApp</a>
         </div>
         <ul class="grid g4 g-stats" style="gap:20px;margin-top:8px">
-          ${S.stats.filter(s => !s.flag).map(s => `<li><span class="stat__v">${s.value}</span>
+          ${STATS.filter(s => !s.flag).map(s => `<li><span class="stat__v">${s.value}</span>
             <span class="tiny" style="display:block;margin-top:6px">${s.label}</span></li>`).join('\n          ')}
         </ul>
       </div>
@@ -67,20 +107,17 @@ header('home', 0, C) + `
         <p class="tiny" style="margin-top:14px;text-align:center">or <a href="services.html">browse all 24 services</a></p>
       </form>
     </div>
-    <div class="container" style="margin-top:clamp(28px,4vw,48px)">
-      ${slot('Photo: the Accupro team in a client meeting at the office — real faces, real workspace', { ratio: '21 / 9', px: 'min 1920px', icon: 'users', cat: 'team-work', eager: true })}
-    </div>
   </section>
 
   <!-- three pillars, verbatim from the current site -->
   <section class="section section--surface">
     <div class="container">
       <div class="between" style="margin-bottom:clamp(24px,3vw,40px)">
-        <div><span class="eyebrow">What we do</span><h2 style="margin-top:8px">${S.sectionHeading}</h2></div>
+        <div><span class="eyebrow">What we do</span><h2 style="margin-top:8px">${SECTION_HEADING}</h2></div>
         <a class="btn btn--ghost btn--sm" href="services.html">All 24 services ${ic('arrow', 16)}</a>
       </div>
       <div class="grid g3">
-        ${S.pillars.map(p => `<article class="card card--link">
+        ${PILLARS.map(p => `<article class="card card--link">
           ${slot(p.shot, { ratio: p.ratio, px: p.px, cls: 'card__media', cat: p.photo })}
           <div class="card__body card__body--badged">
             <span class="card__badge">${ic(p.icon, 21)}</span>
@@ -166,7 +203,7 @@ header('home', 0, C) + `
       <span class="eyebrow">Testimonial</span>
       <h2 style="margin:8px 0 clamp(24px,3vw,36px)">What clients say</h2>
       <div class="grid g4">
-        ${S.testimonials.map(t => `<figure class="card card--pad">
+        ${TESTIMONIALS.map(t => `<figure class="card card--pad">
           <span class="icon-lead">${ic('quote', 22)}</span>
           <blockquote style="font-size:.9375rem;line-height:1.6"><p>${t.quote}</p></blockquote>
           <figcaption class="cluster" style="gap:11px;margin-top:16px">
@@ -206,24 +243,21 @@ header('home', 0, C) + `
     </div>
   </section>
 
-  ${ctaBand(0, C, S.cta)}
-</main>` + footer(0, C)));
+  ${ctaBand(0, C, CTA, T)}
+</main>` + footer(0, C, lang)));
 
 /* ============================== ABOUT ============================== */
 pages.push(write('about.html',
-head({ title: `About Us — ${C.legalName}`, desc: C.tagline.slice(0, 155), d: 0 }) +
-header('about', 0, C) + `
+head({ title: `${T.about} — ${C.legalName}`, desc: C.tagline[lang].slice(0, 155), d: 0, lang, T }) +
+header('about', 0, C, lang, T, 'about.html') +
+pageBanner(0, { eyebrow: 'About us', title: C.legalName, lede: C.tagline[lang], trail: [{ href: 'index.html', label: T.home }, { label: T.about }], photoCat: 'reception', photoSeed: 'about-banner' }) + `
 <main id="main">
-  <div class="container">${crumbs(0, [{ href: 'index.html', label: 'Home' }, { label: 'About Us' }])}</div>
 
   <section class="section section--tight">
     <div class="container split split--wide">
       <div class="stack" style="--s:18px">
-        <span class="eyebrow">About us</span>
-        <h1>${C.legalName}</h1>
-        <p class="lede">${C.tagline}</p>
         <ul class="grid g4" style="gap:16px">
-          ${S.stats.map(s => `<li class="card card--surface card--pad" style="padding:16px">
+          ${STATS.map(s => `<li class="card card--surface card--pad" style="padding:16px">
             <span class="stat__v" style="font-size:1.6rem">${s.value}</span>
             <span class="tiny" style="display:block;margin-top:5px">${s.label}</span></li>`).join('\n          ')}
         </ul>
@@ -302,7 +336,7 @@ header('about', 0, C) + `
           <h4>${t}</h4><p class="small" style="margin-top:6px">${a}<br>${C.city}</p></div></article>`).join('\n        ')}
         <div class="card card--surface card--pad" style="display:flex;flex-direction:column;justify-content:center;gap:12px">
           <span class="icon-lead">${ic('clock', 26)}</span>
-          <h4>${C.hours}</h4>
+          <h4>${C.hours[lang]}</h4>
           <a class="btn btn--primary btn--sm" href="contact.html" style="align-self:flex-start">Contact us ${ic('arrow', 16)}</a>
         </div>
       </div>
@@ -310,30 +344,25 @@ header('about', 0, C) + `
     </div>
   </section>
 
-  ${ctaBand(0, C, S.cta)}
-</main>` + footer(0, C)));
+  ${ctaBand(0, C, CTA, T)}
+</main>` + footer(0, C, lang)));
 
 /* ========================= SERVICES INDEX ========================= */
 pages.push(write('services.html',
-head({ title: `Services — 24 tax, legal and licensing services | ${C.shortName}`, desc: 'Tax and reporting, registration and CORETAX accounts, company legality, stay permits and visa, trademark and IP — 24 services in five areas.', d: 0 }) +
-header('services', 0, C) + `
+head({ title: `${T.services} — 24 tax, legal and licensing services | ${C.shortName}`, desc: 'Tax and reporting, registration and CORETAX accounts, company legality, stay permits and visa, trademark and IP — 24 services in five areas.', d: 0, lang, T }) +
+header('services', 0, C, lang, T, 'services.html') +
+pageBanner(0, { eyebrow: 'Services', title: '24 tax, legal and licensing services', lede: 'Search directly, or browse by area. Every service page carries the document checklist and an estimated turnaround.', trail: [{ href: 'index.html', label: T.home }, { label: T.services }], photoCat: 'filed-docs', photoSeed: 'services-banner' }) + `
 <main id="main">
-  <div class="container">${crumbs(0, [{ href: 'index.html', label: 'Home' }, { label: 'Services' }])}</div>
 
   <section class="section section--tight">
     <div class="container split split--wide">
-      <div class="stack" style="--s:18px">
-        <span class="eyebrow">Services</span>
-        <h1>24 tax, legal and licensing services</h1>
-        <p class="lede">Search directly, or browse by area. Every service page carries the document checklist and an estimated turnaround.</p>
-        <form role="search" class="cluster" style="gap:10px">
-          <label class="field" style="flex:1 1 260px">
-            <span class="field__label">Search services</span>
-            <input class="field__input" type="search" id="service-search" placeholder="e.g. KITAS, NPWP, annual return, PT setup" autocomplete="off">
-          </label>
-        </form>
-      </div>
-      ${slot('Photo: neatly filed client documents — conveys the breadth of the catalogue', { ratio: '4 / 3', px: 'min 1200px', cat: 'filed-docs' })}
+      <form role="search" class="cluster" style="gap:10px">
+        <label class="field" style="flex:1 1 260px">
+          <span class="field__label">Search services</span>
+          <input class="field__input" type="search" id="service-search" placeholder="e.g. KITAS, NPWP, annual return, PT setup" autocomplete="off">
+        </label>
+      </form>
+      ${slot('Photo: neatly filed client documents — conveys the breadth of the catalogue', { ratio: '4 / 3', px: 'min 1200px', cat: 'filed-docs', seed: 'services-search' })}
     </div>
   </section>
 
@@ -380,34 +409,25 @@ header('services', 0, C) + `
     </p>
   </div>
 
-  ${ctaBand(0, C, S.cta)}
-</main>` + footer(0, C)));
+  ${ctaBand(0, C, CTA, T)}
+</main>` + footer(0, C, lang)));
 
 /* ======================== CATEGORY PAGES (5) ======================== */
 CAT.forEach(c => {
   const items = byCat(c.slug);
   pages.push(write(`services/${c.slug}/index.html`,
-  head({ title: `${c.name} — ${items.length} services | ${C.shortName}`, desc: c.blurb, d: 2 }) +
-  header('services', 2, C) + `
+  head({ title: `${c.name} — ${items.length} services | ${C.shortName}`, desc: c.blurb, d: 2, lang, T }) +
+  header('services', 2, C, lang, T, `services/${c.slug}/index.html`) +
+  pageBanner(2, { eyebrow: `${items.length} services`, title: c.name, lede: c.blurb, trail: [{ href: 'index.html', label: T.home }, { href: 'services.html', label: T.services }, { label: c.name }], photoCat: c.photo, photoSeed: `${c.slug}-banner` }) + `
 <main id="main">
-  <div class="container">${crumbs(2, [{ href: 'index.html', label: 'Home' }, { href: 'services.html', label: 'Services' }, { label: c.name }])}</div>
 
   <section class="section section--tight">
     <div class="container split split--wide">
       <div class="stack" style="--s:18px">
-        <div class="cluster" style="gap:11px">
-          <span style="color:var(--navy)">${ic(c.icon, 30)}</span>
-          <span class="tag">${items.length} services</span>
-        </div>
-        <h1>${c.name}</h1>
-        <p class="lede">${c.blurb}</p>
         <div class="cluster">
           <a class="btn btn--primary" href="${up(2)}contact.html">Free consultation ${ic('arrow', 17)}</a>
           <a class="btn btn--gold" href="https://wa.me/${C.whatsappIntl}" target="_blank" rel="noopener">${ic('whatsapp', 18)} Ask on WhatsApp</a>
         </div>
-      </div>
-      <div class="stack" style="--s:18px">
-        ${slot(c.shot, { ratio: '4 / 3', px: 'min 1200px', cat: c.photo })}
         <div class="card card--surface card--pad">
           <span class="eyebrow">At a glance</span>
           <table class="dtable" style="margin-top:12px">
@@ -418,6 +438,7 @@ CAT.forEach(c => {
           </table>
         </div>
       </div>
+      ${slot(c.shot, { ratio: '4 / 3', px: 'min 1200px', cat: c.photo, seed: `${c.slug}-intro` })}
     </div>
   </section>
 
@@ -482,8 +503,8 @@ CAT.forEach(c => {
     </div>
   </section>
 
-  ${ctaBand(2, C, S.cta)}
-</main>` + footer(2, C)));
+  ${ctaBand(2, C, CTA, T)}
+</main>` + footer(2, C, lang)));
 });
 
 /* ====================== SERVICE DETAIL (24) ====================== */
@@ -491,17 +512,14 @@ SVC.forEach(s => {
   const c = cat(s.cat);
   const siblings = byCat(s.cat).filter(x => x.slug !== s.slug);
   pages.push(write(`services/${s.cat}/${s.slug}.html`,
-  head({ title: `${s.name} | ${C.shortName}`, desc: `${s.name} handled end to end by ${C.legalName}, Jakarta.`, d: 2 }) +
-  header('services', 2, C) + `
+  head({ title: `${s.name} | ${C.shortName}`, desc: `${s.name} handled end to end by ${C.legalName}, Jakarta.`, d: 2, lang, T }) +
+  header('services', 2, C, lang, T, `services/${s.cat}/${s.slug}.html`) +
+  pageBanner(2, { eyebrow: c.name, title: s.name, lede: `${PH('WRITE THE ONE-SENTENCE SUMMARY')} — say what is handled, from which starting point to which finished document.`, trail: [{ href: 'index.html', label: T.home }, { href: 'services.html', label: T.services }, { href: `services/${c.slug}/`, label: c.name }, { label: s.name }], photoCat: s.photo, photoSeed: `${s.slug}-banner` }) + `
 <main id="main">
-  <div class="container">${crumbs(2, [{ href: 'index.html', label: 'Home' }, { href: 'services.html', label: 'Services' }, { href: `services/${c.slug}/`, label: c.name }, { label: s.name }])}</div>
 
   <section class="section section--tight">
     <div class="container split split--wide" style="align-items:start">
       <div class="stack" style="--s:18px">
-        <span class="tag">${c.name}</span>
-        <h1>${s.name}</h1>
-        <p class="lede">${PH('WRITE THE ONE-SENTENCE SUMMARY')} — say what is handled, from which starting point to which finished document.</p>
         ${slot(s.shot, { ratio: '16 / 9', px: 'min 1400px', cat: s.photo, seed: s.slug })}
         <ul class="facts">
           ${[['clock','Turnaround','EST.'],['doc','Documents from you','N ITEMS'],['users','Who it is for','WHO'],['badge','You receive','OUTPUT']]
@@ -649,30 +667,25 @@ SVC.forEach(s => {
     </div>
   </section>
 
-  ${ctaBand(2, C, S.cta)}
-</main>` + footer(2, C)));
+  ${ctaBand(2, C, CTA, T)}
+</main>` + footer(2, C, lang)));
 });
 
 /* ============================== TOOLS ============================== */
 pages.push(write('tools.html',
-head({ title: `Tools & Calculators — free, no sign-up | ${C.shortName}`, desc: 'Nine free tools: five Indonesian tax calculators plus cost and requirement simulators for company setup, KITAS and trademark filing.', d: 0 }) +
-header('tools', 0, C) + `
+head({ title: `Tools & Calculators — free, no sign-up | ${C.shortName}`, desc: 'Nine free tools: five Indonesian tax calculators plus cost and requirement simulators for company setup, KITAS and trademark filing.', d: 0, lang, T }) +
+header('tools', 0, C, lang, T, 'tools.html') +
+pageBanner(0, { eyebrow: 'Free tools', title: 'Work out the numbers yourself first', lede: 'Nine tools for estimating tax, cost and processing time. Nothing is sent to a server — results stay in your browser.', trail: [{ href: 'index.html', label: T.home }, { label: 'Tools' }], photoCat: 'screen', photoSeed: 'tools-banner' }) + `
 <main id="main">
-  <div class="container">${crumbs(0, [{ href: 'index.html', label: 'Home' }, { label: 'Tools' }])}</div>
 
   <section class="section section--tight">
     <div class="container split split--wide">
-      <div class="stack" style="--s:18px">
-        <span class="eyebrow">Free tools</span>
-        <h1>Work out the numbers yourself first</h1>
-        <p class="lede">Nine tools for estimating tax, cost and processing time. Nothing is sent to a server — results stay in your browser.</p>
-        <div class="cluster">
-          <button class="chip" aria-pressed="true">All 9</button>
-          <button class="chip">${ic('calc', 15)} Tax calculators (5)</button>
-          <button class="chip chip--gold">${ic('spark', 15)} Cost &amp; requirement simulators (4)</button>
-        </div>
+      <div class="cluster">
+        <button class="chip" aria-pressed="true">All 9</button>
+        <button class="chip">${ic('calc', 15)} Tax calculators (5)</button>
+        <button class="chip chip--gold">${ic('spark', 15)} Cost &amp; requirement simulators (4)</button>
       </div>
-      ${slot('Screenshot: one calculator with results filled in, on desktop', { ratio: '16 / 9', px: 'min 1600px', icon: 'screen', cat: 'screen' })}
+      ${slot('Screenshot: one calculator with results filled in, on desktop', { ratio: '16 / 9', px: 'min 1600px', icon: 'screen', cat: 'screen', seed: 'tools-intro' })}
     </div>
   </section>
 
@@ -766,15 +779,15 @@ header('tools', 0, C) + `
     </div>
   </section>
 
-  ${ctaBand(0, C, S.cta)}
-</main>` + footer(0, C)));
+  ${ctaBand(0, C, CTA, T)}
+</main>` + footer(0, C, lang)));
 
 /* ============================== ARTICLES ============================== */
 pages.push(write('articles.html',
-head({ title: `Articles — tax, legal and licensing insight | ${C.shortName}`, desc: 'Practical explanations of rule changes, commonly misunderstood requirements, and costs to budget for.', d: 0 }) +
-header('articles', 0, C) + `
+head({ title: `Articles — tax, legal and licensing insight | ${C.shortName}`, desc: 'Practical explanations of rule changes, commonly misunderstood requirements, and costs to budget for.', d: 0, lang, T }) +
+header('articles', 0, C, lang, T, 'articles.html') +
+pageBanner(0, { eyebrow: 'Articles', title: 'Tax, legal &amp; licensing insight', lede: 'Practical explanations of rules that changed, requirements that are commonly misunderstood, and costs worth budgeting for.', trail: [{ href: 'index.html', label: T.home }, { label: 'Articles' }], photoCat: 'filed-docs', photoSeed: 'articles-banner' }) + `
 <main id="main">
-  <div class="container">${crumbs(0, [{ href: 'index.html', label: 'Home' }, { label: 'Articles' }])}</div>
 
   <section class="section section--tight">
     <div class="container">
@@ -783,14 +796,6 @@ header('articles', 0, C) + `
         <h3>Clear the old posts before this page goes live</h3></div>
         <p class="small">The current site still serves seven placeholder posts, indexed by search engines: <code>hello-world</code>, two <code>lorem ipsum</code> variants, two <code>we-denounce-with-of-righteous-one-indignation</code> variants and two <code>with-our-vastly-improved-notifications-system</code> variants — complete with fake comments and a fake pull quote, dated March 2021. Delete them, then request URL removal in Search Console.</p>
       </div>
-    </div>
-  </section>
-
-  <section class="section section--tight">
-    <div class="container stack" style="--s:16px">
-      <span class="eyebrow">Articles</span>
-      <h1>Tax, legal &amp; licensing insight</h1>
-      <p class="lede" style="max-width:62ch">Practical explanations of rules that changed, requirements that are commonly misunderstood, and costs worth budgeting for.</p>
     </div>
   </section>
 
@@ -854,29 +859,21 @@ header('articles', 0, C) + `
     </div>
   </section>
 
-  ${ctaBand(0, C, S.cta)}
-</main>` + footer(0, C)));
+  ${ctaBand(0, C, CTA, T)}
+</main>` + footer(0, C, lang)));
 
 /* ============================== CONTACT ============================== */
 pages.push(write('contact.html',
-head({ title: `Contact — ${C.legalName}`, desc: `Contact ${C.legalName} in North Jakarta. ${C.hours}`, d: 0 }) +
-header('contact', 0, C) + `
+head({ title: `Contact — ${C.legalName}`, desc: `Contact ${C.legalName} in North Jakarta. ${C.hours[lang]}`, d: 0, lang, T }) +
+header('contact', 0, C, lang, T, 'contact.html') +
+pageBanner(0, { eyebrow: 'Contact', title: "Let's talk", lede: 'Pick whichever channel suits you. For a quick question WhatsApp is usually fastest; for anything that needs a quote, use the form below.', trail: [{ href: 'index.html', label: T.home }, { label: T.contact }], photoCat: 'reception', photoSeed: 'contact-banner' }) + `
 <main id="main">
-  <div class="container">${crumbs(0, [{ href: 'index.html', label: 'Home' }, { label: 'Contact' }])}</div>
 
   <section class="section section--tight">
-    <div class="container split split--wide">
-      <div class="stack" style="--s:16px">
-        <span class="eyebrow">Contact</span>
-        <h1>Let's talk</h1>
-        <p class="lede">Pick whichever channel suits you. For a quick question WhatsApp is usually fastest; for anything that needs a quote, use the form below.</p>
-      </div>
-      ${slot('Photo: reception or meeting room — gives the contact page a face', { ratio: '16 / 9', px: 'min 1400px', icon: 'pin', cat: 'reception' })}
-    </div>
     <div class="container">
       <ul class="grid g4" style="margin-top:clamp(24px,3vw,36px)">
         ${[['whatsapp','WhatsApp', C.whatsapp, 'Answered during office hours', `https://wa.me/${C.whatsappIntl}`, true],
-           ['phone','Phone', C.phones[0], C.hours, `tel:${C.phones[0].replace(/-/g,'')}`, false],
+           ['phone','Phone', C.phones[0], C.hours[lang], `tel:${C.phones[0].replace(/-/g,'')}`, false],
            ['phone','Second line', C.phones[1], 'Also listed on the current site', `tel:${C.phones[1].replace(/-/g,'')}`, false],
            ['mail','Email', C.emails[0], 'Move this to your own domain', `mailto:${C.emails[0]}`, false]]
           .map(([i,t,v,s,href,gold]) => `<li class="card ${gold ? 'card--gold' : ''} card--pad">
@@ -932,7 +929,7 @@ header('contact', 0, C) + `
               <h4>${t}</h4><p class="small" style="margin-top:5px">${a}<br>${C.city}</p></div></article>`).join('\n          ')}
         </div>
         <div class="card card--surface card--pad">
-          <div class="cluster" style="gap:10px"><span style="color:var(--navy)">${ic('clock', 19)}</span><p class="small">${C.hours}</p></div>
+          <div class="cluster" style="gap:10px"><span style="color:var(--navy)">${ic('clock', 19)}</span><p class="small">${C.hours[lang]}</p></div>
           <a class="btn btn--quiet" style="margin-top:14px" href="https://maps.google.com/?q=Jl.+Bandengan+Utara+80+Jakarta+Utara" target="_blank" rel="noopener">Open in Google Maps ${ic('arrow', 15)}</a>
         </div>
         ${slot('Map: both office locations pinned', { ratio: '4 / 3', icon: 'pin', cat: 'city' })}
@@ -956,12 +953,12 @@ header('contact', 0, C) + `
       </div>
     </div>
   </section>
-</main>` + footer(0, C)));
+</main>` + footer(0, C, lang)));
 
 /* ============================== 404 ============================== */
 pages.push(write('404.html',
-head({ title: `Page not found — ${C.shortName}`, desc: 'That page does not exist.', d: 0 }) +
-header('', 0, C) + `
+head({ title: `Page not found — ${C.shortName}`, desc: 'That page does not exist.', d: 0, lang, T }) +
+header('', 0, C, lang, T, '404.html') + `
 <main id="main">
   <section class="section">
     <div class="container" style="max-width:720px;text-align:center">
@@ -981,17 +978,27 @@ header('', 0, C) + `
       <p class="tiny" style="margin-top:28px">The current site has no 404 page — unknown URLs return an HTTP 500 error instead. On your server, point the 404 handler at this file.</p>
     </div>
   </section>
-</main>` + footer(0, C)));
+</main>` + footer(0, C, lang)));
+});
 
-/* ===================== sitemap.xml + robots.txt ===================== */
+/* ===================== sitemap.xml + robots.txt =====================
+   Site-wide, written once at the true dist root — not per language, and
+   not through the per-language `write` closure above (out of scope here). */
+const writeRoot = (rel, content) => {
+  const f = path.join(OUT, rel);
+  fs.mkdirSync(path.dirname(f), { recursive: true });
+  fs.writeFileSync(f, content);
+};
+
 /* Production domain by default; a preview deploy overrides it with SITE_URL so
    the sitemap advertises the host it is actually served from. */
 const BASE = process.env.SITE_URL || 'https://accuprointernational.co.id';
-const urls = ['index.html','about.html','services.html','tools.html','articles.html','contact.html']
+const PAGE_PATHS = ['index.html','about.html','services.html','tools.html','articles.html','contact.html']
   .map(u => ({ loc: u === 'index.html' ? '/' : '/' + u, pri: u === 'index.html' ? '1.0' : '0.8' }))
   .concat(CAT.map(c => ({ loc: `/services/${c.slug}/`, pri: '0.7' })))
   .concat(SVC.map(s => ({ loc: `/services/${s.cat}/${s.slug}.html`, pri: '0.6' })));
-write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
+const urls = LANGS.flatMap(lang => PAGE_PATHS.map(u => ({ ...u, loc: lang === 'id' ? u.loc : `/${lang}${u.loc}` })));
+writeRoot('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url><loc>${BASE}${u.loc}</loc><priority>${u.pri}</priority></url>`).join('\n')}
 </urlset>
@@ -1002,17 +1009,17 @@ ${urls.map(u => `  <url><loc>${BASE}${u.loc}</loc><priority>${u.pri}</priority><
 /* Netlify reads _headers from the publish dir. An X-Robots-Tag header is
    stronger than the meta tag: it also covers non-HTML files, and it cannot be
    missed by a crawler that never parses the document. */
-if (NOINDEX) write('_headers', `/*\n  X-Robots-Tag: noindex, nofollow\n`);
-/* build.mjs does not wipe dist/, so a _headers left behind by an earlier
-   preview build would otherwise ship a noindex header to production. */
-else fs.rmSync(path.join('dist', '_headers'), { force: true });
+if (NOINDEX) writeRoot('_headers', `/*\n  X-Robots-Tag: noindex, nofollow\n`);
+/* dist/ is wiped at the top of every build now, so this is mostly a
+   belt-and-braces guard against a _headers file surviving from outside the
+   build (e.g. hand-copied) rather than from a previous run. */
+else fs.rmSync(path.join(OUT, '_headers'), { force: true });
 
-write('robots.txt', NOINDEX
+writeRoot('robots.txt', NOINDEX
   ? `User-agent: *\nDisallow: /\n`
   : `User-agent: *\nAllow: /\n\nSitemap: ${BASE}/sitemap.xml\n`);
 console.log(`sitemap.xml: ${urls.length} URLs`);
 
 /* ---------------------------- report ---------------------------- */
-const g = { root: 0, category: 0, service: 0 };
-pages.forEach(p => { if (!p.includes('/')) g.root++; else if (p.endsWith('index.html')) g.category++; else g.service++; });
-console.log(`built ${pages.length} pages —`, g);
+const byLang = LANGS.map(lang => `${lang.toUpperCase()} ${pages.filter(p => lang === 'id' ? !p.startsWith('en/') && !p.startsWith('ch/') : p.startsWith(`${lang}/`)).length}`).join(' · ');
+console.log(`built ${pages.length} pages — ${byLang}`);

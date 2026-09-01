@@ -66,6 +66,16 @@ h4{font-size:1.0625rem;font-weight:700;letter-spacing:-.01em;line-height:1.3}
   background:var(--navy);color:#fff;padding:12px 18px;z-index:200}
 .skip:focus{position:fixed;left:8px;top:8px;width:auto;height:auto;clip-path:none;color:#fff;border-radius:var(--r)}
 
+/* ---------- utility bar (real content — see src/layout.mjs) ---------- */
+.utility-bar{background:var(--navy-900);color:#A8AEDB;font-size:.8125rem}
+.utility-bar__row{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:38px}
+.utility-bar__row a{color:#A8AEDB;display:inline-flex;align-items:center;gap:6px}
+.utility-bar__row a:hover{color:#fff}
+.utility-bar__hours{display:flex;align-items:center;gap:6px}
+.utility-bar__socials{display:flex;align-items:center;gap:10px}
+.utility-bar__socials a{color:#A8AEDB}
+.utility-bar__socials a:hover{color:var(--gold)}
+
 /* ---------- header ---------- */
 .header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .header__bar{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:var(--header-h)}
@@ -83,6 +93,54 @@ h4{font-size:1.0625rem;font-weight:700;letter-spacing:-.01em;line-height:1.3}
 .langs a{padding:5px 9px;font-size:.75rem;font-weight:600;color:var(--muted);border-radius:2px;white-space:nowrap}
 .langs a[aria-current="true"]{background:var(--navy);color:#fff}
 .burger{display:none;width:44px;height:44px;align-items:center;justify-content:center;border:1px solid var(--line-strong);border-radius:var(--r)}
+
+/* ---------- hero slider (home, section 1) ----------
+   All three slides are stacked in the same grid cell (grid-area:1/1), so the
+   track's height is always the tallest of the three — switching the active
+   slide never reflows the page below it. Only opacity/visibility toggle;
+   `hidden`/`display:none` would pull a slide out of that height calculation
+   and bring the jump straight back. */
+.hero-section{position:relative;overflow:hidden;padding-block:clamp(48px,7vw,96px)}
+.hero-section__bg{position:absolute;inset:0;z-index:0}
+.hero-bg-slide{position:absolute;inset:0;opacity:0;transition:opacity .6s ease}
+.hero-bg-slide.is-active{opacity:1}
+.hero-bg-slide img{width:100%;height:100%;object-fit:cover}
+.hero-section__bg::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(22,28,79,.94) 0%,rgba(22,28,79,.86) 45%,rgba(22,28,79,.6) 100%)}
+.hero-section>.container{position:relative;z-index:1}
+.hero-section .pill{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.28);color:#F3E7C4}
+.hero-section h1{color:#fff}
+.hero-section .hero-slide .lede{color:#C3C7E6}
+.hero-section .stat__v{color:#fff}
+.hero-section .g-stats .tiny{color:#A8AEDB}
+.hero-section .btn--gold{color:#fff}
+@media (prefers-reduced-motion:reduce){.hero-bg-slide{transition:none}}
+
+.hero-slider{position:relative}
+.hero-slider__track{position:relative;display:grid}
+.hero-slide{grid-area:1/1;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .35s ease}
+.hero-slide.is-active{opacity:1;visibility:visible;pointer-events:auto}
+.hero-slide .lede{margin:12px 0 20px}
+.hero-slider__controls{display:flex;align-items:center;gap:16px;margin-top:8px}
+.hero-slider__arrow{display:flex;align-items:center;justify-content:center;width:40px;height:40px;flex:none;border:1px solid var(--line-strong);border-radius:100px;color:var(--navy)}
+.hero-slider__arrow:hover{background:var(--navy);border-color:var(--navy);color:#fff}
+.hero-slider__arrow--prev svg{transform:rotate(180deg)}
+.hero-slider__dots{display:flex;align-items:center;gap:8px}
+.hero-slider__dot{width:9px;height:9px;padding:0;border-radius:50%;background:var(--line-strong);border:0;flex:none}
+.hero-slider__dot.is-active{background:var(--navy);width:24px;border-radius:5px}
+@media (prefers-reduced-motion:reduce){.hero-slide{transition:none}}
+
+/* ---------- page banner (every non-home page, section 1) ---------- */
+.page-banner{position:relative;height:400px;display:flex;align-items:flex-end;background:var(--navy-900);color:#fff;overflow:hidden}
+.page-banner__bg{position:absolute;inset:0}
+.page-banner__bg img{width:100%;height:100%;object-fit:cover;opacity:.34}
+.page-banner__bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(22,28,79,.35) 0%,rgba(22,28,79,.92) 100%)}
+.page-banner__content{position:relative;z-index:1;padding-bottom:clamp(28px,4vw,44px)}
+.page-banner .crumbs{padding-block:0 14px}
+.page-banner .crumbs a,.page-banner .crumbs span:not([aria-current]){color:#A8AEDB}
+.page-banner .crumbs span[aria-current]{color:#fff}
+.page-banner .tag{background:var(--gold)}
+.page-banner h1{color:#fff;margin-top:10px}
+.page-banner .lede{color:#C3C7E6;margin-top:10px;max-width:62ch}
 
 /* ---------- buttons ---------- */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;font-family:var(--display);font-size:.9375rem;font-weight:700;letter-spacing:-.01em;border-radius:var(--r);white-space:nowrap;text-align:center;transition:background .15s,color .15s,border-color .15s,transform .15s}
@@ -243,6 +301,7 @@ h4{font-size:1.0625rem;font-weight:700;letter-spacing:-.01em;line-height:1.3}
 @media (max-width:640px){
   body{font-size:16px}
   :root{--gutter:16px;--header-h:66px}
+  .utility-bar__hours{display:none}
   .g2,.g3,.g4{grid-template-columns:1fr}
   .g-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
   .logos{grid-template-columns:repeat(2,minmax(0,1fr))}

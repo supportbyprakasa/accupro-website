@@ -1,22 +1,25 @@
 # Accupro International — static website
 
 A complete static rebuild of `accuprointernational.co.id`, generated from one data file
-and a set of templates. No framework, no build dependencies beyond Node.
+and a set of templates, in three languages. No framework, no build dependencies beyond Node.
 
-**36 HTML pages · plain CSS · 4 KB of vanilla JS · responsive at 390 / 768 / 1440 px**
-**270 image slots, every one filled with a category-matched stock fallback**
+**108 HTML pages (36 × ID / EN / 中文) · plain CSS · 4 KB of vanilla JS · responsive at 390 / 768 / 1440 px**
+**270 image slots per language, every one filled with a category-matched stock fallback**
 
 ---
 
 ## 1. Where the content came from
 
-Every sentence of prose in this site is copied **verbatim** from
-`https://accuprointernational.co.id/en/`. Nothing was invented, paraphrased, or
-translated by hand.
+All real prose in this site is copied **verbatim** from `content-recap/` — a full crawl
+of the live site in all three of its languages (see `content-recap/INDEX.md` and
+`AUDIT.json`). Nothing real was invented, paraphrased, or machine-translated.
 
-Everything that does **not** exist on the current site is marked with a
-`[SQUARE BRACKET]` placeholder, rendered as a small amber tag on the page. Search for
-`ph-tag` in the HTML, or `PH(` in `build.mjs`, to find them all.
+Everything that does **not** exist on the current site, in any language, is marked with
+a `[SQUARE BRACKET]` placeholder, rendered as a small amber tag on the page. Search for
+`ph-tag` in the HTML, or `PH(` in `build.mjs`, to find them all. Because that invented
+content (categories, tools, FAQ copy, checklists, credentials, articles) has no source
+text to translate in the first place, it is written once and reused unchanged across
+all three language builds — see §8 for exactly what is and isn't localized.
 
 That distinction matters, because of what the audit found: **24 of the site's service
 pages contain zero words.** They serve only a title, `By super admin`, `Maret 5, 2025`,
@@ -24,8 +27,10 @@ and the WordPress theme's demo string *"Build strong & impressive websites using
 premade templates"*. So the 24 service detail pages here are fully built and styled but
 deliberately unwritten — they are the writing brief, not finished copy.
 
-Rough volume still to write: **24,000–31,000 words**, before English → Indonesian →
-Mandarin translation.
+Rough volume still to write: **24,000–31,000 words** of real service-page copy (see §8
+for what's already localized vs. still English-only PH text) — and once written, that
+new copy still needs its own Indonesian/Mandarin translation, the same way the rest of
+the site's real content already was.
 
 ---
 
@@ -60,12 +65,14 @@ src/layout.mjs         ← <head>, header, footer, CTA band, breadcrumbs, image 
 src/photos.mjs         ← stock fallback photo sets, one per category (see §5)
 build.mjs              ← page templates + the generator
 verify.mjs             ← automated checks
-dist/                  ← generated output; safe to delete and rebuild
+dist/                  ← generated output; safe to delete and rebuild (wiped and
+                          regenerated on every `node build.mjs`, except assets/)
   index.html  about.html  services.html  tools.html  articles.html  contact.html  404.html
-  sitemap.xml  robots.txt
   services/<category>/index.html          ×5   category pages
   services/<category>/<service>.html      ×24  service detail pages
-  assets/css/style.css
+  en/  ch/               ← the same tree again, once per language (§8)
+  sitemap.xml  robots.txt                 ← cover all three languages
+  assets/css/style.css   ← shared by all three language trees, not duplicated
   assets/js/main.js
   assets/img/logo-accupro.png
 ```
@@ -187,14 +194,42 @@ right but worth checking. See §5.
 |---|---|
 | Calculator logic | Shells only, as agreed. Nine tools are laid out and styled; no arithmetic. Wire it up in `assets/js/main.js`, and keep history in `localStorage` so it survives a reload. |
 | Form submission | Front-end validation only. `contact.html`'s form has no `action`. Point it at your handler, WP `admin-post.php`, or an email service. See `data-demo-form` in `main.js`. |
-| Indonesian & Mandarin | The language switcher is in place but inert — it links to `#`. Content came from `/en/`, so only English is built. Generating `/id/` and `/zh/` is a loop in `build.mjs` once the copy exists. |
 | Privacy Policy & Terms | Footer links point to `#`. Both pages need writing — the contact form collects personal data and the current site has no policy at all. |
 | Google Maps embed | A slot is reserved on `about.html` and `contact.html`. Drop the iframe in. |
-| Real photography | 90+ slots, each with a written brief. |
+| Real photography | 90+ slots per language, each with a written brief. |
 
 ---
 
-## 8. What was fixed relative to the current site
+## 8. Localization: what's translated and what isn't
+
+The language switcher works — `id`/`en`/`ch` are three parallel builds of every page
+(`build.mjs` loops `LANGS` from `src/layout.mjs`, id at the site root, `en/` and `ch/`
+mirroring it one level down), and it lands on the *same* page in the other language,
+not just its homepage.
+
+But only real content gets translated. The rule: **if it exists in `content-recap/` in
+that language, it's localized; if it was invented for this rebuild, it stays in English
+everywhere.**
+
+| Localized (real, per-language text from `content-recap/`) | Stays English (invented for this rebuild — nothing to translate) |
+|---|---|
+| Nav labels: Home / About / Services / Contact, header "Contact Us" button | Extra nav items this rebuild adds: Tools, Articles |
+| Hero headline + lede, the 3 pillars (title + text) | Categories, their blurbs, and the whole `services.html` / category-page chrome |
+| Stats labels, `cta` heading/text, `sectionHeading` | Every `[PH]` placeholder: FAQ, checklists, cost tables, credentials, "why we exist" |
+| Testimonial quotes (name/company are proper nouns, unchanged) | Footer's invented column structure (Services / Company / Get in touch headings) |
+| `company.tagline`, `company.hours` | Tools & Calculators, Articles pages, contact form labels |
+| Team member names and roles | — these are identical across all three languages on the live site too, so no `{id,en,ch}` object was needed for them |
+
+The per-language strings live in `data/site.json` as `{id, en, ch}` objects (see
+`hero`, `pillars[].title/text`, `stats[].label`, `cta`, `sectionHeading`,
+`testimonials[].quote`, `company.tagline`, `company.hours`) plus a top-level `i18n`
+block for the nav/header chrome. Everything else in that file — `categories`, `services`,
+`tools` — is a plain string, deliberately not wrapped in a language object, because
+wrapping it would imply a translation exists when it doesn't.
+
+---
+
+## 9. What was fixed relative to the current site
 
 - **24 service pages** now have a real structure: summary, fact strip (turnaround,
   documents, who it is for, output), what it is, who needs it, document checklist,
@@ -213,7 +248,7 @@ right but worth checking. See §5.
 
 ---
 
-## 9. Converting to a WordPress theme
+## 10. Converting to a WordPress theme
 
 The templates map almost one to one:
 
@@ -232,7 +267,7 @@ redirect only where the slug changes.
 
 ---
 
-## 10. Brand
+## 11. Brand
 
 Sampled from the supplied logo:
 
