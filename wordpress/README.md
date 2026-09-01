@@ -22,6 +22,14 @@ ada karena tersimpan di plugin, bukan di tema.
    zip -r accupro-theme.zip accupro-theme -x '*.DS_Store' '._*'
    ```
 
+> **Kalau dipasang di situs yang sudah punya isi** (accuprointernational.co.id):
+> plugin ini mendeteksinya sendiri. Post type `layanan`, `team`, dan
+> `testimonial` yang sudah didaftarkan plugin lain **tidak** didaftarkan ulang,
+> dan 24 layanan yang sudah ada **diadopsi**, bukan digandakan — judul, isi, dan
+> gambarnya tidak disentuh; yang ditambahkan hanya kategori (tanpa itu layanan
+> lama tidak muncul di katalog) dan briefing foto bila kosong. Lihat bagian
+> [Memasang di situs yang sudah berjalan](#memasang-di-situs-yang-sudah-berjalan).
+
 2. **Plugin dulu, baru tema.** Di dasbor: *Plugin → Tambah Baru → Unggah Plugin*
    → `accupro-core.zip` → Aktifkan. Lalu *Tampilan → Tema → Tambah Baru →
    Unggah Tema* → `accupro-theme.zip` → Aktifkan.
@@ -37,6 +45,47 @@ ada karena tersimpan di plugin, bukan di tema.
    *Pengaturan → Membaca → Halaman depan menampilkan: Halaman statis.*
    Sebenarnya tidak wajib — `front-page.php` tetap dipakai WordPress untuk
    halaman depan apa pun pilihannya.
+
+---
+
+## Memasang di situs yang sudah berjalan
+
+Situs live memakai tema `zebizz` dengan Elementor Pro, dan plugin
+`accupro-blocks` yang mendaftarkan post type `layanan`. Tiga hal yang sudah
+ditangani plugin ini:
+
+**1. Post type tidak didaftarkan dua kali.** `accupro_register_post_types()`
+melewati tipe yang sudah ada. Post lama tetap utuh dan langsung dipakai tema
+Accupro. Kalau ini terjadi, muncul pemberitahuan di dasbor supaya tidak ada
+yang bingung kenapa label menunya berbeda dari dokumentasi ini.
+
+**2. Slug layanan mengikuti yang asli, bukan yang di `data/site.json`.**
+Generator statis memakai slug Inggris (`corporate-tax-processing`), WordPress
+memakai slug Indonesia (`pengurusan-pajak-badan`). Peta lengkapnya ada di
+`accupro_seed_service_slugs()` di `inc/seed.php`. Tanpa peta itu, seeder akan
+membuat 24 layanan baru di sebelah yang lama — 48 layanan, separuhnya duplikat,
+dan setiap URL yang sudah punya peringkat pencarian dapat kembaran.
+
+**3. Konten lama diadopsi, tidak ditimpa.** Layanan dicari lewat slug, lalu
+lewat judul persis; tim dan testimoni dicari lewat judul. Yang ditemukan
+dilewati — hanya field kosong yang diisi.
+
+Diuji dengan mensimulasikan kondisi live di WordPress lokal (24 layanan berslug
+Indonesia tanpa kategori, 4 tim, 4 testimoni), lalu menjalankan seeder dua kali:
+
+```
+SEBELUM  layanan 24 | team 4 | testimonial 4 | kategori 0
+SESUDAH  layanan 24 | team 4 | testimonial 4 | alat 9 | kategori 5
+         duplikat berslug Inggris : 0
+         layanan tanpa kategori   : 0
+         isi layanan tetap utuh   : 24/24
+         kutipan testimoni        : utuh
+```
+
+**Yang masih berubah dan tidak bisa dihindari**: mengaktifkan tema Accupro
+mematikan seluruh layout Elementor. Itu memang tujuannya ("ganti total, tanpa
+Elementor"), tapi terjadi seketika di situs publik — jadi lakukan di staging
+dulu, atau di jam sepi dengan backup siap.
 
 ---
 

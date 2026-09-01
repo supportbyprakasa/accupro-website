@@ -183,19 +183,101 @@ function accupro_seed_categories( $data ) {
 }
 
 /**
+ * Slug layanan di situs yang sedang berjalan.
+ *
+ * data/site.json memakai slug Inggris karena itu yang dipakai generator statis.
+ * Situs WordPress-nya memakai slug Indonesia, dan URL itu sudah punya peringkat
+ * pencarian — jadi slug di sinilah yang menentukan, bukan yang di JSON.
+ *
+ * Tanpa peta ini, seeder mencari 'corporate-tax-processing', tidak menemukannya,
+ * lalu membuat layanan BARU di sebelah 'pengurusan-pajak-badan' yang sudah ada:
+ * 48 layanan, separuhnya duplikat.
+ *
+ * @return array<string,string> slug JSON => slug WordPress
+ */
+function accupro_seed_service_slugs() {
+	return array(
+		'corporate-tax-processing'        => 'pengurusan-pajak-badan',
+		'individual-tax-processing'       => 'pengurusan-pajak-orang-pribadi',
+		'corporate-annual-tax-return'     => 'pengurusan-spt-tahunan-badan',
+		'individual-annual-tax-return'    => 'pengurusan-spt-tahunan-orang-pribadi',
+		'corporate-annual-tax-return-nil' => 'pengurusan-spt-tahunan-badan-nihil',
+		'sp2dk-response'                  => 'pembalasan-jawaban-surat-sp2dk',
+		'pkp-confirmation'                => 'pengukuhan-pengusaha-kena-pajak-pkp',
+		'corporate-npwp'                  => 'pembuatan-npwp-badan',
+		'individual-npwp'                 => 'pembuatan-npwp-orang-pribadi',
+		'npwp-data-update'                => 'perubahan-data-npwp',
+		'efin-registration'               => 'pembuatan-efin',
+		'coretax-pma-account'             => 'pembuatan-akun-coretax-pma',
+		'coretax-pmdn-account'            => 'pembuatan-akun-coretax-pmdn',
+		'coretax-personal-activation'     => 'pengaktifan-akun-coretax-pribadi',
+		'company-establishment'           => 'pendirian-pt-cv-yayasan',
+		'company-legality'                => 'pembuatan-legalitas-perusahaan',
+		'deed-amendment'                  => 'perubahan-akta',
+		'virtual-office'                  => 'sewa-virtual-office',
+		'work-kitas'                      => 'pembuatan-kitas-kerja',
+		'investor-kitas'                  => 'pembuatan-kitas-investor',
+		'family-kitas'                    => 'pembuatan-kitas-penyatuan-keluarga',
+		'business-visa'                   => 'pembuatan-visa-bisnis',
+		'trademark-pma'                   => 'pembuatan-merek-pma-wna',
+		'trademark-pmdn'                  => 'pembuatan-merek-pmdn-wni',
+	);
+}
+
+/**
+ * Cari layanan yang sudah ada, lewat slug lalu lewat judul.
+ *
+ * Judul dipakai sebagai cadangan karena slug bisa saja pernah diubah editor,
+ * sementara judulnya identik dengan yang tercatat di data/site.json.
+ *
+ * @param string $slug Slug WordPress yang diharapkan.
+ * @param string $name Judul layanan.
+ * @return WP_Post|null
+ */
+function accupro_find_service( $slug, $name ) {
+	$found = get_page_by_path( $slug, OBJECT, 'layanan' );
+
+	if ( $found ) {
+		return $found;
+	}
+
+	$by_title = get_posts(
+		array(
+			'post_type'        => 'layanan',
+			'posts_per_page'   => 1,
+			'post_status'      => 'any',
+			'title'            => $name,
+			'no_found_rows'    => true,
+			'suppress_filters' => false,
+		)
+	);
+
+	return $by_title ? $by_title[0] : null;
+}
+
+/**
  * Layanan.
+ *
+ * Dua jalur. Kalau layanannya sudah ada — situs yang sedang berjalan sudah
+ * punya 24 — entri itu diadopsi: isinya tidak disentuh sama sekali, yang
+ * ditambahkan hanya kategori dan briefing foto bila memang belum ada. Kalau
+ * belum ada, baru dibuatkan, dengan slug Indonesia.
  *
  * @param array $data Data bundel.
  */
 function accupro_seed_services( $data ) {
+	$slugs = accupro_seed_service_slugs();
+
 	foreach ( ( isset( $data['services'] ) ? $data['services'] : array() ) as $index => $service ) {
 		if ( empty( $service['slug'] ) || empty( $service['name'] ) ) {
 			continue;
 		}
 
-		$existing = get_page_by_path( $service['slug'], OBJECT, 'layanan' );
+		$slug     = isset( $slugs[ $service['slug'] ] ) ? $slugs[ $service['slug'] ] : $service['slug'];
+		$existing = accupro_find_service( $slug, $service['name'] );
 
 		if ( $existing ) {
+			accupro_adopt_service( $existing, $service );
 			continue;
 		}
 
@@ -204,7 +286,7 @@ function accupro_seed_services( $data ) {
 				'post_type'   => 'layanan',
 				'post_status' => 'publish',
 				'post_title'  => $service['name'],
-				'post_name'   => $service['slug'],
+				'post_name'   => $slug,
 				'menu_order'  => $index,
 			)
 		);
@@ -224,7 +306,61 @@ function accupro_seed_services( $data ) {
 }
 
 /**
+ * Lengkapi layanan yang sudah ada tanpa menimpa apa pun yang sudah diisi.
+ *
+ * Judul, isi, dan gambar milik editor — tidak disentuh. Yang ditambahkan hanya
+ * kategori (tanpa itu layanan lama tidak muncul di katalog, karena katalog
+ * mengelompokkan per kategori) dan briefing foto bila kosong.
+ *
+ * @param WP_Post $post    Layanan yang sudah ada.
+ * @param array   $service Entri dari data bundel.
+ */
+function accupro_adopt_service( $post, $service ) {
+	if ( ! empty( $service['cat'] ) ) {
+		$terms = wp_get_object_terms( $post->ID, 'kategori_layanan', array( 'fields' => 'ids' ) );
+
+		if ( ! is_wp_error( $terms ) && ! $terms ) {
+			wp_set_object_terms( $post->ID, $service['cat'], 'kategori_layanan' );
+		}
+	}
+
+	if ( ! empty( $service['shot'] ) && ! get_post_meta( $post->ID, 'accupro_shot', true ) ) {
+		update_post_meta( $post->ID, 'accupro_shot', $service['shot'] );
+	}
+}
+
+/**
+ * Cari post berdasarkan judul persis, dalam satu post type.
+ *
+ * Slug tidak bisa diandalkan untuk testimoni dan tim: situs yang berjalan
+ * memakai slug seperti 'ibu-cindy', dan sanitize_title() atas nama yang sama
+ * belum tentu menghasilkan slug yang identik. Judulnya yang stabil.
+ *
+ * @param string $type Post type.
+ * @param string $title Judul persis.
+ * @return WP_Post|null
+ */
+function accupro_find_by_title( $type, $title ) {
+	$found = get_posts(
+		array(
+			'post_type'        => $type,
+			'posts_per_page'   => 1,
+			'post_status'      => 'any',
+			'title'            => $title,
+			'no_found_rows'    => true,
+			'suppress_filters' => false,
+		)
+	);
+
+	return $found ? $found[0] : null;
+}
+
+/**
  * Testimoni.
+ *
+ * Kalau testimoni dengan nama yang sama sudah ada — situs yang berjalan sudah
+ * punya empat — kutipannya tidak disentuh; yang diisi hanya nama perusahaan
+ * bila field itu masih kosong.
  *
  * @param array $data Data bundel.
  */
@@ -236,10 +372,16 @@ function accupro_seed_testimonials( $data ) {
 			continue;
 		}
 
-		$slug     = sanitize_title( $item['name'] );
-		$existing = get_page_by_path( $slug, OBJECT, 'testimoni' );
+		// '[COMPANY NAME]' adalah penanda di data statis untuk nama yang belum
+		// dikonfirmasi klien — jangan ikut dipublikasikan.
+		$company = ( ! empty( $item['company'] ) && '[COMPANY NAME]' !== $item['company'] ) ? $item['company'] : '';
+
+		$existing = accupro_find_by_title( 'testimonial', $item['name'] );
 
 		if ( $existing ) {
+			if ( $company && ! get_post_meta( $existing->ID, 'accupro_perusahaan', true ) ) {
+				update_post_meta( $existing->ID, 'accupro_perusahaan', $company );
+			}
 			continue;
 		}
 
@@ -250,19 +392,16 @@ function accupro_seed_testimonials( $data ) {
 
 		$post_id = wp_insert_post(
 			array(
-				'post_type'    => 'testimoni',
+				'post_type'    => 'testimonial',
 				'post_status'  => 'publish',
 				'post_title'   => $item['name'],
-				'post_name'    => $slug,
+				'post_name'    => sanitize_title( $item['name'] ),
 				'post_content' => $quote,
 				'menu_order'   => $index,
 			)
 		);
 
-		if ( ! is_wp_error( $post_id ) && $post_id && ! empty( $item['company'] ) ) {
-			// '[COMPANY NAME]' adalah penanda di data statis untuk nama yang
-			// belum dikonfirmasi klien — jangan ikut dipublikasikan.
-			$company = ( '[COMPANY NAME]' === $item['company'] ) ? '' : $item['company'];
+		if ( ! is_wp_error( $post_id ) && $post_id && $company ) {
 			update_post_meta( $post_id, 'accupro_perusahaan', $company );
 		}
 	}
@@ -270,6 +409,9 @@ function accupro_seed_testimonials( $data ) {
 
 /**
  * Anggota tim.
+ *
+ * Sama seperti testimoni: yang sudah ada diadopsi, jabatannya hanya diisi bila
+ * masih kosong.
  *
  * @param array $data Data bundel.
  */
@@ -279,25 +421,28 @@ function accupro_seed_team( $data ) {
 			continue;
 		}
 
-		$slug     = sanitize_title( $member['name'] );
-		$existing = get_page_by_path( $slug, OBJECT, 'tim' );
+		$role     = isset( $member['role'] ) ? $member['role'] : '';
+		$existing = accupro_find_by_title( 'team', $member['name'] );
 
 		if ( $existing ) {
+			if ( $role && ! get_post_meta( $existing->ID, 'accupro_jabatan', true ) ) {
+				update_post_meta( $existing->ID, 'accupro_jabatan', $role );
+			}
 			continue;
 		}
 
 		$post_id = wp_insert_post(
 			array(
-				'post_type'   => 'tim',
+				'post_type'   => 'team',
 				'post_status' => 'publish',
 				'post_title'  => $member['name'],
-				'post_name'   => $slug,
+				'post_name'   => sanitize_title( $member['name'] ),
 				'menu_order'  => $index,
 			)
 		);
 
-		if ( ! is_wp_error( $post_id ) && $post_id && ! empty( $member['role'] ) ) {
-			update_post_meta( $post_id, 'accupro_jabatan', $member['role'] );
+		if ( ! is_wp_error( $post_id ) && $post_id && $role ) {
+			update_post_meta( $post_id, 'accupro_jabatan', $role );
 		}
 	}
 }
@@ -342,7 +487,13 @@ function accupro_seed_tools( $data ) {
 		if ( isset( $bridge[ $tool['slug'] ] ) ) {
 			update_post_meta( $post_id, 'accupro_result_label', $bridge[ $tool['slug'] ]['label'] );
 
-			$service = get_page_by_path( $bridge[ $tool['slug'] ]['service'], OBJECT, 'layanan' );
+			// Slug pendamping ditulis dengan slug JSON; terjemahkan dulu ke slug
+			// WordPress, kalau tidak pencariannya selalu gagal di situs yang
+			// layanannya memakai slug Indonesia.
+			$slugs        = accupro_seed_service_slugs();
+			$bridge_slug  = $bridge[ $tool['slug'] ]['service'];
+			$bridge_slug  = isset( $slugs[ $bridge_slug ] ) ? $slugs[ $bridge_slug ] : $bridge_slug;
+			$service      = get_page_by_path( $bridge_slug, OBJECT, 'layanan' );
 
 			if ( $service ) {
 				update_post_meta( $post_id, 'accupro_bridge_post', (string) $service->ID );

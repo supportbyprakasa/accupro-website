@@ -31,14 +31,14 @@ function accupro_meta_fields() {
 				'desc'  => __( 'Tampil di kartu daftar layanan dan di bawah judul halaman layanan.', 'accupro' ),
 			),
 		),
-		'testimoni' => array(
+		'testimonial' => array(
 			'accupro_perusahaan' => array(
 				'label' => __( 'Perusahaan', 'accupro' ),
 				'type'  => 'text',
 				'desc'  => __( 'Nama perusahaan pemberi testimoni. Kosongkan bila tidak ingin ditampilkan.', 'accupro' ),
 			),
 		),
-		'tim'       => array(
+		'team'       => array(
 			'accupro_jabatan' => array(
 				'label' => __( 'Jabatan', 'accupro' ),
 				'type'  => 'text',

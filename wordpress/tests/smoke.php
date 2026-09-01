@@ -80,7 +80,7 @@ stub_report( 9 === count( $tools ), 'seed: 9 alat hitung', count( $tools ) . ' a
 $terms = get_terms( array( 'taxonomy' => 'kategori_layanan' ) );
 stub_report( 5 === count( $terms ), 'seed: 5 kategori', count( $terms ) . ' kategori' );
 
-$testimonials = get_posts( array( 'post_type' => 'testimoni', 'posts_per_page' => -1 ) );
+$testimonials = get_posts( array( 'post_type' => 'testimonial', 'posts_per_page' => -1 ) );
 stub_report( count( $testimonials ) > 0, 'seed: testimoni', count( $testimonials ) . ' testimoni' );
 
 stub_report( null !== get_page_by_path( 'tentang-kami' ), 'seed: halaman Tentang Kami' );
@@ -97,11 +97,20 @@ stub_report(
 /* -------------------------------------------- lengkapi relasi untuk render */
 
 // Stub get_posts menyaring lewat meta _cat; isi dari data seed.
-$data = accupro_seed_data();
+$data  = accupro_seed_data();
+$slugs = accupro_seed_service_slugs();
 foreach ( $data['services'] as $service ) {
-	$post = get_page_by_path( $service['slug'], OBJECT, 'layanan' );
+	$slug = $slugs[ $service['slug'] ] ?? $service['slug'];
+	$post = get_page_by_path( $slug, OBJECT, 'layanan' );
 	if ( $post ) { update_post_meta( $post->ID, '_cat', $service['cat'] ); }
 }
+
+// Slug layanan harus memakai slug WordPress yang asli, bukan slug JSON —
+// kalau tidak, seeder akan menggandakan 24 layanan di situs yang sudah ada.
+stub_report( 24 === count( $slugs ), 'peta slug layanan lengkap', count( $slugs ) . '/24' );
+$live = get_page_by_path( 'pengurusan-pajak-badan', OBJECT, 'layanan' );
+stub_report( null !== $live, 'layanan dibuat dengan slug Indonesia', $live ? $live->post_title : '-' );
+stub_report( null === get_page_by_path( 'corporate-tax-processing', OBJECT, 'layanan' ), 'tidak ada layanan berslug Inggris' );
 foreach ( $GLOBALS['stub_terms'] as $term ) {
 	foreach ( $data['categories'] as $cat ) {
 		if ( $term->name === $cat['name'] ) { $term->slug = $cat['slug']; }
@@ -163,7 +172,7 @@ $theme_files = array(
 	'404.php'                        => array( 'archive', array() ),
 );
 
-$service_post = get_page_by_path( 'corporate-tax-processing', OBJECT, 'layanan' );
+$service_post = get_page_by_path( 'pengurusan-pajak-badan', OBJECT, 'layanan' );
 $tool_post    = get_page_by_path( 'pph4-2', OBJECT, 'alat' );
 $page_post    = get_page_by_path( 'kontak' );
 $article_post = stub_add_post( array( 'post_type' => 'post', 'post_name' => 'artikel-uji', 'post_title' => 'Artikel Uji', 'post_content' => 'Isi artikel.' ) );

@@ -209,6 +209,8 @@ function get_posts( $args = array() ) {
 			if ( ( $GLOBALS['stub_meta'][ $post->ID ]['_cat'] ?? '' ) !== $want ) { continue; }
 		}
 
+		if ( ! empty( $args['title'] ) && $post->post_title !== $args['title'] ) { continue; }
+
 		if ( isset( $args['meta_query'][0] ) ) {
 			$q = $args['meta_query'][0];
 			if ( ( $GLOBALS['stub_meta'][ $post->ID ][ $q['key'] ] ?? '' ) !== $q['value'] ) { continue; }
@@ -230,6 +232,9 @@ function get_term_meta( $id, $key = '', $single = false ) { return $GLOBALS['stu
 function update_term_meta( $id, $key, $value ) { $GLOBALS['stub_term_meta'][ $id ][ $key ] = $value; return true; }
 function get_post_status( $id ) { return isset( $GLOBALS['stub_posts'][ $id ] ) ? $GLOBALS['stub_posts'][ $id ]->post_status : false; }
 
+function post_type_exists( $type ) { return in_array( $type, array( 'layanan', 'testimonial', 'team', 'alat', 'post', 'page' ), true ); }
+function get_post_type_object( $type ) { return null; }
+function wp_get_object_terms( $id, $tax, $args = array() ) { return isset( $GLOBALS['stub_meta'][ $id ]['_cat'] ) ? array( $GLOBALS['stub_meta'][ $id ]['_cat'] ) : array(); }
 function get_terms( $args = array() ) {
 	$tax = $args['taxonomy'] ?? '';
 	$out = array();

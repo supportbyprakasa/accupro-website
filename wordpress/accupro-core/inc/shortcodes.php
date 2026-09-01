@@ -208,7 +208,7 @@ function accupro_sc_testimoni( $atts ) {
 
 	$items = get_posts(
 		array(
-			'post_type'      => 'testimoni',
+			'post_type'      => 'testimonial',
 			'posts_per_page' => (int) $atts['jumlah'],
 			'orderby'        => 'menu_order date',
 			'order'          => 'ASC',
@@ -257,7 +257,7 @@ add_shortcode( 'accupro_testimoni', 'accupro_sc_testimoni' );
 function accupro_sc_tim() {
 	$items = get_posts(
 		array(
-			'post_type'      => 'tim',
+			'post_type'      => 'team',
 			'posts_per_page' => -1,
 			'orderby'        => 'menu_order title',
 			'order'          => 'ASC',
